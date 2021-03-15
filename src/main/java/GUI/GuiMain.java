@@ -11,15 +11,21 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.ArcTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.control.Button;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-
-public class GuiMain extends Application {
+public class GuiMain extends Application implements EventHandler<ActionEvent>{
 
     static CelestialBody sun, earth;
     static Rectangle2D screenBounds;
+    private Stage singleStage;
+    private Scene introScene;
+    private Scene visualiserScene;
+    private Button beginButton;
 
     public static void main(String[] args) {
         launch(args);
@@ -27,13 +33,30 @@ public class GuiMain extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        primaryStage.setTitle("A Titanic Space Odyssey!");
+    	
+    	singleStage = primaryStage;    	
+        singleStage.setTitle("A Titanic Space Odyssey!");
+        
+        // Sets all the scenes that will be (eventually) seen.
+        setIntroScene();
+        setVisualiserScene();
+
+        singleStage.setScene(introScene);
+        singleStage.show();
+    }
+    
+	public void setIntroScene() {
+    	beginButton = new Button("BEGIN!");
+    	beginButton.setOnAction((EventHandler<ActionEvent>) this);
+    	BorderPane beginPane = new BorderPane(beginButton);
+    	beginPane.setPrefSize(160, 100);
+    	introScene = new Scene(beginPane,640,480);
+    	introScene.getStylesheets().add(GuiMain.class.getResource("/Stylesheet.css").toExternalForm());
+    }
+    
+    public void setVisualiserScene() {
 
         screenBounds = Screen.getPrimary().getBounds();
-
-        primaryStage.setFullScreen(true);
-        primaryStage.setResizable(false);
-        primaryStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
 
         sun = new CelestialBody("Sun", screenBounds.getWidth()/2,
                 screenBounds.getHeight()/2);
@@ -42,21 +65,30 @@ public class GuiMain extends Application {
         earth = new CelestialBody("Earth", screenBounds.getWidth()/4,
                 screenBounds.getHeight()/2);
         earth.getBody().getStyleClass().add("earth");
-
+        
         transition();
-
+    	
         BorderPane root = new BorderPane();
         root.getChildren().addAll(sun.getBody(), earth.getBody());
-        Scene scene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
-
-        scene.getStylesheets().add(GuiMain.class.getResource("/Stylesheet.css").toExternalForm());
-
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        
+        visualiserScene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
+        visualiserScene.getStylesheets().add(GuiMain.class.getResource("/Stylesheet.css").toExternalForm());
+    }
+    
+    /*
+     * Handles all button actions in one single method.
+     */
+    public void handle(ActionEvent e) {
+    	if(e.getSource() == beginButton) {
+    		singleStage.setScene(visualiserScene);
+            singleStage.setFullScreen(true);
+            singleStage.setResizable(false);
+            singleStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+    	}
     }
 
     /*
-        Creates animation for earth.
+     * Creates animation for earth.
      */
     public static void transition() {
         Path path = new Path();
@@ -84,4 +116,3 @@ public class GuiMain extends Application {
         pathTransition.play();
     }
 }
-
