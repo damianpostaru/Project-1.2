@@ -45,7 +45,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
         singleStage.show();
     }
     
-	public void setIntroScene() {
+    public void setIntroScene() {
     	beginButton = new Button("BEGIN!");
     	beginButton.setOnAction((EventHandler<ActionEvent>) this);
     	BorderPane beginPane = new BorderPane(beginButton);
