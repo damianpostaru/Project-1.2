@@ -1,0 +1,11 @@
+.root {
+    -fx-background-color: black;
+}
+
+.sun {
+    -fx-fill: #ebc728;
+}
+
+.earth {
+    -fx-fill: #1c7de6;
+}
