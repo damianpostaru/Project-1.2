@@ -66,13 +66,13 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
         introScene = new Scene(beginPane,screenBounds.getWidth(),screenBounds.getHeight());
 
         introText.setId("introText");
-        introText.setX(40);
-        introText.setY(120);
+        introText.setX(365);
+        introText.setY(300);
 
         launchButton.setOnAction((EventHandler<ActionEvent>) this);
         launchButton.setPrefSize(310, 75);
-        launchButton.setLayoutX(166);
-        launchButton.setLayoutY(320);
+        launchButton.setLayoutX(628);
+        launchButton.setLayoutY(560);
 
         beginPane.getChildren().add(introText);
         beginPane.getChildren().add(launchButton);
