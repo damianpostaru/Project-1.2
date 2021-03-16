@@ -16,7 +16,7 @@ public class State implements StateInterface {
         planets[8] = new Planet(1.34553e23,2.5755e6,new Vector3d(6.332873118527889e+11,  -1.357175556995868e+12,  -2.134637041453660e+09),new Vector3d(3.056877965721629e+03, 6.125612956428791e+03, -9.523587380845593e+02),"Titan");//titan
         planets[9] = new Planet(8.6813e25,25.4e6,new Vector3d(2.395195786685187e+12,   1.744450959214586e+12,  -2.455116324031639e+10),new Vector3d(-4.059468635313243e+03, 5.187467354884825e+03,  7.182516236837899e+01),"Neptune");//neptune
         planets[10] = new Planet(1.02413e26,24.6e6,new Vector3d(4.382692942729203e+12,  -9.093501655486243e+11,  -8.227728929479486e+10),new Vector3d( 1.068410720964204e+03, 5.354959501569486e+03, -1.343918199987533e+02),"Uranus");//uranus
-        shuttle = new Shuttle(150000, 10,p0,v0,"Shuttle" );//the shuttle
+        shuttle = new Shuttle(150000, 10,(Vector3d) p0.add(planets[3].getPos()),(Vector3d)v0.add(planets[3].getVel()),"Shuttle" );//the shuttle with location relative to SSB
     }
 
     public StateInterface addMul(double step, RateInterface rate) {
