@@ -8,11 +8,11 @@ public class CelestialBody {
     private double posX, posY;
     private Circle celestialBody;
 
-    public CelestialBody(String name, double posX, double posY) {
+    public CelestialBody(String name, double posX, double posY, int radius) {
         this.name = name;
         this.posX = posX;
         this.posY = posY;
-        celestialBody = new Circle(posX, posY, 10);
+        celestialBody = new Circle(posX, posY, radius);
     }
 
     /*
