@@ -8,9 +8,11 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.ArcTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -25,7 +27,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
     private Stage singleStage;
     private Scene introScene;
     private Scene visualiserScene;
-    private Button beginButton;
+    private Button launchButton;
 
     public static void main(String[] args) {
         launch(args);
@@ -46,12 +48,25 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
         singleStage.show();
     }
     
-	public void setIntroScene() {
-    	beginButton = new Button("BEGIN!");
-    	beginButton.setOnAction((EventHandler<ActionEvent>) this);
-    	BorderPane beginPane = new BorderPane(beginButton);
-    	beginPane.setPrefSize(160, 100);
-    	introScene = new Scene(beginPane,640,480);
+    public void setIntroScene() {
+    	String introTitle = "     A Titanic" + System.getProperty("line.separator") + "Space Odyssey!";
+    	Pane beginPane = new Pane();
+	Text introText = new Text(introTitle);
+	launchButton = new Button("LAUNCH PROBE!");
+	introScene = new Scene(beginPane,640,480);
+		
+	introText.setId("introText");
+	introText.setX(40);
+	introText.setY(120);
+		
+    	launchButton.setOnAction((EventHandler<ActionEvent>) this);
+    	launchButton.setPrefSize(310, 75);
+    	launchButton.setLayoutX(166);
+    	launchButton.setLayoutY(320);
+
+	beginPane.getChildren().add(introText);
+	beginPane.getChildren().add(launchButton);
+    	
     	introScene.getStylesheets().add(GuiMain.class.getResource("/Stylesheet.css").toExternalForm());
     }
     
@@ -80,7 +95,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
      * Handles all button actions in one single method.
      */
     public void handle(ActionEvent e) {
-    	if(e.getSource() == beginButton) {
+    	if(e.getSource() == launchButton) {
     		singleStage.setScene(visualiserScene);
             singleStage.setFullScreen(true);
             singleStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
