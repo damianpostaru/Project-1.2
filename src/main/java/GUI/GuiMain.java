@@ -153,7 +153,6 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
             seconds++;
             ssl = "Time Past Since Launch: " + seconds + "sec";
             timeText.setText(ssl);
-            System.out.println(seconds);
         }
     };
 
