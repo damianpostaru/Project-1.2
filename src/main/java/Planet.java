@@ -15,14 +15,12 @@ public class Planet
         radius = r;
     }
 
-    public void updatePos(Vector3dInterface dp)
+    public void update(Vector3dInterface acc, double dt)
     {
-        pos.add(dp);
+        vel = (Vector3d) vel.add(acc.mul(dt));
+        pos = (Vector3d) pos.add(vel.mul(dt));
     }
-    public void updateVel(Vector3dInterface dv)
-    {
-        vel.add(dv);
-    }
+
 
     public double getMass()
     {
@@ -34,6 +32,14 @@ public class Planet
     public Vector3dInterface getPos()
     {
         return pos;
+    }
+
+    public void setPos(Vector3d pos) {
+        this.pos = pos;
+    }
+
+    public void setVel(Vector3d vel) {
+        this.vel = vel;
     }
 
     public Vector3dInterface getVel()
