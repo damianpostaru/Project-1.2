@@ -32,6 +32,9 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
 
     public static void main(String[] args) {
         launch(args);
+        Solver s = new Solver();
+        State state0 = new State();
+        StateInterface[] states = s.solve(new Function(), state0,31556926 , 86400);
     }
 
     @Override

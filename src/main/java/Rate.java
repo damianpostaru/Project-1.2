@@ -1,8 +1,7 @@
 public class Rate implements RateInterface {
     Vector3d[] acc;
 
-    public Rate(Vector3d[] a)
-    {
+    public Rate(Vector3d[] a) {
         acc = a;
     }
 

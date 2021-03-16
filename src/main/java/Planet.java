@@ -17,8 +17,8 @@ public class Planet
 
     public void update(Vector3dInterface acc, double dt)
     {
-        vel = (Vector3d) vel.add(acc.mul(dt));
-        pos = (Vector3d) pos.add(vel.mul(dt));
+        vel = (Vector3d) vel.addMul(dt, acc);
+        pos = (Vector3d) pos.addMul(dt, vel);
     }
 
 

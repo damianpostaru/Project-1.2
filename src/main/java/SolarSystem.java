@@ -29,7 +29,7 @@ public class SolarSystem extends ArrayList<Planet>
             for (int j = 0; j < size(); j++)
             {
                 if(i == j){continue;}
-                Vector3d deltaPos = (Vector3d) get(i).getPos().sub(get(j).getPos());
+                Vector3d deltaPos = (Vector3d) get(j).getPos().sub(get(i).getPos());
                 Vector3d yes = (Vector3d)deltaPos.mul(Math.pow(1/deltaPos.norm(),3));
                 acc[i] = (Vector3d)acc[i].add(yes.mul(get(j).getMass()));
             }

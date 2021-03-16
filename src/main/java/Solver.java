@@ -20,14 +20,18 @@ public class Solver implements ODESolverInterface {
 
     @Override
     public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
-        StateInterface[] states = new StateInterface[(int) Math.ceil(tf/h)];
+        StateInterface[] states = new StateInterface[(int) Math.ceil(tf / h)];
         states[0] = y0;
         double t = 0;
 
-        for(int i = 1;i < states.length;i++){
-            states[i] = step(f, t, states[i - 1], h);
-            if((tf - t)/h < 0){t +=(tf-t)%h;}
-            else{t += h;}
+        for (int i = 1; i < states.length; i++) {
+            states[i] = step(f, t, states[i - 1], 0.1);
+            GuiMain.transition((State) states[i]);
+            if ((tf - t) / h < 0) {
+                t += (tf - t) % h;
+            } else {
+                t += h;
+            }
 
         }
 
