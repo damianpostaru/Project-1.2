@@ -18,6 +18,3 @@ public interface StateInterface {
 
     String toString();
 }
-
-interface RateInterface {
-}
