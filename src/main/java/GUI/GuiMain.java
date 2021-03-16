@@ -36,6 +36,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
     	
     	singleStage = primaryStage;    	
         singleStage.setTitle("A Titanic Space Odyssey!");
+        singleStage.setResizable(false);
         
         // Sets all the scenes that will be (eventually) seen.
         setIntroScene();
@@ -45,7 +46,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
         singleStage.show();
     }
     
-    public void setIntroScene() {
+	public void setIntroScene() {
     	beginButton = new Button("BEGIN!");
     	beginButton.setOnAction((EventHandler<ActionEvent>) this);
     	BorderPane beginPane = new BorderPane(beginButton);
@@ -82,7 +83,6 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
     	if(e.getSource() == beginButton) {
     		singleStage.setScene(visualiserScene);
             singleStage.setFullScreen(true);
-            singleStage.setResizable(false);
             singleStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
     	}
     }
