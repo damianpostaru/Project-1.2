@@ -1,5 +1,3 @@
-package GUI;
-
 import javafx.scene.shape.Circle;
 
 public class CelestialBody {

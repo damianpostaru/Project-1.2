@@ -1,8 +1,4 @@
-package GUI;
-
-import javafx.animation.Animation;
-import javafx.animation.Interpolator;
-import javafx.animation.PathTransition;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
@@ -10,9 +6,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.ArcTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -20,6 +13,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -172,29 +166,16 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
     /*
      * Creates animation for earth.
      */
-    public static void transition() {
-        Path path = new Path();
-        PathTransition pathTransition = new PathTransition();
-        pathTransition.setNode(earth.getBody());
-        pathTransition.setDuration(Duration.millis(10000));
-        MoveTo moveTo = new MoveTo(earth.getX(), earth.getY());
-        ArcTo arcTo = new ArcTo();
-        arcTo.setX(screenBounds.getWidth()*0.75);
-        arcTo.setY(screenBounds.getHeight()/2);
-        arcTo.setRadiusX(50.0);
-        arcTo.setRadiusY(50.0);
+    public static void transition(State position) {
+        SolarSystem solar = position.getSolarSystem();
+        Planet earthPlanet = solar.get(3);
+        Vector3d newPosition = (Vector3d) earthPlanet.getPos();
 
-        ArcTo arcTo2 = new ArcTo();
-        arcTo2.setX(screenBounds.getWidth()/4);
-        arcTo2.setY(screenBounds.getHeight()/2);
-        arcTo2.setRadiusX(50.0);
-        arcTo2.setRadiusY(50.0);
-
-        path.getElements().addAll(moveTo, arcTo, arcTo2);
-        pathTransition.setPath(path);
-        pathTransition.setCycleCount(Animation.INDEFINITE);
-        pathTransition.setInterpolator(Interpolator.LINEAR);
-
-        pathTransition.play();
+        TranslateTransition transition = new TranslateTransition();
+        transition.setDuration(Duration.seconds(1));
+        transition.setToX(newPosition.getX());
+        transition.setToY(newPosition.getY());
+        transition.setNode(earth.getBody());
+        transition.play();
     }
 }
