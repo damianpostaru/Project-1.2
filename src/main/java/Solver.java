@@ -25,7 +25,7 @@ public class Solver implements ODESolverInterface {
         double t = 0;
 
         for (int i = 1; i < states.length; i++) {
-            states[i] = step(f, t, states[i - 1], 0.1);
+            states[i] = step(f, t, states[i - 1], h);
             GuiMain.transition((State) states[i]);
             if ((tf - t) / h < 0) {
                 t += (tf - t) % h;
