@@ -1,14 +1,16 @@
-public class Solver implements SolverInterface{
-
-
-
+public class Solver implements ODESolverInterface{
     @Override
-    public Vector3dInterface[] solve(FunctionInterface f, Vector3dInterface x0, double h, int nSteps) {
-        return new Vector3dInterface[0];
+    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double[] ts) {
+        return new StateInterface[0];
     }
 
     @Override
-    public Vector3dInterface step(FunctionInterface f, double t, Vector3dInterface x, double h) {
-        return x.add(f.call(t, x).mul(h));
+    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
+        return new StateInterface[0];
+    }
+
+    @Override
+    public StateInterface step(ODEFunctionInterface f, double t, StateInterface y, double h) {
+        return y.addMul(h, f.call(t, y));
     }
 }
