@@ -12,22 +12,24 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.ArcTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
-import javafx.scene.text.Text;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GuiMain extends Application implements EventHandler<ActionEvent>{
 
-    static CelestialBody sun, earth;
+    static CelestialBody sun, earth, mercury, venus, moon, mars, jupiter, saturn, titan;
     static Rectangle2D screenBounds;
     private Stage singleStage;
     private Scene introScene;
     private Scene visualiserScene;
     private Button launchButton;
+    private double centerX;
+    private double centerY;
 
     public static void main(String[] args) {
         launch(args);
@@ -35,71 +37,109 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
 
     @Override
     public void start(Stage primaryStage) {
-    	
-    	singleStage = primaryStage;    	
+
+        singleStage = primaryStage;
         singleStage.setTitle("A Titanic Space Odyssey!");
-        singleStage.setResizable(false);
-        
+
+        screenBounds = Screen.getPrimary().getBounds();
+
+        centerX = screenBounds.getWidth()/2;
+        centerY = screenBounds.getHeight()/2;
+
         // Sets all the scenes that will be (eventually) seen.
         setIntroScene();
         setVisualiserScene();
 
+        singleStage.setFullScreen(true);
+        singleStage.setResizable(false);
+        singleStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+
         singleStage.setScene(introScene);
         singleStage.show();
     }
-    
-    public void setIntroScene() {
-    	String introTitle = "     A Titanic" + System.getProperty("line.separator") + "Space Odyssey!";
-    	Pane beginPane = new Pane();
-	Text introText = new Text(introTitle);
-	launchButton = new Button("LAUNCH PROBE!");
-	introScene = new Scene(beginPane,640,480);
-		
-	introText.setId("introText");
-	introText.setX(40);
-	introText.setY(120);
-		
-    	launchButton.setOnAction((EventHandler<ActionEvent>) this);
-    	launchButton.setPrefSize(310, 75);
-    	launchButton.setLayoutX(166);
-    	launchButton.setLayoutY(320);
 
-	beginPane.getChildren().add(introText);
-	beginPane.getChildren().add(launchButton);
-    	
-    	introScene.getStylesheets().add(GuiMain.class.getResource("/Stylesheet.css").toExternalForm());
+    public void setIntroScene() {
+        String introTitle = "     A Titanic" + System.getProperty("line.separator") + "Space Odyssey!";
+        Pane beginPane = new Pane();
+        Text introText = new Text(introTitle);
+        launchButton = new Button("LAUNCH PROBE!");
+        introScene = new Scene(beginPane,screenBounds.getWidth(),screenBounds.getHeight());
+
+        introText.setId("introText");
+        introText.setX(40);
+        introText.setY(120);
+
+        launchButton.setOnAction((EventHandler<ActionEvent>) this);
+        launchButton.setPrefSize(310, 75);
+        launchButton.setLayoutX(166);
+        launchButton.setLayoutY(320);
+
+        beginPane.getChildren().add(introText);
+        beginPane.getChildren().add(launchButton);
+
+        introScene.getStylesheets().add(GuiMain.class.getResource("/Stylesheet.css").toExternalForm());
     }
-    
+
     public void setVisualiserScene() {
 
-        screenBounds = Screen.getPrimary().getBounds();
+        double distancePixel = 3000/screenBounds.getHeight();
 
-        sun = new CelestialBody("Sun", screenBounds.getWidth()/2,
-                screenBounds.getHeight()/2);
+        sun = new CelestialBody("Sun", centerX - ((0.680678)/distancePixel),
+                centerY - ((1.0800055)/distancePixel), 15);
         sun.getBody().getStyleClass().add("sun");
 
-        earth = new CelestialBody("Earth", screenBounds.getWidth()/4,
-                screenBounds.getHeight()/2);
+        earth = new CelestialBody("Earth", centerX - ((147.1922)/distancePixel),
+                centerY + ((28.609958)/distancePixel), 10);
         earth.getBody().getStyleClass().add("earth");
-        
-        transition();
-    	
+
+        mercury = new CelestialBody("Mercury", centerX + ((0.0060478)/distancePixel),
+                centerY + ((68.0180)/distancePixel), 10);
+        mercury.getBody().getStyleClass().add("mercury");
+
+        venus = new CelestialBody("Venus", centerX - ((94.3535)/distancePixel),
+                centerY - ((53.5035)/distancePixel), 10);
+        venus.getBody().getStyleClass().add("venus");
+
+        moon = new CelestialBody("Moon", centerX - ((147.2344)/distancePixel),
+                centerY + ((28.2258)/distancePixel) ,5);
+        moon.getBody().getStyleClass().add("moon");
+
+
+        mars = new CelestialBody("Mars", centerX - ((36.1564)/distancePixel),
+                centerY + ((216.7633)/ distancePixel), 10);
+        mars.getBody().getStyleClass().add("mars");
+
+        jupiter = new CelestialBody("Jupiter", centerX + ((178.1303)/distancePixel),
+                centerY + ((755.1118)/ distancePixel), 10);
+        jupiter.getBody().getStyleClass().add("jupiter");
+
+        saturn = new CelestialBody("Saturn", centerX + ((632.8647)/ distancePixel),
+                centerY + ((1358.1728)/ distancePixel), 10);
+        saturn.getBody().getStyleClass().add("saturn");
+
+        titan = new CelestialBody("Titan", centerX + ((633.2873)/ distancePixel),
+                centerY + ((1357.1756)/distancePixel), 5);
+        titan.getBody().getStyleClass().add("titan");
+
         BorderPane root = new BorderPane();
-        root.getChildren().addAll(sun.getBody(), earth.getBody());
-        
+        root.getChildren().addAll(sun.getBody(), earth.getBody(), mercury.getBody(),
+                venus.getBody(), moon.getBody(), mars.getBody(), jupiter.getBody(),
+                saturn.getBody(), titan.getBody());
+
         visualiserScene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
         visualiserScene.getStylesheets().add(GuiMain.class.getResource("/Stylesheet.css").toExternalForm());
     }
-    
+
     /*
      * Handles all button actions in one single method.
      */
     public void handle(ActionEvent e) {
-    	if(e.getSource() == launchButton) {
-    		singleStage.setScene(visualiserScene);
+        if(e.getSource() == launchButton) {
+            singleStage.setScene(visualiserScene);
             singleStage.setFullScreen(true);
+            singleStage.setResizable(false);
             singleStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-    	}
+        }
     }
 
     /*
