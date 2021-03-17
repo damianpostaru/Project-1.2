@@ -13,8 +13,10 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         State[] states = (State[]) solver.solve(new Function(), initialState, tf, h);
         for (int i = 0; i < states.length; i++) {
             trajectory[i] = states[i].getSolarSystem().getShuttle().getPos();
-            System.out.println(states[i].getSolarSystem().getShuttle().getVel());
+            //System.out.println(states[i].getSolarSystem().getShuttle().getVel());
         }
+//        System.out.println(states[states.length-1].getSolarSystem().get(8).getPos().dist(states[states.length-1].getSolarSystem().getShuttle().getPos()));
+//        System.out.println(states[states.length-1].getSolarSystem().get(8));
         return trajectory;
     }
 }
