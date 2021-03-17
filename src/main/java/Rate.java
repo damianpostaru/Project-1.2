@@ -1,11 +1,11 @@
 public class Rate implements RateInterface {
-    Vector3d[] acc;
+    Vector3d[] acceleration;
 
-    public Rate(Vector3d[] a) {
-        acc = a;
+    public Rate(Vector3d[] acceleration) {
+        this.acceleration = acceleration;
     }
 
-    public Vector3d[] getAcc() {
-        return acc;
+    public Vector3d[] getAcceleration() {
+        return acceleration;
     }
 }

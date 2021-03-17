@@ -1,54 +1,49 @@
-public class Planet
-{
-    private Vector3d pos;
-    private Vector3d vel;
-    private String name;
-    private double mass;
-    private double radius;
+public class Planet {
+    private Vector3d position;
+    private Vector3d velocity;
+    private final String name;
+    private final double mass;
+    private final double radius;
 
-    public Planet(double m, double r,Vector3d p0,Vector3d v0, String n)
-    {
-        pos = p0;
-        vel = v0;
-        name = n;
-        mass = m;
-        radius = r;
+    public Planet(double mass, double radius, Vector3d initialPosition, Vector3d initialVelocity, String name) {
+        position = initialPosition;
+        velocity = initialVelocity;
+        this.name = name;
+        this.mass = mass;
+        this.radius = radius;
     }
 
-    public void update(Vector3dInterface acc, double dt)
-    {
-        vel = (Vector3d) vel.addMul(dt, acc);
-        pos = (Vector3d) pos.addMul(dt, vel);
+    public void update(Vector3dInterface acceleration, double step) {
+        velocity = (Vector3d) velocity.addMul(step, acceleration);
+        position = (Vector3d) position.addMul(step, velocity);
     }
 
 
-    public double getMass()
-    {
+    public double getMass() {
         return mass;
     }
 
-    public double getRadius() { return radius; }
-
-    public Vector3dInterface getPos()
-    {
-        return pos;
+    public double getRadius() {
+        return radius;
     }
 
-    public void setPos(Vector3d pos) {
-        this.pos = pos;
+    public Vector3dInterface getPosition() {
+        return position;
     }
 
-    public void setVel(Vector3d vel) {
-        this.vel = vel;
+    public void setPosition(Vector3d position) {
+        this.position = position;
     }
 
-    public Vector3dInterface getVel()
-    {
-        return vel;
+    public void setVelocity(Vector3d velocity) {
+        this.velocity = velocity;
     }
 
-    public String toString()
-    {
-        return "[" + name + " pos: " + pos.toString() + " vel: " + vel.toString()+ "]"; 
+    public Vector3dInterface getVelocity() {
+        return velocity;
+    }
+
+    public String toString() {
+        return "[" + name + " pos: " + position.toString() + " vel: " + velocity.toString() + "]";
     }
 }

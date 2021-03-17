@@ -8,15 +8,10 @@ import javafx.scene.text.*;
 import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
 import java.io.InputStream;
-import javafx.animation.Animation;
-import javafx.animation.Interpolator;
-import javafx.animation.PathTransition;
+
 import javafx.geometry.Pos;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.ArcTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -238,7 +233,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
     public static void transition(State position) {
         SolarSystem solar = position.getSolarSystem();
         Planet earthPlanet = solar.get(3);
-        Vector3d newPosition = (Vector3d) earthPlanet.getPos();
+        Vector3d newPosition = (Vector3d) earthPlanet.getPosition();
 
         TranslateTransition transition = new TranslateTransition();
         transition.setDuration(Duration.seconds(1));
