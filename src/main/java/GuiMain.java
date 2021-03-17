@@ -1,18 +1,24 @@
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.control.Button;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -31,8 +37,12 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
     public static double distancePixel;
     public static Path sunPath, mercuryPath, venusPath, earthPath, moonPath, marsPath,
     jupiterPath, saturnPath, titanPath;
+    private static Vector3dInterface initialPosition;
+    private static Vector3dInterface initialVelocity;
 
     public static void main(String[] args) {
+        initialPosition = new Vector3d(0.1, 6371e3, 0.1);
+        initialVelocity = new Vector3d(22500, -25500, -1200);
         launch(args);
     }
 
@@ -53,9 +63,10 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
 
         PlanetTransition.createPath();
 
-        Solver s = new Solver();
-        State state0 = new State();
-        StateInterface[] states = s.solve(new Function(), state0,31556926 , 3600);
+
+        Solver solver = new Solver();
+        State state0 = new State(initialPosition, initialVelocity);
+        StateInterface[] states = solver.solve(new Function(), state0,31556926 , 3600);
 
         //PlanetTransition.transition(sun, sunPath);
         PlanetTransition.transition(mercury, mercuryPath);
@@ -80,23 +91,77 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
     }
 
     public void setIntroScene() {
-        String introTitle = "     A Titanic" + System.getProperty("line.separator") + "Space Odyssey!";
+        String introTitle = "A Titanic" + System.getProperty("line.separator") + "Space Odyssey!";
+        String introT = "Have a good trip Astronauts!\n" +
+                "I hope to see you back";
         Pane beginPane = new Pane();
         Text introText = new Text(introTitle);
+        Text introText2 = new Text(introT);
+
         launchButton = new Button("LAUNCH PROBE!");
         introScene = new Scene(beginPane,screenBounds.getWidth(),screenBounds.getHeight());
 
+        ImageView imageView2 = null;
+
+        try {
+            InputStream stream = new FileInputStream("pngegg.png");
+            Image image = new Image(stream);
+
+            imageView2 = new ImageView();
+
+            imageView2.setImage(image);
+
+            imageView2.setX(100);
+            imageView2.setY(200);
+            imageView2.setFitWidth(300);
+            imageView2.setPreserveRatio(true);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        ImageView imageView3 = null;
+
+        try {
+            InputStream stream = new FileInputStream("planet2.png");
+            Image image = new Image(stream);
+
+            imageView3 = new ImageView();
+
+            imageView3.setImage(image);
+
+            imageView3.setX(1200);
+            imageView3.setY(300);
+            imageView3.setFitWidth(300);
+            imageView3.setPreserveRatio(true);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
         introText.setId("introText");
-        introText.setX(365);
-        introText.setY(300);
+        introText.setTextAlignment(TextAlignment.CENTER);
+        introText.setX(screenBounds.getWidth()/2 - 400);
+        introText.setY(screenBounds.getHeight()/2 - 200);
+
+        introText2.setId("introText");
+        introText2.setTextAlignment(TextAlignment.CENTER);
+        introText2.setX(200);
+        introText2.setY(800);
 
         launchButton.setOnAction((EventHandler<ActionEvent>) this);
         launchButton.setPrefSize(310, 75);
         launchButton.setLayoutX(628);
         launchButton.setLayoutY(560);
 
+
+
         beginPane.getChildren().add(introText);
+        beginPane.getChildren().add(introText2);
         beginPane.getChildren().add(launchButton);
+        beginPane.getChildren().add(imageView2);
+        beginPane.getChildren().add(imageView3);
+
+
 
         introScene.getStylesheets().add(GuiMain.class.getResource("/Stylesheet.css").toExternalForm());
     }

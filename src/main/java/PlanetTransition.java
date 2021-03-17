@@ -49,15 +49,15 @@ public class PlanetTransition extends GuiMain {
         Planet saturnPlanet = solar.get(7);
         Planet titanPlanet = solar.get(8);
 
-        Vector3d newSun = (Vector3d) sunPlanet.getPos();
-        Vector3d newMercury = (Vector3d) mercuryPlanet.getPos();
-        Vector3d newVenus = (Vector3d) venusPlanet.getPos();
-        Vector3d newEarth = (Vector3d) earthPlanet.getPos();
-        Vector3d newMoon = (Vector3d) moonPlanet.getPos();
-        Vector3d newMars = (Vector3d) marsPlanet.getPos();
-        Vector3d newJupiter = (Vector3d) jupiterPlanet.getPos();
-        Vector3d newSaturn = (Vector3d) saturnPlanet.getPos();
-        Vector3d newTitan = (Vector3d) titanPlanet.getPos();
+        Vector3d newSun = (Vector3d) sunPlanet.getPosition();
+        Vector3d newMercury = (Vector3d) mercuryPlanet.getPosition();
+        Vector3d newVenus = (Vector3d) venusPlanet.getPosition();
+        Vector3d newEarth = (Vector3d) earthPlanet.getPosition();
+        Vector3d newMoon = (Vector3d) moonPlanet.getPosition();
+        Vector3d newMars = (Vector3d) marsPlanet.getPosition();
+        Vector3d newJupiter = (Vector3d) jupiterPlanet.getPosition();
+        Vector3d newSaturn = (Vector3d) saturnPlanet.getPosition();
+        Vector3d newTitan = (Vector3d) titanPlanet.getPosition();
 
         sunPath.getElements().add(new LineTo(centerX + (newSun.getX()/1e9)/distancePixel,
                 centerY - (newSun.getY()/1e9)/distancePixel));
