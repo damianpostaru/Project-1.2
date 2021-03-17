@@ -1,21 +1,31 @@
-import javafx.animation.TranslateTransition;
+package GUI;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCombination;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.text.*;
+import javafx.stage.Stage;
 import javafx.scene.layout.BorderPane;
+import java.io.InputStream;
+import javafx.animation.Animation;
+import javafx.animation.Interpolator;
+import javafx.animation.PathTransition;
+import javafx.geometry.Pos;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.ArcTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.text.Text;
 import javafx.stage.Screen;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-
 import java.util.Timer;
 import java.util.TimerTask;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class GuiMain extends Application implements EventHandler<ActionEvent>{
 
