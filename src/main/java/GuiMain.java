@@ -1,26 +1,26 @@
-import javafx.animation.TranslateTransition;
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.text.*;
-import javafx.stage.Stage;
-import javafx.scene.layout.BorderPane;
-import java.io.InputStream;
-
-import javafx.geometry.Pos;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.Pane;
-import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Path;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
-import javafx.util.Duration;
-import java.util.Timer;
-import java.util.TimerTask;
+import javafx.stage.Stage;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class GuiMain extends Application implements EventHandler<ActionEvent>{
 
@@ -32,16 +32,18 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
     private Scene visualiserScene;
     private Button launchButton;
     private Text timeText;
-    private double centerX;
-    private double centerY;
+    public static double centerX;
+    public static double centerY;
+    public static double distancePixel;
+    public static Path sunPath, mercuryPath, venusPath, earthPath, moonPath, marsPath,
+    jupiterPath, saturnPath, titanPath;
+    private static Vector3dInterface initialPosition;
+    private static Vector3dInterface initialVelocity;
 
     public static void main(String[] args) {
+        initialPosition = new Vector3d(0.1, 6371e3, 0.1);
+        initialVelocity = new Vector3d(22500, -25500, -1200);
         launch(args);
-//        Solver s = new Solver();
-//        Vector3dInterface p0 = null;
-//        Vector3dInterface v0 = null;
-//        State state0 = new State(p0, v0);
-//        StateInterface[] states = s.solve(new Function(), state0,31556926 , 86400);
     }
 
     @Override
@@ -58,6 +60,27 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
         // Sets all the scenes that will be (eventually) seen.
         setIntroScene();
         setVisualiserScene();
+
+        PlanetTransition.createPath();
+
+
+        Solver solver = new Solver();
+        State state0 = new State(initialPosition, initialVelocity);
+        StateInterface[] states = solver.solve(new Function(), state0,31556926 , 3600);
+
+        //PlanetTransition.transition(sun, sunPath);
+        PlanetTransition.transition(mercury, mercuryPath);
+        PlanetTransition.transition(venus, venusPath);
+        PlanetTransition.transition(earth, earthPath);
+        PlanetTransition.transition(moon, moonPath);
+        PlanetTransition.transition(mars, marsPath);
+        PlanetTransition.transition(jupiter, jupiterPath);
+        PlanetTransition.transition(saturn, saturnPath);
+        PlanetTransition.transition(titan, titanPath);
+
+//        for (int i = 0; i < sunPath.getElements().size(); i++) {
+//            System.out.println(sunPath.getElements().get(i));
+//        }
 
         singleStage.setFullScreen(true);
         singleStage.setResizable(false);
@@ -145,7 +168,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
 
     public void setVisualiserScene() {
 
-        double distancePixel = 3000/screenBounds.getHeight();
+        distancePixel = 3000/screenBounds.getHeight();
 
         sun = new CelestialBody("Sun", centerX - ((0.680678)/distancePixel),
                 centerY - ((1.0800055)/distancePixel), 15);
@@ -227,19 +250,6 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
         }
     }
 
-    /*
-     * Creates animation for earth.
-     */
-    public static void transition(State position) {
-        SolarSystem solar = position.getSolarSystem();
-        Planet earthPlanet = solar.get(3);
-        Vector3d newPosition = (Vector3d) earthPlanet.getPosition();
 
-        TranslateTransition transition = new TranslateTransition();
-        transition.setDuration(Duration.seconds(1));
-        transition.setToX(newPosition.getX());
-        transition.setToY(newPosition.getY());
-        transition.setNode(earth.getBody());
-        transition.play();
-    }
+
 }
