@@ -1,10 +1,14 @@
 public class State implements StateInterface{
 
     SolarSystem ss;
+    Vector3dInterface p0;
+    Vector3dInterface v0;
 
 
-    public State() {
-        ss = new SolarSystem();
+    public State(Vector3dInterface p0, Vector3dInterface v0) {
+        this.p0 = p0;
+        this.v0 = v0;
+        ss = new SolarSystem(p0, v0);
     }
 
     public StateInterface addMul(double step, RateInterface rate) {
@@ -31,7 +35,7 @@ public class State implements StateInterface{
 
     private State cloneState()
     {
-        State newState = new State();
+        State newState = new State(p0, v0);
         SolarSystem sol = newState.getSolarSystem();
         for (int i = 0; i < ss.size(); i++)
         {
