@@ -2,12 +2,10 @@ public class SimMain
 {
     public static void main(String[] args)
     {
-//        Solver s = new Solver();
-//        State state0 = new State();
-//        StateInterface[] states = s.solve(new Function(), state0,31556926 , 60);
-//        for (int i = 0; i < states.length; i++)
-//        {
-//            System.out.println(states[i].toString());
-//        }
+        ProbeSimulator probeSimulator = new ProbeSimulator();
+        Vector3d[] trajectory = (Vector3d[]) probeSimulator.trajectory(new Vector3d(0.1, 6371e3, 0.1), new Vector3d(0, 20000, 0), 31556926 , 86400);
+        for (Vector3d position : trajectory) {
+//            System.out.println(position);
+        }
     }
 }
