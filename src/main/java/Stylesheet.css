@@ -1,5 +1,5 @@
 #introText {
-    -fx-font: 120px SansSerifBold;
+    -fx-font: 90px SansSerifBold;
     -fx-font-weight: bold;
     -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, aqua 0%, purple 50%);
     -fx-stroke: white;
