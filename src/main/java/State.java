@@ -1,50 +1,43 @@
-public class State implements StateInterface{
+public class State implements StateInterface {
 
-    SolarSystem ss;
-    Vector3dInterface p0;
-    Vector3dInterface v0;
+    private final SolarSystem solarSystem;
+    private final Vector3dInterface initialPosition;
+    private final Vector3dInterface initialVelocity;
 
-
-    public State(Vector3dInterface p0, Vector3dInterface v0) {
-        this.p0 = p0;
-        this.v0 = v0;
-        ss = new SolarSystem(p0, v0);
+    public State(Vector3dInterface initialPosition, Vector3dInterface initialVelocity) {
+        this.initialPosition = initialPosition;
+        this.initialVelocity = initialVelocity;
+        solarSystem = new SolarSystem(initialPosition, initialVelocity);
     }
 
     public StateInterface addMul(double step, RateInterface rate) {
         State nextState = cloneState();
-        SolarSystem sol = nextState.getSolarSystem();
+        SolarSystem solarSystem = nextState.getSolarSystem();
         Rate r = (Rate) rate;
-        Vector3d[] acc = r.getAcc();
-        for (int i = 0; i < sol.size(); i++)
-        {
-            sol.get(i).update(acc[i],step);
+        Vector3d[] acceleration = r.getAcceleration();
+        for (int i = 0; i < solarSystem.size(); i++) {
+            solarSystem.get(i).update(acceleration[i], step);
         }
-
         return nextState;
     }
 
     public String toString() {
-
-        return "Solar system: " + ss.toString();
+        return "Solar system: " + solarSystem.toString();
     }
 
     public SolarSystem getSolarSystem() {
-        return ss;
+        return solarSystem;
     }
 
-    private State cloneState()
-    {
-        State newState = new State(p0, v0);
-        SolarSystem sol = newState.getSolarSystem();
-        for (int i = 0; i < ss.size(); i++)
-        {
-            Vector3dInterface pos = ss.get(i).getPos();
-            Vector3dInterface vel = ss.get(i).getVel();
-            sol.get(i).setPos(new Vector3d(pos.getX(),pos.getY(), pos.getZ()));
-            sol.get(i).setVel(new Vector3d(vel.getX(),vel.getY(), vel.getZ()));
+    private State cloneState() {
+        State newState = new State(initialPosition, initialVelocity);
+        SolarSystem solarSystem = newState.getSolarSystem();
+        for (int i = 0; i < this.solarSystem.size(); i++) {
+            Vector3dInterface position = this.solarSystem.get(i).getPosition();
+            Vector3dInterface velocity = this.solarSystem.get(i).getVelocity();
+            solarSystem.get(i).setPosition(new Vector3d(position.getX(), position.getY(), position.getZ()));
+            solarSystem.get(i).setVelocity(new Vector3d(velocity.getX(), velocity.getY(), velocity.getZ()));
         }
-
         return newState;
     }
 }
