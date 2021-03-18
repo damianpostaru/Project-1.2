@@ -115,13 +115,11 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
 
         introBox.getChildren().addAll(introLabel, launchButton);
 
-        launchButton.setOnAction(this);
+        launchButton.setOnAction((EventHandler<ActionEvent>) this);
         launchButton.setPrefSize(310, 75);
 
         introBox.setAlignment(Pos.CENTER);
         beginPane.getChildren().add(introBox);
-
-
     }
 
     public void setVisualiserScene() {
@@ -198,13 +196,24 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
      * (at the moment, it's not configured properly, but should be easy to use the actual
      * probe travel variable, instead of this 'seconds' variable)
      */
-    int seconds = 0;
+    int i = 0;
     String ssl;
     Timer timer = new Timer();
     TimerTask task = new TimerTask() {
         public void run() {
-            seconds++;
-            ssl = "Time Past Since Launch: " + seconds + "sec";
+        	/* Basically from accessing the list accessTimes, we conclude that it has 525948 elements.
+        	 * By dividing this value (number of steps taken) by 12 seconds - the set duration of the visualisation -
+        	 * we get an integer number, since 525948%43829 = 0 (obtained from 525948/12 = 43829).
+        	 * This allows us to access the list at that same index each time.
+        	 * This way, we can make the timer increase harmoniously during the entirety of the probe launch.
+        	 */
+            i += 43829;
+            if(i == 525948) {
+            	i--;
+            	ssl = "TimeSteps Since Launch: " + Solver.getAccessTimes().get(i);
+            	timer.cancel();
+            }
+            ssl = "TimeSteps Since Launch: " + Solver.getAccessTimes().get(i);
             timeText.setText(ssl);
         }
     };
@@ -219,6 +228,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
             singleStage.setResizable(false);
             singleStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
             timer.scheduleAtFixedRate(task, 0, 1000);
+            //System.out.println("ELEMENTS " + Solver.getAccessTimes().size());
         }
     }
 
