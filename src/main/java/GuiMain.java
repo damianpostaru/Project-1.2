@@ -22,11 +22,9 @@ import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class GuiMain extends Application implements EventHandler<ActionEvent> {
+public class GuiMain extends Application implements EventHandler<ActionEvent>{
 
     static CelestialBody sun, earth, mercury, venus, moon, mars, jupiter, saturn, titan;
-    static CelestialBodyModel sunModel, earthModel, mercuryModel, venusModel, moonModel, marsModel, jupiterModel,
-            saturnModel, titanModel;
     static Rectangle2D screenBounds;
     private BorderPane root;
     private Stage singleStage;
@@ -34,12 +32,11 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
     private Scene visualiserScene;
     private Button launchButton;
     private Text timeText;
-    private Text externalPLanet;
     public static double centerX;
     public static double centerY;
     public static double distancePixel;
-    public static Path sunPath, mercuryPath, venusPath, earthPath, moonPath, marsPath, jupiterPath, saturnPath,
-            titanPath;
+    public static Path sunPath, mercuryPath, venusPath, earthPath, moonPath, marsPath,
+    jupiterPath, saturnPath, titanPath;
     private static Vector3dInterface initialPosition;
     private static Vector3dInterface initialVelocity;
 
@@ -57,8 +54,8 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
 
         screenBounds = Screen.getPrimary().getBounds();
 
-        centerX = screenBounds.getWidth() / 2;
-        centerY = screenBounds.getHeight() / 2;
+        centerX = screenBounds.getWidth()/2;
+        centerY = screenBounds.getHeight()/2;
 
         // Sets all the scenes that will be (eventually) seen.
         setIntroScene();
@@ -66,11 +63,12 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
 
         PlanetTransition.createPath();
 
+
         Solver solver = new Solver();
         State state0 = new State(initialPosition, initialVelocity);
-        StateInterface[] states = solver.solve(new Function(), state0, 31556926, 3600);
+        StateInterface[] states = solver.solve(new Function(), state0,31556926 , 3600);
 
-        // PlanetTransition.transition(sun, sunPath);
+        //PlanetTransition.transition(sun, sunPath);
         PlanetTransition.transition(mercury, mercuryPath);
         PlanetTransition.transition(venus, venusPath);
         PlanetTransition.transition(earth, earthPath);
@@ -80,9 +78,9 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
         PlanetTransition.transition(saturn, saturnPath);
         PlanetTransition.transition(titan, titanPath);
 
-        // for (int i = 0; i < sunPath.getElements().size(); i++) {
-        // System.out.println(sunPath.getElements().get(i));
-        // }
+//        for (int i = 0; i < sunPath.getElements().size(); i++) {
+//            System.out.println(sunPath.getElements().get(i));
+//        }
 
         singleStage.setFullScreen(true);
         singleStage.setResizable(false);
@@ -94,13 +92,14 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
 
     public void setIntroScene() {
         String introTitle = "A Titanic" + System.getProperty("line.separator") + "Space Odyssey!";
-        String introT = "Have a good trip Astronauts!\n" + "I hope to see you back";
+        String introT = "Have a good trip Astronauts!\n" +
+                "I hope to see you back";
         Pane beginPane = new Pane();
         Text introText = new Text(introTitle);
         Text introText2 = new Text(introT);
 
         launchButton = new Button("LAUNCH PROBE!");
-        introScene = new Scene(beginPane, screenBounds.getWidth(), screenBounds.getHeight());
+        introScene = new Scene(beginPane,screenBounds.getWidth(),screenBounds.getHeight());
 
         ImageView imageView2 = null;
 
@@ -138,10 +137,11 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
             e.printStackTrace();
         }
 
+
         introText.setId("introText");
         introText.setTextAlignment(TextAlignment.CENTER);
-        introText.setX(screenBounds.getWidth() / 2 - 400);
-        introText.setY(screenBounds.getHeight() / 2 - 200);
+        introText.setX(screenBounds.getWidth()/2 - 400);
+        introText.setY(screenBounds.getHeight()/2 - 200);
 
         introText2.setId("introText");
         introText2.setTextAlignment(TextAlignment.CENTER);
@@ -153,104 +153,78 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
         launchButton.setLayoutX(628);
         launchButton.setLayoutY(560);
 
+
+
         beginPane.getChildren().add(introText);
         beginPane.getChildren().add(introText2);
         beginPane.getChildren().add(launchButton);
         beginPane.getChildren().add(imageView2);
         beginPane.getChildren().add(imageView3);
 
+
+
         introScene.getStylesheets().add(GuiMain.class.getResource("/Stylesheet.css").toExternalForm());
     }
 
     public void setVisualiserScene() {
 
-        distancePixel = 3000 / screenBounds.getHeight();
+        distancePixel = 3000/screenBounds.getHeight();
 
-        sun = new CelestialBody("Sun", centerX - ((0.680678) / distancePixel), centerY - ((1.0800055) / distancePixel),
-                15);
+        sun = new CelestialBody("Sun", centerX - ((0.680678)/distancePixel),
+                centerY - ((1.0800055)/distancePixel), 15);
         sun.getBody().getStyleClass().add("sun");
 
-        sunModel = new CelestialBodyModel("SunModel", 100, 345, 10);
-        sunModel.getBody().getStyleClass().add("sun");
-
-        earth = new CelestialBody("Earth", centerX - ((147.1922) / distancePixel),
-                centerY + ((28.609958) / distancePixel), 10);
+        earth = new CelestialBody("Earth", centerX - ((147.1922)/distancePixel),
+                centerY + ((28.609958)/distancePixel), 10);
         earth.getBody().getStyleClass().add("earth");
 
-        earthModel = new CelestialBodyModel("EarthModel", 100, 160, 10);
-        earthModel.getBody().getStyleClass().add("earth");
-
-        mercury = new CelestialBody("Mercury", centerX + ((0.0060478) / distancePixel),
-                centerY + ((68.0180) / distancePixel), 10);
+        mercury = new CelestialBody("Mercury", centerX + ((0.0060478)/distancePixel),
+                centerY + ((68.0180)/distancePixel), 10);
         mercury.getBody().getStyleClass().add("mercury");
 
-        mercuryModel = new CelestialBodyModel("MercuryModel", 100, 66, 10);
-        mercuryModel.getBody().getStyleClass().add("mercury");
-
-        venus = new CelestialBody("Venus", centerX - ((94.3535) / distancePixel), centerY - ((53.5035) / distancePixel),
-                10);
+        venus = new CelestialBody("Venus", centerX - ((94.3535)/distancePixel),
+                centerY - ((53.5035)/distancePixel), 10);
         venus.getBody().getStyleClass().add("venus");
 
-        venusModel = new CelestialBodyModel("VenusModel", 100, 115, 10);
-        venusModel.getBody().getStyleClass().add("venus");
-
-        moon = new CelestialBody("Moon", centerX - ((147.2344) / distancePixel), centerY + ((28.2258) / distancePixel),
-                5);
+        moon = new CelestialBody("Moon", centerX - ((147.2344)/distancePixel),
+                centerY + ((28.2258)/distancePixel) ,5);
         moon.getBody().getStyleClass().add("moon");
 
-        moonModel = new CelestialBodyModel("MoonModel", 100, 445, 10);
-        moonModel.getBody().getStyleClass().add("moon");
 
-        mars = new CelestialBody("Mars", centerX - ((36.1564) / distancePixel), centerY + ((216.7633) / distancePixel),
-                10);
+        mars = new CelestialBody("Mars", centerX - ((36.1564)/distancePixel),
+                centerY + ((216.7633)/ distancePixel), 10);
         mars.getBody().getStyleClass().add("mars");
 
-        marsModel = new CelestialBodyModel("MarsModel", 100, 200, 10);
-        marsModel.getBody().getStyleClass().add("mars");
-
-        jupiter = new CelestialBody("Jupiter", centerX + ((178.1303) / distancePixel),
-                centerY + ((755.1118) / distancePixel), 10);
+        jupiter = new CelestialBody("Jupiter", centerX + ((178.1303)/distancePixel),
+                centerY + ((755.1118)/ distancePixel), 10);
         jupiter.getBody().getStyleClass().add("jupiter");
 
-        jupiterModel = new CelestialBodyModel("JupiterModel", 100, 245, 10);
-        jupiterModel.getBody().getStyleClass().add("jupiter");
-
-        saturn = new CelestialBody("Saturn", centerX + ((632.8647) / distancePixel),
-                centerY + ((1358.1728) / distancePixel), 10);
+        saturn = new CelestialBody("Saturn", centerX + ((632.8647)/ distancePixel),
+                centerY + ((1358.1728)/ distancePixel), 10);
         saturn.getBody().getStyleClass().add("saturn");
 
-        saturnModel = new CelestialBodyModel("SaturnModel", 100, 295, 10);
-        saturnModel.getBody().getStyleClass().add("saturn");
-
-        titan = new CelestialBody("Titan", centerX + ((633.2873) / distancePixel),
-                centerY + ((1357.1756) / distancePixel), 5);
+        titan = new CelestialBody("Titan", centerX + ((633.2873)/ distancePixel),
+                centerY + ((1357.1756)/distancePixel), 5);
         titan.getBody().getStyleClass().add("titan");
-
-        titanModel = new CelestialBodyModel("TitanModel", 100, 395, 10);
-        titanModel.getBody().getStyleClass().add("titan");
 
         timeText = new Text();
         timeText.setId("timeText");
 
-        externalPLanet = new Text();
-        externalPLanet.setId("timeText");
-
         root = new BorderPane();
-        root.setAlignment(timeText, Pos.BOTTOM_RIGHT);
+        root.setAlignment(timeText,Pos.BOTTOM_RIGHT);
         root.setBottom(timeText);
-        root.getChildren().addAll(sun.getBody(), sunModel.getBody(), earth.getBody(), earthModel.getBody(),
-                mercury.getBody(), mercuryModel.getBody(), venus.getBody(), venusModel.getBody(), moon.getBody(),
-                moonModel.getBody(), mars.getBody(), marsModel.getBody(), jupiter.getBody(), jupiterModel.getBody(),
-                saturn.getBody(), saturnModel.getBody(), titan.getBody(), titanModel.getBody());
+        root.getChildren().addAll(sun.getBody(), earth.getBody(), mercury.getBody(),
+                venus.getBody(), moon.getBody(), mars.getBody(), jupiter.getBody(),
+                saturn.getBody(), titan.getBody());
 
         visualiserScene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
         visualiserScene.getStylesheets().add(GuiMain.class.getResource("/Stylesheet.css").toExternalForm());
     }
 
     /*
-     * Times and updates the probe journey continuously - seconds since launch. (at
-     * the moment, it's not configured properly, but should be easy to use the
-     * actual probe travel variable, instead of this 'seconds' variable)
+     * Times and updates the probe journey continuously - seconds since launch.
+     * (at the moment, it's not configured properly, but should be easy to use the actual
+     * probe travel variable, instead of this 'seconds' variable)
      */
     int seconds = 0;
     String ssl;
@@ -260,15 +234,6 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
             seconds++;
             ssl = "Time Past Since Launch: " + seconds + "sec";
             timeText.setText(ssl);
-            externalPLanet.setText(System.getProperty("line.separator") + System.getProperty("line.separator")
-                    + " Mercury" + System.getProperty("line.separator") + System.getProperty("line.separator")
-                    + " Venus" + System.getProperty("line.separator") + System.getProperty("line.separator") + "Earth"
-                    + System.getProperty("line.separator") + System.getProperty("line.separator") + "Mars"
-                    + System.getProperty("line.separator") + System.getProperty("line.separator") + "Jupiter"
-                    + System.getProperty("line.separator") + System.getProperty("line.separator") + "Saturn"
-                    + System.getProperty("line.separator") + System.getProperty("line.separator") + "Sun"
-                    + System.getProperty("line.separator") + System.getProperty("line.separator") + "Titan"
-                    + System.getProperty("line.separator") + System.getProperty("line.separator") + "Moon");
         }
     };
 
@@ -276,13 +241,15 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
      * Handles all button actions in one single method.
      */
     public void handle(ActionEvent e) {
-        if (e.getSource() == launchButton) {
+        if(e.getSource() == launchButton) {
             singleStage.setScene(visualiserScene);
             singleStage.setFullScreen(true);
             singleStage.setResizable(false);
             singleStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-            timer.scheduleAtFixedRate(task, 0, 1000);
+            timer.scheduleAtFixedRate(task,0,1000);
         }
     }
+
+
 
 }
