@@ -24,7 +24,7 @@ public class Solver implements ODESolverInterface {
         for (int i = 1; i < states.length; i++) {
             states[i] = step(function, time, states[i - 1], stepSize);
             PlanetTransition.addPath((State) states[i]);
-            if ((finalTime - time) / stepSize < 0) {
+            if ((finalTime - time) / stepSize < 1) {
                 time += (finalTime - time) % stepSize;
                 accessTimes.add(time);
             } else {
