@@ -23,13 +23,13 @@ public class Solver implements ODESolverInterface {
         double time = 0;
         for (int i = 1; i < states.length; i++) {
             states[i] = step(function, time, states[i - 1], stepSize);
-            PlanetTransition.addPath((State) states[i]);
+          //  PlanetTransition.addPath((State) states[i]);
             if ((finalTime - time) / stepSize < 0) {
                 time += (finalTime - time) % stepSize;
-                accessTimes.add(time);
+            //    accessTimes.add(time);
             } else {
                 time += stepSize;
-                accessTimes.add(time);
+              //  accessTimes.add(time);
             }
         }
         return states;
