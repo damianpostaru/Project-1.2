@@ -11,9 +11,10 @@ public class InfoScreen extends GuiMain {
 
     public static Label planetLabel, sunLabel, mercuryLabel, venusLabel, earthLabel, moonLabel,
             marsLabel,
-            jupiterLabel, saturnLabel, titanLabel;
+            jupiterLabel, saturnLabel, titanLabel, probeLabel;
 
-    public static Circle sun2, mercury2, venus2, earth2, moon2, mars2, jupiter2, saturn2, titan2;
+    public static Circle sun2, mercury2, venus2, earth2, moon2, mars2, jupiter2, saturn2, titan2,
+            probe2;
 
     public static void run() {
         labelCreator();
@@ -52,11 +53,14 @@ public class InfoScreen extends GuiMain {
         titanBox = new HBox(25);
         titanBox.getChildren().addAll(titanLabel, titan2);
 
+        probeBox = new HBox(25);
+        probeBox.getChildren().addAll(probeLabel, probe2);
+
         infoBox = new VBox(50);
         infoBox.getChildren().addAll(planetLabel, sunBox, mercuryBox, venusBox, earthBox, moonBox,
                 marsBox,
                 jupiterBox,
-                saturnBox, titanBox, probeLaunch, exitButton);
+                saturnBox, titanBox, probeBox, probeLaunch, exitButton);
         infoBox.setPadding(new Insets(0,50,0,0));
         infoBox.getStyleClass().add("Label");
         infoBox.setAlignment(Pos.CENTER);
@@ -92,6 +96,9 @@ public class InfoScreen extends GuiMain {
 
         titanLabel = new Label("Titan");
         titanLabel.getStyleClass().add("planetLabel");
+
+        probeLabel = new Label("Probe");
+        probeLabel.getStyleClass().add("planetLabel");
     }
 
     public static void circleCreator() {
@@ -121,5 +128,8 @@ public class InfoScreen extends GuiMain {
 
         titan2 = new Circle(6);
         titan2.getStyleClass().add("titan");
+
+        probe2 = new Circle(4);
+        probe2.getStyleClass().add("probe");
     }
 }

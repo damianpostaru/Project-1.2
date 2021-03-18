@@ -36,7 +36,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
             jupiterPath, saturnPath, titanPath;
     public static VBox infoBox;
     public static HBox sunBox, mercuryBox, venusBox, earthBox, moonBox, marsBox, jupiterBox,
-            saturnBox, titanBox;
+            saturnBox, titanBox, probeBox;
     private static Vector3dInterface initialPosition;
     private static Vector3dInterface initialVelocity;
 
