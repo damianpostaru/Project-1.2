@@ -33,7 +33,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
     public static double centerY;
     public static double distancePixel;
     public static Path sunPath, mercuryPath, venusPath, earthPath, moonPath, marsPath,
-            jupiterPath, saturnPath, titanPath;
+            jupiterPath, saturnPath, titanPath, probePath;
     public static VBox infoBox;
     public static HBox sunBox, mercuryBox, venusBox, earthBox, moonBox, marsBox, jupiterBox,
             saturnBox, titanBox, probeBox;
@@ -80,6 +80,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
             PlanetTransition.transition(jupiter, jupiterPath);
             PlanetTransition.transition(saturn, saturnPath);
             PlanetTransition.transition(titan, titanPath);
+            PlanetTransition.transition(probe, probePath);
         });
 
 
