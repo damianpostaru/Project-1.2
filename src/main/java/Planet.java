@@ -18,7 +18,6 @@ public class Planet {
         position = (Vector3d) position.addMul(step, velocity);
     }
 
-
     public double getMass() {
         return mass;
     }

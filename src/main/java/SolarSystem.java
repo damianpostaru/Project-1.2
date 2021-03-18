@@ -40,15 +40,10 @@ public class SolarSystem extends ArrayList<Planet> {
         accelerations[11] = new Vector3d(0, 0, 0);
         for (int j = 0; j < size() - 1; j++) {
             Vector3d deltaPos = (Vector3d) get(j).getPosition().sub(get(11).getPosition());
-            if (j == 3) {
-//                System.out.println(deltaPos.norm());
-            }
             Vector3d distanceToTheCube = (Vector3d) deltaPos.mul(Math.pow(1 / deltaPos.norm(), 3));
             accelerations[11] = (Vector3d) accelerations[11].add(distanceToTheCube.mul(get(j).getMass()));
-//            System.out.println(acc[11]);
         }
         accelerations[11] = (Vector3d) accelerations[11].mul(G);
-//        System.out.println(acc[11]);
         return accelerations;
     }
 
