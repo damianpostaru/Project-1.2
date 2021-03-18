@@ -5,7 +5,6 @@ public class Solver implements ODESolverInterface {
         StateInterface[] states = new StateInterface[outputTimes.length];
         states[0] = initialState;
         for (int i = 1; i < states.length; i++) {
-            // test to improve the step size (manual 2.1 Testing(p.4))
             states[i] = step(function, outputTimes[i], states[i - 1], 60);
         }
         return states;

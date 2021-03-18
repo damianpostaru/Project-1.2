@@ -7,10 +7,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         State[] states = (State[]) solver.solve(new Function(), initialState, outputTimes);
         for (int i = 0; i < states.length; i++) {
             trajectory[i] = states[i].getSolarSystem().getShuttle().getPosition();
-            //System.out.println(states[i].getSolarSystem().getShuttle().getVel());
         }
-//        System.out.println(states[states.length-1].getSolarSystem().get(8).getPos().dist(states[states.length-1].getSolarSystem().getShuttle().getPos()));
-//        System.out.println(states[states.length-1].getSolarSystem().get(8));
         return trajectory;
     }
 
@@ -27,7 +24,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         double bestTime = 0;
         for (int i = 0; i < states.length; i++) {
             trajectory[i] = states[i].getSolarSystem().getShuttle().getPosition();
-            System.out.println(states[i].getSolarSystem().getShuttle().getPosition());
+//            System.out.println(states[i].getSolarSystem().getShuttle().getPosition());
             double dist = states[i].getSolarSystem().get(8).getPosition().dist(states[i].getSolarSystem().getShuttle().getPosition());
             if(dist < bestDist)
             {
@@ -41,9 +38,6 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         {
             System.out.println("Titan has been hit");
         }
-
-//        System.out.println(states[states.length-1].getSolarSystem().get(8).getPos().dist(states[states.length-1].getSolarSystem().getShuttle().getPos()));
-//        System.out.println(states[states.length-1].getSolarSystem().get(8));
         return trajectory;
     }
 }

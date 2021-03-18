@@ -15,7 +15,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -41,8 +40,8 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
     private static Vector3dInterface initialVelocity;
 
     public static void main(String[] args) {
-        initialPosition = new Vector3d(0.1, 6371e3, 0.1);
-        initialVelocity = new Vector3d(22500, -25500, -1200);
+        initialPosition = new Vector3d(0.1, -6371e3, 0.1);
+        initialVelocity = new Vector3d(18044.44, -29351.0, -819.35);
         launch(args);
     }
 
@@ -65,8 +64,9 @@ public class GuiMain extends Application implements EventHandler<ActionEvent>{
 
 
         Solver solver = new Solver();
+        ProbeSimulator probeSimulator = new ProbeSimulator();
         State state0 = new State(initialPosition, initialVelocity);
-        StateInterface[] states = solver.solve(new Function(), state0,31556926 , 3600);
+        Vector3d[] trajectory = (Vector3d[]) probeSimulator.trajectory(initialPosition, initialVelocity, 31556926, 60);
 
         //PlanetTransition.transition(sun, sunPath);
         PlanetTransition.transition(mercury, mercuryPath);
