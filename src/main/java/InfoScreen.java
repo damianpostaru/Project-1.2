@@ -9,12 +9,9 @@ import javafx.scene.shape.Circle;
 
 public class InfoScreen extends GuiMain {
 
-    public static Label planetLabel, sunLabel, mercuryLabel, venusLabel, earthLabel, moonLabel,
-            marsLabel,
-            jupiterLabel, saturnLabel, titanLabel, probeLabel;
+    public static Label planetLabel, sunLabel, mercuryLabel, venusLabel, earthLabel, moonLabel, marsLabel, jupiterLabel, saturnLabel, titanLabel, probeLabel;
 
-    public static Circle sun2, mercury2, venus2, earth2, moon2, mars2, jupiter2, saturn2, titan2,
-            probe2;
+    public static Circle sun2, mercury2, venus2, earth2, moon2, mars2, jupiter2, saturn2, titan2, probe2;
 
     public static void run() {
         labelCreator();
@@ -57,11 +54,8 @@ public class InfoScreen extends GuiMain {
         probeBox.getChildren().addAll(probeLabel, probe2);
 
         infoBox = new VBox(50);
-        infoBox.getChildren().addAll(planetLabel, sunBox, mercuryBox, venusBox, earthBox, moonBox,
-                marsBox,
-                jupiterBox,
-                saturnBox, titanBox, probeBox, probeLaunch, exitButton);
-        infoBox.setPadding(new Insets(0,50,0,0));
+        infoBox.getChildren().addAll(planetLabel, sunBox, mercuryBox, venusBox, earthBox, moonBox, marsBox, jupiterBox, saturnBox, titanBox, probeBox, probeLaunch, exitButton);
+        infoBox.setPadding(new Insets(0, 50, 0, 0));
         infoBox.getStyleClass().add("Label");
         infoBox.setAlignment(Pos.CENTER);
     }

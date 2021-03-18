@@ -115,7 +115,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
 
         introBox.getChildren().addAll(introLabel, launchButton);
 
-        launchButton.setOnAction((EventHandler<ActionEvent>) this);
+        launchButton.setOnAction(this);
         launchButton.setPrefSize(310, 75);
 
         introBox.setAlignment(Pos.CENTER);

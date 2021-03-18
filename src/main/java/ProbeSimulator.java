@@ -24,18 +24,16 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         double bestTime = 0;
         for (int i = 0; i < states.length; i++) {
             trajectory[i] = states[i].getSolarSystem().getShuttle().getPosition();
-//            System.out.println(states[i].getSolarSystem().getShuttle().getPosition());
+            System.out.println(states[i].getSolarSystem().getShuttle().getPosition());
             double dist = states[i].getSolarSystem().get(8).getPosition().dist(states[i].getSolarSystem().getShuttle().getPosition());
-            if(dist < bestDist)
-            {
+            if (dist < bestDist) {
                 bestDist = dist;
                 bestTime = i * stepSize;
             }
         }
         System.out.println("Time of closest approach: " + bestTime);
         System.out.println("Distance of closest approach: " + bestDist);
-        if(bestDist <= states[states.length-1].getSolarSystem().get(8).getRadius())
-        {
+        if (bestDist <= states[states.length - 1].getSolarSystem().get(8).getRadius()) {
             System.out.println("Titan has been hit");
         }
         return trajectory;
