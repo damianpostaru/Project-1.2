@@ -26,7 +26,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
     private Stage singleStage;
     private Scene introScene;
     private Scene visualiserScene;
-    public static Button launchButton, probeLaunch, exitButton;
+    public static Button beginButton, probeLaunch, exitButton;
     public static Text timeText;
     public static double centerX;
     public static double centerY;
@@ -63,19 +63,12 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
 
         PlanetTransition.createPath();
 
-
-//        Solver solver = new Solver();
-//        State state0 = new State(initialPosition, initialVelocity);
-//        StateInterface[] states = solver.solve(new Function(), state0, 31556926, 3600);
-
-        Solver solver = new Solver();
         ProbeSimulator probeSimulator = new ProbeSimulator();
-        State state0 = new State(initialPosition, initialVelocity);
         Vector3d[] trajectory = (Vector3d[]) probeSimulator.trajectory(initialPosition, initialVelocity, 31556926, 60);
 
 
         probeLaunch.setOnAction(e -> {
-            //PlanetTransition.transition(sun, sunPath);
+            i = 0;
             PlanetTransition.transition(mercury, mercuryPath);
             PlanetTransition.transition(venus, venusPath);
             PlanetTransition.transition(earth, earthPath);
@@ -85,17 +78,12 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
             PlanetTransition.transition(saturn, saturnPath);
             PlanetTransition.transition(titan, titanPath);
             PlanetTransition.transition(probe, probePath);
+            timer.scheduleAtFixedRate(task, 0, 1000);
         });
-
-
-//        for (int i = 0; i < sunPath.getElements().size(); i++) {
-//            System.out.println(titanPath.getElements().get(i));
-//        }
 
         singleStage.setFullScreen(true);
         singleStage.setResizable(false);
         singleStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-
         singleStage.setScene(introScene);
         singleStage.show();
     }
@@ -105,18 +93,16 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
         introScene = new Scene(beginPane, screenBounds.getWidth(), screenBounds.getHeight());
         introScene.getStylesheets().add(GuiMain.class.getResource("/Stylesheet.css").toExternalForm());
 
-
         VBox introBox = new VBox(50);
         Label introLabel = new Label("A Titanic Space Odyssey!");
         introLabel.getStyleClass().add("introLabel");
 
+        beginButton = new Button("BEGIN!");
 
-        launchButton = new Button("LAUNCH PROBE!");
+        introBox.getChildren().addAll(introLabel, beginButton);
 
-        introBox.getChildren().addAll(introLabel, launchButton);
-
-        launchButton.setOnAction((EventHandler<ActionEvent>) this);
-        launchButton.setPrefSize(310, 75);
+        beginButton.setOnAction((EventHandler<ActionEvent>) this);
+        beginButton.setPrefSize(310, 75);
 
         introBox.setAlignment(Pos.CENTER);
         beginPane.getChildren().add(introBox);
@@ -193,8 +179,6 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
 
     /*
      * Times and updates the probe journey continuously - seconds since launch.
-     * (at the moment, it's not configured properly, but should be easy to use the actual
-     * probe travel variable, instead of this 'seconds' variable)
      */
     int i = 0;
     String ssl;
@@ -208,7 +192,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
         	 * This way, we can make the timer increase harmoniously during the entirety of the probe launch.
         	 */
             i += 43829;
-            if(i == 525948) {
+            if (i == 525948) {
             	i--;
             	ssl = "TimeSteps Since Launch: " + Solver.getAccessTimes().get(i);
             	timer.cancel();
@@ -222,13 +206,11 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
      * Handles all button actions in one single method.
      */
     public void handle(ActionEvent e) {
-        if (e.getSource() == launchButton) {
+        if (e.getSource() == beginButton) {
             singleStage.setScene(visualiserScene);
             singleStage.setFullScreen(true);
             singleStage.setResizable(false);
             singleStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-            timer.scheduleAtFixedRate(task, 0, 1000);
-            //System.out.println("ELEMENTS " + Solver.getAccessTimes().size());
         }
     }
 
