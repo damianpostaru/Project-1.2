@@ -88,7 +88,7 @@ public class PlanetTransition extends GuiMain {
 
     public static void transition(CelestialBody node, Path nodePath) {
         PathTransition bodyTransition = new PathTransition();
-        bodyTransition.setDuration(Duration.seconds(20));
+        bodyTransition.setDuration(Duration.seconds(12));
         bodyTransition.setNode(node.getBody());
         bodyTransition.setPath(nodePath);
         bodyTransition.play();
