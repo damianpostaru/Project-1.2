@@ -25,7 +25,7 @@ public class SolarSystem extends ArrayList<Planet> {
 
     public Vector3d[] calcAcc() {
         accelerations = new Vector3d[size()];
-        for (int i = 0; i < accelerations.length - 1; i++) {
+        for (int i = 0; i < accelerations.length; i++) {
             accelerations[i] = new Vector3d(0, 0, 0);
             for (int j = 0; j < size() - 1; j++) {
                 if (i == j) {
@@ -37,13 +37,6 @@ public class SolarSystem extends ArrayList<Planet> {
             }
             accelerations[i] = (Vector3d) accelerations[i].mul(G);
         }
-        accelerations[11] = new Vector3d(0, 0, 0);
-        for (int j = 0; j < size() - 1; j++) {
-            Vector3d deltaPos = (Vector3d) get(j).getPosition().sub(get(11).getPosition());
-            Vector3d distanceToTheCube = (Vector3d) deltaPos.mul(Math.pow(1 / deltaPos.norm(), 3));
-            accelerations[11] = (Vector3d) accelerations[11].add(distanceToTheCube.mul(get(j).getMass()));
-        }
-        accelerations[11] = (Vector3d) accelerations[11].mul(G);
         return accelerations;
     }
 
