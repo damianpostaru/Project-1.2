@@ -65,9 +65,14 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
         PlanetTransition.createPath();
 
 
+//        Solver solver = new Solver();
+//        State state0 = new State(initialPosition, initialVelocity);
+//        StateInterface[] states = solver.solve(new Function(), state0, 31556926, 3600);
+
         Solver solver = new Solver();
+        ProbeSimulator probeSimulator = new ProbeSimulator();
         State state0 = new State(initialPosition, initialVelocity);
-        StateInterface[] states = solver.solve(new Function(), state0, 31556926, 3600);
+        Vector3d[] trajectory = (Vector3d[]) probeSimulator.trajectory(initialPosition, initialVelocity, 31556926, 60);
 
 
         probeLaunch.setOnAction(e -> {
