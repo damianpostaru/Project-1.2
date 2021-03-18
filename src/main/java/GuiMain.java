@@ -69,6 +69,8 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
 
         probeLaunch.setOnAction(e -> {
             i = 0;
+            timer = new Timer();
+            makeTask();
             PlanetTransition.transition(mercury, mercuryPath);
             PlanetTransition.transition(venus, venusPath);
             PlanetTransition.transition(earth, earthPath);
@@ -182,25 +184,30 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
      */
     int i = 0;
     String ssl;
-    Timer timer = new Timer();
-    TimerTask task = new TimerTask() {
+    Timer timer;
+    TimerTask task;
+
+    public void makeTask()
+    {
+        task = new TimerTask() {
         public void run() {
-        	/* Basically from accessing the list accessTimes, we conclude that it has 525948 elements.
-        	 * By dividing this value (number of steps taken) by 12 seconds - the set duration of the visualisation -
-        	 * we get an integer number, since 525948%43829 = 0 (obtained from 525948/12 = 43829).
-        	 * This allows us to access the list at that same index each time.
-        	 * This way, we can make the timer increase harmoniously during the entirety of the probe launch.
-        	 */
+            /* Basically from accessing the list accessTimes, we conclude that it has 525948 elements.
+             * By dividing this value (number of steps taken) by 12 seconds - the set duration of the visualisation -
+             * we get an integer number, since 525948%43829 = 0 (obtained from 525948/12 = 43829).
+             * This allows us to access the list at that same index each time.
+             * This way, we can make the timer increase harmoniously during the entirety of the probe launch.
+             */
             i += 43829;
             if (i == 525948) {
-            	i--;
-            	ssl = "TimeSteps Since Launch: " + Solver.getAccessTimes().get(i);
-            	timer.cancel();
+                i--;
+                ssl = "Time Since Launch: " + Solver.getAccessTimes().get(i);
+                timer.cancel();
             }
-            ssl = "TimeSteps Since Launch: " + Solver.getAccessTimes().get(i);
+            ssl = "Time Since Launch: " + Solver.getAccessTimes().get(i);
             timeText.setText(ssl);
         }
     };
+    }
 
     /*
      * Handles all button actions in one single method.
