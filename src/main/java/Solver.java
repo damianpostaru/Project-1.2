@@ -1,4 +1,10 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class Solver implements ODESolverInterface {
+	
+	// List to be accessed in the timer functionality in the GuiMain.
+	public static List<Double> accessTimes =  new ArrayList<Double>();
 
     @Override
     public StateInterface[] solve(ODEFunctionInterface function, StateInterface initialState, double[] outputTimes) {
@@ -20,8 +26,10 @@ public class Solver implements ODESolverInterface {
             PlanetTransition.addPath((State) states[i]);
             if ((finalTime - time) / stepSize < 0) {
                 time += (finalTime - time) % stepSize;
+                accessTimes.add(time);
             } else {
                 time += stepSize;
+                accessTimes.add(time);
             }
         }
         return states;
@@ -30,5 +38,9 @@ public class Solver implements ODESolverInterface {
     @Override
     public StateInterface step(ODEFunctionInterface function, double time, StateInterface state, double stepSize) {
         return state.addMul(stepSize, function.call(time, state));
+    }
+    
+    public static List<Double> getAccessTimes() {
+    	return accessTimes;
     }
 }
