@@ -1,5 +1,6 @@
-import java.util.Vector;
 
+/* THIS CLASS WAS USED TO APPROXIMATE THE REQUIRED INITIAL CONDITIONS, TO USE IT SOME LINES IN SOLVER RELATED TO THE GUI NEED TO BE COMMENTED OUT (ACCESSTIMES METHODS).*/
+import java.util.Vector;
 public class SimMain {
     public static void main(String[] args) {
 //        ProbeSimulator probeSimulator = new ProbeSimulator();

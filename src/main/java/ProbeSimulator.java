@@ -24,7 +24,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         double bestTime = 0;
         for (int i = 0; i < states.length; i++) {
             trajectory[i] = states[i].getSolarSystem().getShuttle().getPosition();
-    //        System.out.println(states[i].getSolarSystem().getShuttle().getPosition());
+            System.out.println(states[i].getSolarSystem().getShuttle().getPosition());
             double dist = states[i].getSolarSystem().get(8).getPosition().dist(states[i].getSolarSystem().getShuttle().getPosition());
             if (dist < bestDist) {
                 bestDist = dist;
