@@ -17,11 +17,6 @@ import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import titan.*;
-import titan.interfaces.Vector3dInterface;
-import titan.solver.Solver;
-import titan.space.Vector3d;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -45,6 +40,11 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
             saturnBox, titanBox, probeBox;
     private static Vector3dInterface initialPosition;
     private static Vector3dInterface initialVelocity;
+    private int timerTime;
+    private boolean isTimerTaskRunning;
+    private String ssl;
+    private Timer timer;
+    private TimerTask timerTask;
 
 
     public static void main(String[] args) {
@@ -75,9 +75,9 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
 
 
         probeLaunch.setOnAction(e -> {
-            i = 0;
-            timer = new Timer();
-            makeTask();
+            startTimerTask();
+            //timer.scheduleAtFixedRate(timerTask, 0, 1000);
+            //probeLaunch.setDisable(true);
             PlanetTransition.transition(mercury, mercuryPath);
             PlanetTransition.transition(venus, venusPath);
             PlanetTransition.transition(earth, earthPath);
@@ -87,7 +87,6 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
             PlanetTransition.transition(saturn, saturnPath);
             PlanetTransition.transition(titan, titanPath);
             PlanetTransition.transition(probe, probePath);
-            timer.scheduleAtFixedRate(task, 0, 1000);
         });
 
         singleStage.setFullScreen(true);
@@ -100,7 +99,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
     public void setIntroScene() {
         StackPane beginPane = new StackPane();
         introScene = new Scene(beginPane, screenBounds.getWidth(), screenBounds.getHeight());
-        introScene.getStylesheets().add(GuiMain.class.getResource("/titan/gui/Stylesheet.css").toExternalForm());
+        introScene.getStylesheets().add(GuiMain.class.getResource("/Stylesheet.css").toExternalForm());
 
         VBox introBox = new VBox(50);
         Label introLabel = new Label("A Titanic Space Odyssey!");
@@ -183,37 +182,43 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
                 saturn.getBody(), titan.getBody(), probe.getBody());
 
         visualiserScene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
-        visualiserScene.getStylesheets().add(GuiMain.class.getResource("/titan/gui/Stylesheet.css").toExternalForm());
+        visualiserScene.getStylesheets().add(GuiMain.class.getResource("/Stylesheet.css").toExternalForm());
     }
 
     /*
      * Times and updates the probe journey continuously - seconds since launch.
      */
-    int i = 0;
-    String ssl;
-    Timer timer;
-    TimerTask task;
-
-    public void makeTask()
+    public void startTimerTask()
     {
-        task = new TimerTask() {
-        public void run() {
-            /* Basically from accessing the list accessTimes, we conclude that it has 525948 elements.
-             * By dividing this value (number of steps taken) by 12 seconds - the set duration of the visualisation -
-             * we get an integer number, since 525948%43829 = 0 (obtained from 525948/12 = 43829).
-             * This allows us to access the list at that same index each time.
-             * This way, we can make the timer increase harmoniously during the entirety of the probe launch.
-             */
-            i += 43829;
-            if (i == 525948) {
-                i--;
-                ssl = "Time Since Launch: " + Solver.getAccessTimes().get(i);
-                timer.cancel();
-            }
-            ssl = "Time Since Launch: " + Solver.getAccessTimes().get(i);
-            timeText.setText(ssl);
+        if(isTimerTaskRunning) {
+            timerTask.cancel();
+            isTimerTaskRunning = false;
         }
-    };
+        timerTime = 0;
+        timer = new Timer();
+        timerTask = new TimerTask() {
+            public void run() {
+                isTimerTaskRunning = true;
+                /* Basically from accessing the list accessTimes, we conclude that it has 525948 elements.
+                 * By dividing this value (number of steps taken) by 12 seconds - the set duration of the visualisation -
+                 * we get an integer number, since 525948%43829 = 0 (obtained from 525948/12 = 43829).
+                 * This allows us to access the list at that same index each time.
+                 * This way, we can make the timer increase harmoniously during the entirety of the probe launch.
+                 */
+                if(timerTime + 43829 <= Solver.getAccessTimes().size()) {
+                    timerTime += 43829;
+                }
+                if (timerTime == 525948) {
+                    timerTime--;
+                    ssl = "Time Since Launch: " + Solver.getAccessTimes().get(timerTime);
+                    timer.cancel();
+                    //probeLaunch.setDisable(false);
+                }
+                ssl = "Time Since Launch: " + Solver.getAccessTimes().get(timerTime);
+                timeText.setText(ssl);
+            }
+        };
+        timer.scheduleAtFixedRate(timerTask, 0, 1000);
     }
 
     /*
@@ -227,6 +232,4 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
             singleStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
         }
     }
-
-
 }
