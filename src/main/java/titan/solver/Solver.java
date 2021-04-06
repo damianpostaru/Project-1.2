@@ -1,3 +1,10 @@
+package titan.solver;
+
+import titan.gui.PlanetTransition;
+import titan.interfaces.ODEFunctionInterface;
+import titan.interfaces.ODESolverInterface;
+import titan.interfaces.StateInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 

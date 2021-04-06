@@ -1,3 +1,5 @@
+package titan.gui;
+
 import javafx.scene.shape.Circle;
 
 public class CelestialBody {

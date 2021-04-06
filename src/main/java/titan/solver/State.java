@@ -1,3 +1,11 @@
+package titan.solver;
+
+import titan.interfaces.RateInterface;
+import titan.interfaces.StateInterface;
+import titan.interfaces.Vector3dInterface;
+import titan.space.SolarSystem;
+import titan.space.Vector3d;
+
 public class State implements StateInterface {
 
     private final SolarSystem solarSystem;

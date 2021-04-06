@@ -1,3 +1,5 @@
+package titan.gui;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -53,7 +55,7 @@ public class InfoScreen extends GuiMain {
         probeBox = new HBox(25);
         probeBox.getChildren().addAll(probeLabel, probe2);
 
-        infoBox = new VBox(50);
+        infoBox = new VBox(screenBounds.getHeight()/(13*2));
         infoBox.getChildren().addAll(planetLabel, sunBox, mercuryBox, venusBox, earthBox, moonBox, marsBox, jupiterBox, saturnBox, titanBox, probeBox, probeLaunch, exitButton);
         infoBox.setPadding(new Insets(0, 50, 0, 0));
         infoBox.getStyleClass().add("Label");

@@ -1,3 +1,8 @@
+package titan.solver;
+
+import titan.space.Vector3d;
+import titan.interfaces.RateInterface;
+
 public class Rate implements RateInterface {
     Vector3d[] acceleration;
 

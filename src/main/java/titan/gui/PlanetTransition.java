@@ -1,8 +1,14 @@
+package titan.gui;
+
 import javafx.animation.PathTransition;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
+import titan.solver.State;
+import titan.space.Planet;
+import titan.space.SolarSystem;
+import titan.space.Vector3d;
 
 public class PlanetTransition extends GuiMain {
 

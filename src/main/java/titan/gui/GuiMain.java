@@ -1,3 +1,5 @@
+package titan.gui;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,6 +17,11 @@ import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import titan.*;
+import titan.interfaces.Vector3dInterface;
+import titan.solver.Solver;
+import titan.space.Vector3d;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -93,7 +100,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
     public void setIntroScene() {
         StackPane beginPane = new StackPane();
         introScene = new Scene(beginPane, screenBounds.getWidth(), screenBounds.getHeight());
-        introScene.getStylesheets().add(GuiMain.class.getResource("/Stylesheet.css").toExternalForm());
+        introScene.getStylesheets().add(GuiMain.class.getResource("/titan/gui/Stylesheet.css").toExternalForm());
 
         VBox introBox = new VBox(50);
         Label introLabel = new Label("A Titanic Space Odyssey!");
@@ -176,7 +183,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
                 saturn.getBody(), titan.getBody(), probe.getBody());
 
         visualiserScene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
-        visualiserScene.getStylesheets().add(GuiMain.class.getResource("/Stylesheet.css").toExternalForm());
+        visualiserScene.getStylesheets().add(GuiMain.class.getResource("/titan/gui/Stylesheet.css").toExternalForm());
     }
 
     /*

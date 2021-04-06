@@ -1,3 +1,7 @@
+package titan.space;
+
+import titan.interfaces.Vector3dInterface;
+
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 

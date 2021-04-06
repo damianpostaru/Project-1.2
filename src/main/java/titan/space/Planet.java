@@ -1,3 +1,7 @@
+package titan.space;
+
+import titan.interfaces.Vector3dInterface;
+
 public class Planet {
     private Vector3d position;
     private Vector3d velocity;

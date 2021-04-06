@@ -1,3 +1,7 @@
+package titan.space;
+
+import titan.interfaces.Vector3dInterface;
+
 import java.util.ArrayList;
 
 public class SolarSystem extends ArrayList<Planet> {

@@ -1,3 +1,12 @@
+package titan;
+
+import titan.interfaces.ProbeSimulatorInterface;
+import titan.interfaces.Vector3dInterface;
+import titan.solver.Function;
+import titan.solver.Solver;
+import titan.solver.State;
+import titan.space.Vector3d;
+
 public class ProbeSimulator implements ProbeSimulatorInterface {
     @Override
     public Vector3dInterface[] trajectory(Vector3dInterface initialPosition, Vector3dInterface initialVelocity, double[] outputTimes) {
