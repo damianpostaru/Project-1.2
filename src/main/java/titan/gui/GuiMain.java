@@ -78,7 +78,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
         PlanetTransition.createPath();
 
         ProbeSimulator probeSimulator = new ProbeSimulator();
-        Vector3d[] trajectory = (Vector3d[]) probeSimulator.trajectory(initialPosition, initialVelocity, 31556926, 60);
+        Vector3d[] trajectory = (Vector3d[]) probeSimulator.trajectory(initialPosition, initialVelocity, 31556926, 10);
 
 
         probeLaunch.setOnAction(e -> {

@@ -6,6 +6,7 @@ import titan.solver.Function;
 import titan.solver.RungeKuttaSolver;
 import titan.solver.Solver;
 import titan.solver.State;
+import titan.space.SolarSystemData;
 import titan.space.Vector3d;
 
 public class ProbeSimulator implements ProbeSimulatorInterface {
@@ -45,7 +46,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         }
         System.out.println("Time of closest approach: " + bestTime);
         System.out.println("Distance of closest approach: " + bestDist);
-        if (bestDist <= states[states.length - 1].getSolarSystem().get(8).getRadius()) {
+        if (bestDist <= SolarSystemData.radii[8]) {
             System.out.println("Titan has been hit");
         }
         return trajectory;
