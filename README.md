@@ -3,9 +3,9 @@
     
 ## For java 1.8 and older:
 ### Compile with:
-    javac GuiMain.java
+    javac titan\gui\GuiMain.java
 ### Run with:
-    java GuiMain
+    java titan.gui.GuiMain
     
 ## For java newer than 1.8:  
 ### Compile with: 
