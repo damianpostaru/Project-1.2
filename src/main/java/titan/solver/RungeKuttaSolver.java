@@ -8,19 +8,13 @@ import titan.interfaces.StateInterface;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Solver implements ODESolverInterface {
-	
-	// List to be accessed in the timer functionality in the GuiMain.
-	public static List<Double> accessTimes = new ArrayList<>();
+public class RungeKuttaSolver implements ODESolverInterface {
+
+    public static List<Double> accessTimes = new ArrayList<>();
 
     @Override
-    public StateInterface[] solve(ODEFunctionInterface function, StateInterface initialState, double[] outputTimes) {
-        StateInterface[] states = new StateInterface[outputTimes.length];
-        states[0] = initialState;
-        for (int i = 1; i < states.length; i++) {
-            states[i] = step(function, outputTimes[i], states[i - 1], 60);
-        }
-        return states;
+    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double[] ts) {
+        return new StateInterface[0];
     }
 
     @Override
@@ -43,10 +37,16 @@ public class Solver implements ODESolverInterface {
 
     @Override
     public StateInterface step(ODEFunctionInterface function, double time, StateInterface state, double stepSize) {
-        return state.addMul(stepSize, function.call(time, state));
+        Rate k1 = (Rate) function.call(time, state);
+        Rate k2 = (Rate) function.call(time + stepSize / 2, state.addMul(stepSize, k1.mul(0.5)));
+        Rate k3 = (Rate) function.call(time + stepSize / 2, state.addMul(stepSize, k2.mul(0.5)));
+        Rate k4 = (Rate) function.call(time + stepSize, state.addMul(stepSize, k3));
+        Rate k = k1.add(k2.mul(2).add(k3.mul(2).add(k4)));
+
+        return state.addMul(stepSize, k.mul(1.0 / 6.0));
     }
-    
+
     public static List<Double> getAccessTimes() {
-    	return accessTimes;
+        return accessTimes;
     }
 }
