@@ -41,7 +41,7 @@ public class RungeKuttaSolver implements ODESolverInterface {
         Rate k2 = (Rate) function.call(time + stepSize / 2, state.addMul(stepSize, k1.mul(0.5)));
         Rate k3 = (Rate) function.call(time + stepSize / 2, state.addMul(stepSize, k2.mul(0.5)));
         Rate k4 = (Rate) function.call(time + stepSize, state.addMul(stepSize, k3));
-        Rate k = k1.add(k2.add(k3.add(k4)));
+        Rate k = k1.add(k2.mul(2).add(k3.mul(2).add(k4)));
 
         return state.addMul(stepSize, k.mul(1.0 / 6.0));
     }
