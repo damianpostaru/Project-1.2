@@ -69,7 +69,7 @@ public class InfoScreen extends GuiMain {
         sunLabel = new Label("Sun");
         sunLabel.getStyleClass().add("planetLabel");
 
-        mercuryLabel = new Label("mercury");
+        mercuryLabel = new Label("Mercury");
         mercuryLabel.getStyleClass().add("planetLabel");
 
         venusLabel = new Label("Venus");
