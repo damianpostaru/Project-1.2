@@ -2,10 +2,7 @@ package titan;
 
 import titan.interfaces.ProbeSimulatorInterface;
 import titan.interfaces.Vector3dInterface;
-import titan.solver.Function;
-import titan.solver.RungeKuttaSolver;
-import titan.solver.Solver;
-import titan.solver.State;
+import titan.solver.*;
 import titan.space.SolarSystemData;
 import titan.space.Vector3d;
 
@@ -14,8 +11,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
     public Vector3dInterface[] trajectory(Vector3dInterface initialPosition, Vector3dInterface initialVelocity, double[] outputTimes) {
         Vector3dInterface[] trajectory = new Vector3d[outputTimes.length];
         State initialState = new State(initialPosition, initialVelocity);
-//        Solver solver = new Solver();
-        RungeKuttaSolver solver = new RungeKuttaSolver();
+        VerletSolver solver = new VerletSolver();
         State[] states = (State[]) solver.solve(new Function(), initialState, outputTimes);
         for (int i = 0; i < states.length; i++) {
             trajectory[i] = states[i].getSolarSystem().getShuttle().getPosition();
@@ -30,8 +26,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         System.out.println("Probe starting position: " + initialPosition);
         System.out.println("Probe starting velocity: " + initialVelocity);
 //        System.out.println("Probe trajectory: ");
-//        Solver solver = new Solver();
-        RungeKuttaSolver solver = new RungeKuttaSolver();
+        VerletSolver solver = new VerletSolver();
         State[] states = (State[]) solver.solve(new Function(), initialState, finalTime, stepSize);
         double bestDist = Double.MAX_VALUE;
         double bestTime = 0;

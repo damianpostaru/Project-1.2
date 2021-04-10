@@ -11,11 +11,25 @@ public class Planet {
         velocity = initialVelocity;
     }
 
-    public void update(Vector3dInterface acceleration, double step) {
+    public void update(double step, Vector3dInterface acceleration) {
         velocity = (Vector3d) velocity.addMul(step, acceleration);
         position = (Vector3d) position.addMul(step, velocity);
+
     }
-        public Vector3dInterface getPosition() {
+    public void update2(double step, Vector3dInterface acceleration) {
+        position = (Vector3d) position.addMul(step, acceleration);
+    }
+
+
+    // two helper methods for the computation of Verlet
+    public void mulPos(double scalar){
+        position = (Vector3d) position.mul(scalar);
+    }
+    public void subPos(Vector3dInterface pos){
+        position = (Vector3d) position.sub(pos);
+    }
+
+    public Vector3dInterface getPosition() {
         return position;
     }
 
