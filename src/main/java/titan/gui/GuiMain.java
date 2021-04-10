@@ -22,6 +22,7 @@ import titan.ProbeSimulator;
 import titan.interfaces.Vector3dInterface;
 import titan.solver.RungeKuttaSolver;
 import titan.solver.Solver;
+import titan.solver.VerletSolver;
 import titan.space.Vector3d;
 
 import java.util.Timer;
@@ -78,7 +79,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
         PlanetTransition.createPath();
 
         ProbeSimulator probeSimulator = new ProbeSimulator();
-        Vector3d[] trajectory = (Vector3d[]) probeSimulator.trajectory(initialPosition, initialVelocity, 31556926, 10);
+        Vector3d[] trajectory = (Vector3d[]) probeSimulator.trajectory(initialPosition, initialVelocity, 31556926, 60);
 
 
         probeLaunch.setOnAction(e -> {
@@ -212,16 +213,16 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
                  * This allows us to access the list at that same index each time.
                  * This way, we can make the timer increase harmoniously during the entirety of the probe launch.
                  */
-                if(timerTime + 43829 <= RungeKuttaSolver.getAccessTimes().size()) {
+                if(timerTime + 43829 <= VerletSolver.getAccessTimes().size()) {
                     timerTime += 43829;
                 }
                 if (timerTime == 525948) {
                     timerTime--;
-                    ssl = "Time Since Launch: " + RungeKuttaSolver.getAccessTimes().get(timerTime);
+                    ssl = "Time Since Launch: " + VerletSolver.getAccessTimes().get(timerTime);
                     timer.cancel();
                     //probeLaunch.setDisable(false);
                 }
-                ssl = "Time Since Launch: " + RungeKuttaSolver.getAccessTimes().get(timerTime);
+                ssl = "Time Since Launch: " + VerletSolver.getAccessTimes().get(timerTime);
                 timeText.setText(ssl);
             }
         };

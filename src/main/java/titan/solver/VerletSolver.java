@@ -1,5 +1,6 @@
 package titan.solver;
 
+import titan.gui.PlanetTransition;
 import titan.interfaces.ODEFunctionInterface;
 import titan.interfaces.ODESolverInterface;
 import titan.interfaces.StateInterface;
@@ -19,28 +20,51 @@ public class VerletSolver implements ODESolverInterface {
     }
 
     @Override
-    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
-        StateInterface[] states = new StateInterface[(int) Math.ceil(tf / h)];
-        double t = h;
-        states[0] = y0;
+//    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double tf, double h) {
+//        StateInterface[] states = new StateInterface[(int) Math.ceil(tf / h)];
+//        double t = 0;
+//        states[0] = y0;
+//
+//        // bootstrap to get the last 2 positions using Runge-Kutta Solver
+//        RungeKuttaSolver rk = new RungeKuttaSolver();
+//        states[1] = rk.step(f, t, y0, h);
+//
+//        t = t + h;
+//        // perform the Verlet solver
+//        for (int i = 2; i < states.length; i++) {
+//            states[i] = step(f, t, states[i - 2], states[i - 1], h);
+//
+//            if ((tf - t) / h < 1) {
+//                t += (tf - t) % h;
+//            } else {
+//                t += h;
+//            }
+//            accessTimes.add(t);
+//        }
+//
+//        return states;
+//    }
 
+    public StateInterface[] solve(ODEFunctionInterface function, StateInterface initialState, double finalTime, double stepSize) {
+        StateInterface[] states = new State[(int) Math.ceil(finalTime / stepSize)];
+        states[0] = initialState;
+        double time = 0;
         // bootstrap to get the last 2 positions using Runge-Kutta Solver
         RungeKuttaSolver rk = new RungeKuttaSolver();
-        states[1] = rk.step(f, t, y0, h);
+        states[1] = rk.step(function, time, initialState, stepSize);
 
-        t = t + h;
-        // perform the Verlet solver
+        time = time + stepSize;
+
         for (int i = 2; i < states.length; i++) {
-            states[i] = step(f, t, states[i - 2], states[i - 1], h);
-
-            if ((tf - t) / h < 1) {
-                t += (tf - t) % h;
+            states[i] = step(function, time, states[i - 2], states[i - 1], stepSize);
+            PlanetTransition.addPath((State) states[i]);
+            if ((finalTime - time) / stepSize < 1) {
+                time += (finalTime - time) % stepSize;
             } else {
-                t += h;
+                time += stepSize;
             }
-            accessTimes.add(t);
+            accessTimes.add(time);
         }
-
         return states;
     }
 
@@ -62,8 +86,12 @@ public class VerletSolver implements ODESolverInterface {
             system1.get(i).subPos(system0.get(i).getPosition());
         }
 
-        y1.addMul(Math.pow(h, 2), f.call(t, y1));
 
-        return y1;
+
+        return y1.addMul(Math.pow(h, 2), f.call(t, y1));
+    }
+
+    public static List<Double> getAccessTimes() {
+        return accessTimes;
     }
 }
