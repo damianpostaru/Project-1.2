@@ -20,8 +20,6 @@ import javafx.stage.Stage;
 
 import titan.ProbeSimulator;
 import titan.interfaces.Vector3dInterface;
-import titan.solver.RungeKuttaSolver;
-import titan.solver.Solver;
 import titan.solver.VerletSolver;
 import titan.space.Vector3d;
 

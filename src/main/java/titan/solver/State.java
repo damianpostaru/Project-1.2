@@ -24,7 +24,18 @@ public class State implements StateInterface {
         Rate r = (Rate) rate;
         Vector3d[] acceleration = r.getAcceleration();
         for (int i = 0; i < solarSystem.size(); i++) {
-            solarSystem.get(i).update(acceleration[i], step);
+            solarSystem.get(i).update(step, acceleration[i]);
+        }
+        return nextState;
+    }
+
+    public StateInterface addMul2(double step, RateInterface rate) {
+        State nextState = cloneState();
+        SolarSystem solarSystem = nextState.getSolarSystem();
+        Rate r = (Rate) rate;
+        Vector3d[] acceleration = r.getAcceleration();
+        for (int i = 0; i < solarSystem.size(); i++) {
+            solarSystem.get(i).update2(step, acceleration[i]);
         }
         return nextState;
     }
@@ -37,7 +48,7 @@ public class State implements StateInterface {
         return solarSystem;
     }
 
-    private State cloneState() {
+    public State cloneState() {
         State newState = new State(initialPosition, initialVelocity);
         SolarSystem solarSystem = newState.getSolarSystem();
         for (int i = 0; i < this.solarSystem.size(); i++) {
