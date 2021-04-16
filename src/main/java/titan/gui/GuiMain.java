@@ -17,7 +17,6 @@ import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-
 import titan.ProbeSimulator;
 import titan.interfaces.Vector3dInterface;
 import titan.solver.VerletSolver;
@@ -105,7 +104,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
     public void setIntroScene() {
         StackPane beginPane = new StackPane();
         introScene = new Scene(beginPane, screenBounds.getWidth(), screenBounds.getHeight());
-//        introScene.getStylesheets().add(getStylesheet());
+        introScene.getStylesheets().add("Stylesheet.css");
 
         VBox introBox = new VBox(50);
         Label introLabel = new Label("A Titanic Space Odyssey!");
@@ -115,17 +114,11 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
 
         introBox.getChildren().addAll(introLabel, beginButton);
 
-        beginButton.setOnAction((EventHandler<ActionEvent>) this);
+        beginButton.setOnAction(this);
         beginButton.setPrefSize(310, 75);
 
         introBox.setAlignment(Pos.CENTER);
         beginPane.getChildren().add(introBox);
-    }
-
-
-    // TODO: Fix this (doesn't find Stylesheet, returns null)
-    private String getStylesheet() {
-        return GuiMain.class.getResource("Stylesheet.css").toExternalForm();
     }
 
     public void setVisualiserScene() {
@@ -194,7 +187,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
                 saturn.getBody(), titan.getBody(), probe.getBody());
 
         visualiserScene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
-//        visualiserScene.getStylesheets().add(getStylesheet());
+        visualiserScene.getStylesheets().add("Stylesheet.css");
     }
 
     /*
