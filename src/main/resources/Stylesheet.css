@@ -32,7 +32,7 @@
 }
 
 .root {
-    -fx-background-image:url('titan/gui/space.jpg');
+    -fx-background-image:url('space.jpg');
     /*-fx-background-color: black;*/
 }
 
