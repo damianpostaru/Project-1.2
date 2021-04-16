@@ -1,6 +1,15 @@
 plugins {
     id 'java'
     id 'org.openjfx.javafxplugin' version '0.0.9'
+    id "application"
+}
+
+mainClassName = 'titan.gui.GuiMain'
+
+
+javafx {
+    version = "15.0.1"
+    modules = ['javafx.controls']
 }
 
 group 'org.example'
@@ -16,9 +25,4 @@ test {
 
 dependencies {
     testCompile 'org.junit.jupiter:junit-jupiter:5.7.1'
-}
-
-javafx {
-    version = "15.0.1"
-    modules = [ 'javafx.controls' ]
 }
