@@ -105,7 +105,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
     public void setIntroScene() {
         StackPane beginPane = new StackPane();
         introScene = new Scene(beginPane, screenBounds.getWidth(), screenBounds.getHeight());
-        introScene.getStylesheets().add(GuiMain.class.getResource("Stylesheet.css").toExternalForm());
+//        introScene.getStylesheets().add(getStylesheet());
 
         VBox introBox = new VBox(50);
         Label introLabel = new Label("A Titanic Space Odyssey!");
@@ -120,6 +120,12 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
 
         introBox.setAlignment(Pos.CENTER);
         beginPane.getChildren().add(introBox);
+    }
+
+
+    // TODO: Fix this (doesn't find Stylesheet, returns null)
+    private String getStylesheet() {
+        return GuiMain.class.getResource("Stylesheet.css").toExternalForm();
     }
 
     public void setVisualiserScene() {
@@ -188,7 +194,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
                 saturn.getBody(), titan.getBody(), probe.getBody());
 
         visualiserScene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
-        visualiserScene.getStylesheets().add(GuiMain.class.getResource("Stylesheet.css").toExternalForm());
+//        visualiserScene.getStylesheets().add(getStylesheet());
     }
 
     /*
