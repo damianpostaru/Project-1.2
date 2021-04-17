@@ -78,22 +78,6 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
         ProbeSimulator probeSimulator = new ProbeSimulator();
         Vector3d[] trajectory = (Vector3d[]) probeSimulator.trajectory(initialPosition, initialVelocity, 31556926, 60);
 
-
-        probeLaunch.setOnAction(e -> {
-            startTimerTask();
-            //timer.scheduleAtFixedRate(timerTask, 0, 1000);
-            //probeLaunch.setDisable(true);
-            PlanetTransition.transition(mercury, mercuryPath);
-            PlanetTransition.transition(venus, venusPath);
-            PlanetTransition.transition(earth, earthPath);
-            PlanetTransition.transition(moon, moonPath);
-            PlanetTransition.transition(mars, marsPath);
-            PlanetTransition.transition(jupiter, jupiterPath);
-            PlanetTransition.transition(saturn, saturnPath);
-            PlanetTransition.transition(titan, titanPath);
-            PlanetTransition.transition(probe, probePath);
-        });
-
         singleStage.setFullScreen(true);
         singleStage.setResizable(false);
         singleStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
@@ -176,6 +160,11 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
         timeText = new Text();
         timeText.setId("timeText");
 
+        probeLaunch = new Button("Launch Probe!");
+        exitButton = new Button("Exit Simulation!");
+        probeLaunch.setOnAction((EventHandler<ActionEvent>) this);
+        exitButton.setOnAction((EventHandler<ActionEvent>) this);
+
         InfoScreen.run();
 
         root = new BorderPane();
@@ -193,8 +182,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
     /*
      * Times and updates the probe journey continuously - seconds since launch.
      */
-    public void startTimerTask()
-    {
+    public void startTimerTask() {
         if(isTimerTaskRunning) {
             timerTask.cancel();
             isTimerTaskRunning = false;
@@ -210,11 +198,11 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
                  * This allows us to access the list at that same index each time.
                  * This way, we can make the timer increase harmoniously during the entirety of the probe launch.
                  */
-                if(timerTime + 43829 <= VerletSolver.getAccessTimes().size()) {
+                if(timerTime + 43829 <= VerletSolver.getAccessTimes().size()+1) {
                     timerTime += 43829;
                 }
                 if (timerTime == 525948) {
-                    timerTime--;
+                    timerTime -= 2;
                     ssl = "Time Since Launch: " + VerletSolver.getAccessTimes().get(timerTime);
                     timer.cancel();
                     //probeLaunch.setDisable(false);
@@ -229,12 +217,30 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
     /*
      * Handles all button actions in one single method.
      */
+    @Override
     public void handle(ActionEvent e) {
         if (e.getSource() == beginButton) {
             singleStage.setScene(visualiserScene);
             singleStage.setFullScreen(true);
             singleStage.setResizable(false);
             singleStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
+        }
+        if (e.getSource() == probeLaunch) {
+            startTimerTask();
+            //timer.scheduleAtFixedRate(timerTask, 0, 1000);
+            //probeLaunch.setDisable(true);
+            PlanetTransition.transition(mercury, mercuryPath);
+            PlanetTransition.transition(venus, venusPath);
+            PlanetTransition.transition(earth, earthPath);
+            PlanetTransition.transition(moon, moonPath);
+            PlanetTransition.transition(mars, marsPath);
+            PlanetTransition.transition(jupiter, jupiterPath);
+            PlanetTransition.transition(saturn, saturnPath);
+            PlanetTransition.transition(titan, titanPath);
+            PlanetTransition.transition(probe, probePath);
+        }
+        if(e.getSource() == exitButton) {
+            System.exit(0);
         }
     }
 }
