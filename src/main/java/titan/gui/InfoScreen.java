@@ -1,5 +1,7 @@
 package titan.gui;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,12 +20,6 @@ public class InfoScreen extends GuiMain {
     public static void run() {
         labelCreator();
         circleCreator();
-
-        probeLaunch = new Button("Launch Probe!");
-        exitButton = new Button("Exit Simulation!");
-        exitButton.setOnAction(e -> {
-            System.exit(0);
-        });
 
         sunBox = new HBox(25);
         sunBox.getChildren().addAll(sunLabel, sun2);
