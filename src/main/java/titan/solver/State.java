@@ -29,17 +29,6 @@ public class State implements StateInterface {
         return nextState;
     }
 
-    public StateInterface addMul2(double step, RateInterface rate) {
-        State nextState = cloneState();
-        SolarSystem solarSystem = nextState.getSolarSystem();
-        Rate r = (Rate) rate;
-        Vector3d[] acceleration = r.getAcceleration();
-        for (int i = 0; i < solarSystem.size(); i++) {
-            solarSystem.get(i).update2(step, acceleration[i]);
-        }
-        return nextState;
-    }
-
     public String toString() {
         return "Solar system: " + solarSystem.toString();
     }

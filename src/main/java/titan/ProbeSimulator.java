@@ -11,7 +11,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
     public Vector3dInterface[] trajectory(Vector3dInterface initialPosition, Vector3dInterface initialVelocity, double[] outputTimes) {
         Vector3dInterface[] trajectory = new Vector3d[outputTimes.length];
         State initialState = new State(initialPosition, initialVelocity);
-        VerletSolver solver = new VerletSolver();
+        Solver solver = new Solver();
         State[] states = (State[]) solver.solve(new Function(), initialState, outputTimes);
         for (int i = 0; i < states.length; i++) {
             trajectory[i] = states[i].getSolarSystem().getShuttle().getPosition();
@@ -26,7 +26,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         System.out.println("Probe starting position: " + initialPosition);
         System.out.println("Probe starting velocity: " + initialVelocity);
 //        System.out.println("Probe trajectory: ");
-        VerletSolver solver = new VerletSolver();
+        Solver solver = new Solver();
         State[] states = (State[]) solver.solve(new Function(), initialState, finalTime, stepSize);
         double bestDist = Double.MAX_VALUE;
         double bestTime = 0;
