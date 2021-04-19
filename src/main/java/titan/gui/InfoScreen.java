@@ -10,9 +10,11 @@ import javafx.scene.shape.Circle;
 
 public class InfoScreen extends GuiMain {
 
-    public static Label planetLabel, sunLabel, mercuryLabel, venusLabel, earthLabel, moonLabel, marsLabel, jupiterLabel, saturnLabel, titanLabel, probeLabel;
+    public static Label planetLabel, sunLabel, mercuryLabel, venusLabel, earthLabel, moonLabel,
+    marsLabel, jupiterLabel, saturnLabel, titanLabel, probeLabel, neptuneLabel, uranusLabel;
 
-    public static Circle sun2, mercury2, venus2, earth2, moon2, mars2, jupiter2, saturn2, titan2, probe2;
+    public static Circle sun2, mercury2, venus2, earth2, moon2, mars2, jupiter2, saturn2, titan2,
+    probe2, neptune2, uranus2;
 
     public static void run() {
         labelCreator();
@@ -45,11 +47,20 @@ public class InfoScreen extends GuiMain {
         titanBox = new HBox(25);
         titanBox.getChildren().addAll(titanLabel, titan2);
 
+        neptuneBox = new HBox(25);
+        neptuneBox.getChildren().addAll(neptuneLabel, neptune2);
+
+        uranusBox = new HBox(25);
+        uranusBox.getChildren().addAll(uranusLabel, uranus2);
+
         probeBox = new HBox(25);
         probeBox.getChildren().addAll(probeLabel, probe2);
 
-        infoBox = new VBox(screenBounds.getHeight()/(13*2));
-        infoBox.getChildren().addAll(planetLabel, sunBox, mercuryBox, venusBox, earthBox, moonBox, marsBox, jupiterBox, saturnBox, titanBox, probeBox, probeLaunch, exitButton);
+        infoBox = new VBox(screenBounds.getHeight()/(20*2));
+        infoBox.getChildren().addAll(planetLabel, sunBox, mercuryBox, venusBox, earthBox, moonBox
+                , marsBox, jupiterBox, saturnBox, titanBox, neptuneBox, uranusBox, probeBox,
+                probeLaunch,
+                exitButton);
         infoBox.setPadding(new Insets(0, 50, 0, 0));
         infoBox.getStyleClass().add("Label");
         infoBox.setAlignment(Pos.CENTER);
@@ -88,6 +99,12 @@ public class InfoScreen extends GuiMain {
 
         probeLabel = new Label("Probe");
         probeLabel.getStyleClass().add("planetLabel");
+
+        neptuneLabel = new Label("Neptune");
+        neptuneLabel.getStyleClass().add("planetLabel");
+
+        uranusLabel = new Label("Uranus");
+        uranusLabel.getStyleClass().add("planetLabel");
     }
 
     public static void circleCreator() {
@@ -120,5 +137,11 @@ public class InfoScreen extends GuiMain {
 
         probe2 = new Circle(4);
         probe2.getStyleClass().add("probe");
+
+        neptune2 = new Circle(15);
+        neptune2.getStyleClass().add("neptune");
+
+        uranus2 = new Circle(15);
+        uranus2.getStyleClass().add("uranus");
     }
 }

@@ -27,7 +27,8 @@ import java.util.TimerTask;
 
 public class GuiMain extends Application implements EventHandler<ActionEvent> {
 
-    static CelestialBody sun, earth, mercury, venus, moon, mars, jupiter, saturn, titan, probe;
+    static CelestialBody sun, earth, mercury, venus, moon, mars, jupiter, saturn, titan, probe,
+            neptune, uranus;
     static Rectangle2D screenBounds;
     private BorderPane root;
     private Stage singleStage;
@@ -39,10 +40,10 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
     public static double centerY;
     public static double distancePixel;
     public static Path sunPath, mercuryPath, venusPath, earthPath, moonPath, marsPath,
-            jupiterPath, saturnPath, titanPath, probePath;
+            jupiterPath, saturnPath, titanPath, probePath, neptunePath, uranusPath;
     public static VBox infoBox;
     public static HBox sunBox, mercuryBox, venusBox, earthBox, moonBox, marsBox, jupiterBox,
-            saturnBox, titanBox, probeBox;
+            saturnBox, titanBox, probeBox, neptuneBox, uranusBox;
     private static Vector3dInterface initialPosition;
     private static Vector3dInterface initialVelocity;
     private int timerTime;
@@ -157,6 +158,16 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
                 centerY - (((-2.860995816266412e10) / (1e9)) / distancePixel) - (6371e3/1e9), 4);
         probe.getBody().getStyleClass().add("probe");
 
+        neptune = new CelestialBody("Neptune",
+                centerX + (((4.382692942729203e12) / (1e9)) / distancePixel),
+                centerY - (((-9.093501655486243e11) / (1e9)) / distancePixel), 15);
+        neptune.getBody().getStyleClass().add(("neptune"));
+
+        uranus = new CelestialBody("Uranus",
+                centerX + (((2.395195786685187e12) / (1e9)) / distancePixel),
+                centerY - (((1.744450959214586e12) / (1e9)) / distancePixel), 15);
+        uranus.getBody().getStyleClass().add("uranus");
+
         timeText = new Text();
         timeText.setId("timeText");
 
@@ -173,7 +184,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
         root.setBottom(timeText);
         root.getChildren().addAll(sun.getBody(), earth.getBody(), mercury.getBody(),
                 venus.getBody(), moon.getBody(), mars.getBody(), jupiter.getBody(),
-                saturn.getBody(), titan.getBody(), probe.getBody());
+                saturn.getBody(), titan.getBody(), probe.getBody(), neptune.getBody());
 
         visualiserScene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
         visualiserScene.getStylesheets().add("Stylesheet.css");
@@ -238,6 +249,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
             PlanetTransition.transition(saturn, saturnPath);
             PlanetTransition.transition(titan, titanPath);
             PlanetTransition.transition(probe, probePath);
+            PlanetTransition.transition(neptune, neptunePath);
         }
         if(e.getSource() == exitButton) {
             System.exit(0);

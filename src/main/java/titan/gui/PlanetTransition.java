@@ -13,9 +13,9 @@ import titan.space.Vector3d;
 public class PlanetTransition extends GuiMain {
 
     public static Planet sunPlanet, mercuryPlanet, venusPlanet, earthPlanet, moonPlanet,
-    marsPlanet, jupiterPlanet, saturnPlanet, titanPlanet, probePlanet;
+    marsPlanet, jupiterPlanet, saturnPlanet, titanPlanet, probePlanet, neptunePlanet, uranusPlanet;
     public static Vector3d newSun, newMercury, newVenus, newEarth, newMoon, newMars, newJupiter,
-    newSaturn, newTitan, newProbe;
+    newSaturn, newTitan, newProbe, newNeptune, newUranus;
 
     public static void createPath() {
         sunPath = new Path();
@@ -28,6 +28,8 @@ public class PlanetTransition extends GuiMain {
         saturnPath = new Path();
         titanPath = new Path();
         probePath = new Path();
+        neptunePath = new Path();
+        uranusPath = new Path();
 
         sunPath.getElements().add(new MoveTo(sun.getX(), sun.getY()));
         mercuryPath.getElements().add(new MoveTo(mercury.getX(), mercury.getY()));
@@ -39,6 +41,8 @@ public class PlanetTransition extends GuiMain {
         saturnPath.getElements().add(new MoveTo(saturn.getX(), saturn.getY()));
         titanPath.getElements().add(new MoveTo(titan.getX(), titan.getY()));
         probePath.getElements().add(new MoveTo(probe.getX(), probe.getY()));
+        neptunePath.getElements().add(new MoveTo(neptune.getX(), neptune.getY()));
+        uranusPath.getElements().add(new MoveTo(uranus.getX(), uranus.getY()));
     }
 
 
@@ -54,6 +58,8 @@ public class PlanetTransition extends GuiMain {
         addPath(solar, 6, jupiterPlanet, newJupiter, jupiterPath);
         addPath(solar, 7, saturnPlanet, newSaturn, saturnPath);
         addPath(solar, 8, titanPlanet, newTitan, titanPath);
+        addPath(solar, 9, neptunePlanet, newNeptune, neptunePath);
+        addPath(solar, 10, uranusPlanet, newUranus, uranusPath);
         addPath(solar, 11, probePlanet, newProbe, probePath);
 
     }
