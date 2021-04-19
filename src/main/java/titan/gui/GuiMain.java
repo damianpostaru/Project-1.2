@@ -19,7 +19,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import titan.ProbeSimulator;
 import titan.interfaces.Vector3dInterface;
-import titan.solver.VerletSolver;
+import titan.solver.Solver;
 import titan.space.Vector3d;
 
 import java.util.Timer;
@@ -198,16 +198,16 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
                  * This allows us to access the list at that same index each time.
                  * This way, we can make the timer increase harmoniously during the entirety of the probe launch.
                  */
-                if(timerTime + 43829 <= VerletSolver.getAccessTimes().size()+1) {
+                if(timerTime + 43829 <= Solver.getAccessTimes().size()+1) {
                     timerTime += 43829;
                 }
                 if (timerTime == 525948) {
                     timerTime -= 2;
-                    ssl = "Time Since Launch: " + VerletSolver.getAccessTimes().get(timerTime);
+                    ssl = "Time Since Launch: " + Solver.getAccessTimes().get(timerTime);
                     timer.cancel();
                     //probeLaunch.setDisable(false);
                 }
-                ssl = "Time Since Launch: " + VerletSolver.getAccessTimes().get(timerTime);
+                ssl = "Time Since Launch: " + Solver.getAccessTimes().get(timerTime);
                 timeText.setText(ssl);
             }
         };
