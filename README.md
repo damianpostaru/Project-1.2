@@ -1,5 +1,5 @@
 # Project-1.2  
-    Navigate to src\main\java
+    Navigate to the folder Project-1.2
     
 ## Gradle
 #### Run from terminal
