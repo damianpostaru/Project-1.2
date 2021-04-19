@@ -56,7 +56,7 @@ public class InfoScreen extends GuiMain {
         probeBox = new HBox(25);
         probeBox.getChildren().addAll(probeLabel, probe2);
 
-        infoBox = new VBox(screenBounds.getHeight()/(15*2));
+        infoBox = new VBox(screenBounds.getHeight()/(20*2));
         infoBox.getChildren().addAll(planetLabel, sunBox, mercuryBox, venusBox, earthBox, moonBox
                 , marsBox, jupiterBox, saturnBox, titanBox, neptuneBox, uranusBox, probeBox,
                 probeLaunch,
