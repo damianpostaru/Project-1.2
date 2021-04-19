@@ -30,7 +30,7 @@ public class Solver implements ODESolverInterface {
 
     @Override
     public StateInterface[] solve(ODEFunctionInterface function, StateInterface initialState, double finalTime, double stepSize) {
-        StateInterface[] states = new State[(int) Math.ceil(finalTime / stepSize)];
+        StateInterface[] states = new State[(int) Math.ceil(finalTime / stepSize) + 1];
         states[0] = initialState;
         double time = 0;
         // bootstrap to get the last 2 positions using Runge-Kutta Solver
