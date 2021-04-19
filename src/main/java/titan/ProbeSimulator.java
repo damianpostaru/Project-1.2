@@ -21,7 +21,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
 
     @Override
     public Vector3dInterface[] trajectory(Vector3dInterface initialPosition, Vector3dInterface initialVelocity, double finalTime, double stepSize) {
-        Vector3dInterface[] trajectory = new Vector3d[(int) Math.ceil(finalTime / stepSize)];
+        Vector3dInterface[] trajectory = new Vector3d[(int) Math.ceil(finalTime / stepSize) + 1];
         State initialState = new State(initialPosition, initialVelocity);
         System.out.println("Probe starting position: " + initialPosition);
         System.out.println("Probe starting velocity: " + initialVelocity);
