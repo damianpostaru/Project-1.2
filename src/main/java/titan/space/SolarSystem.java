@@ -26,7 +26,7 @@ public class SolarSystem extends ArrayList<Planet> {
         return (Shuttle) get(11);
     }
 
-    public Vector3d[] calcAcc() {
+    public Vector3d[] calcAcc(double t) {
         accelerations = new Vector3d[size()];
         for (int i = 0; i < accelerations.length; i++) {
             accelerations[i] = new Vector3d(0, 0, 0);
@@ -40,6 +40,7 @@ public class SolarSystem extends ArrayList<Planet> {
             }
             accelerations[i] = (Vector3d) accelerations[i].mul(G);
         }
+        accelerations[11] = (Vector3d) accelerations[11].add(((Shuttle)get(11)).calcEngineAcc(t));
         return accelerations;
     }
 

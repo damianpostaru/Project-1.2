@@ -16,7 +16,7 @@ public class Shuttle extends Planet {
         this.fuelMass = fuelMass;
     }
 
-    public Vector3d calcEngineAcc(double t, double h) {
+    public Vector3d calcEngineAcc(double t) {
         for (int i = 0; i < engineTimings.length; i++) {
             if(engineTimings[i][2] < t && engineTimings[i][1] >= t) {//check if the engine needs to be fired and return the acceleration
                 double force = engineTimings[i][0];
@@ -33,7 +33,7 @@ public class Shuttle extends Planet {
         double burnedFuelMass = 0;
         for (int i = 0; i < engineTimings.length; i++) {
             if (engineTimings[i][1] < t){//if a burn has been or is being executed
-                double time = 0;
+                double time;
                 if (engineTimings[i][2] < t)//entire burn has been executed
                 {
                     time = engineTimings[i][2] - engineTimings[i][1];
