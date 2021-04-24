@@ -5,8 +5,9 @@ import titan.interfaces.Vector3dInterface;
 public class Shuttle extends Planet {
     //contains data about each burn in the simulation stored as {force, start time , end time}
     //NOTE: make sure that the burns do not overlap in their times
-    public static double[][] engineTimings = new double[][]{};
-    public static Vector3d[] engineDirections = new Vector3d[]{};
+    //NOTE: make sure engineDirections and engineTimings arrays are the same length
+    public static double[][] engineTimings = new double[][]{{75e6,0,900}};
+    public static Vector3d[] engineDirections = new Vector3d[]{new Vector3d(0,0,0)};
 
     private final double fuelMass;
     private final double EFF_EXH_VEL = 40000;
@@ -17,13 +18,17 @@ public class Shuttle extends Planet {
     }
 
     public Vector3d calcEngineAcc(double t) {
+
         for (int i = 0; i < engineTimings.length; i++) {
-            if(engineTimings[i][2] < t && engineTimings[i][1] >= t) {//check if the engine needs to be fired and return the acceleration
+            //System.out.println(t + " : " + engineTimings[i][1] + " : " + engineTimings[i][2]);
+            if(engineTimings[i][2] >= t && engineTimings[i][1] < t) {//check if the engine needs to be fired and return the acceleration
+                System.out.println("Fire the engines!!!");
                 double force = engineTimings[i][0];
                 Vector3d dir = engineDirections[i];
-                double fuelConsumption = force / EFF_EXH_VEL;
                 double mass = calcFuelMass(t) + SolarSystemData.masses[11];
+                System.out.println(mass);
                 return (Vector3d) (dir.mul(force)).mul(1.0 / mass);
+
             }
         }
         return new Vector3d(0,0,0); //if no engine is used return no acceleration
