@@ -1,6 +1,8 @@
 package titan.gui;
 
 import javafx.application.Application;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -9,10 +11,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.*;
 import javafx.scene.shape.Path;
 import javafx.scene.text.Text;
 import javafx.stage.Screen;
@@ -30,27 +31,27 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
     static CelestialBody sun, earth, mercury, venus, moon, mars, jupiter, saturn, titan, probe,
             neptune, uranus;
     static Rectangle2D screenBounds;
-    private BorderPane root;
     private Stage singleStage;
-    private Scene introScene;
-    private Scene visualiserScene;
+    private Scene introScene, visualiserScene;
     public static Button beginButton, probeLaunch, exitButton;
-    public static Text timeText;
-    public static double centerX;
-    public static double centerY;
-    public static double distancePixel;
+    public static double centerX, centerY, distancePixel;
     public static Path sunPath, mercuryPath, venusPath, earthPath, moonPath, marsPath,
             jupiterPath, saturnPath, titanPath, probePath, neptunePath, uranusPath;
     public static VBox infoBox;
     public static HBox sunBox, mercuryBox, venusBox, earthBox, moonBox, marsBox, jupiterBox,
             saturnBox, titanBox, probeBox, neptuneBox, uranusBox;
-    private static Vector3dInterface initialPosition;
-    private static Vector3dInterface initialVelocity;
-    private int timerTime;
-    private boolean isTimerTaskRunning;
-    private String ssl;
-    private Timer timer;
+    private static Vector3dInterface initialPosition, initialVelocity;
+    // Timer Related Variables
     private TimerTask timerTask;
+    private Text timeText;
+    private Timer timer;
+    private String ssl;
+    private boolean isTimerTaskRunning;
+    private int timerTime;
+    // Zoom Related Variables
+    private DoubleProperty scrollScale;
+    private Pane zoomPane;
+    private double initialSceneX, initialSceneY, xTranslation, yTranslation;
 
 
     public static void main(String[] args) {
@@ -77,7 +78,8 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
         PlanetTransition.createPath();
 
         ProbeSimulator probeSimulator = new ProbeSimulator();
-        Vector3d[] trajectory = (Vector3d[]) probeSimulator.trajectory(initialPosition, initialVelocity, 31556926, 60);
+        Vector3d[] trajectory =
+                (Vector3d[]) probeSimulator.trajectory(initialPosition, initialVelocity, 31536000, 60);
 
         singleStage.setFullScreen(true);
         singleStage.setResizable(false);
@@ -107,6 +109,51 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
     }
 
     public void setVisualiserScene() {
+
+        setCelestialBodies();
+
+        timeText = new Text();
+        timeText.setId("timeText");
+
+        probeLaunch = new Button("Launch Probe!");
+        exitButton = new Button("Exit Simulation!");
+        probeLaunch.setOnAction(this);
+        exitButton.setOnAction(this);
+
+        InfoScreen.run();
+
+        scrollScale = new SimpleDoubleProperty(1.0);
+        zoomPane = new Pane();
+        zoomPane.scaleXProperty().bind(scrollScale);
+        zoomPane.scaleYProperty().bind(scrollScale);
+        zoomPane.getChildren().addAll(sun.getBody(), earth.getBody(), mercury.getBody(),
+                venus.getBody(), moon.getBody(), mars.getBody(), jupiter.getBody(), saturn.getBody(),
+                uranus.getBody(), neptune.getBody(), titan.getBody(), probe.getBody());
+        // Initially displayed Solar System position
+        zoomPane.setTranslateX(-screenBounds.getWidth()/4);
+        zoomPane.setTranslateY(-screenBounds.getHeight()/4);
+
+        zoomPane.setOnScroll(scrollHandler);
+        zoomPane.setOnMousePressed(pressHandler);
+        zoomPane.setOnMouseDragged(dragHandler);
+
+        BorderPane root = new BorderPane();
+        root.setRight(infoBox);
+        root.setAlignment(timeText, Pos.BOTTOM_RIGHT);
+        root.setBottom(timeText);
+        root.setCenter(zoomPane);
+        // Make the infoBox always appear on top in relation to the zoomPane
+        // This allows the the buttons 'probeLaunch' and 'exitButton' to be clickable at all times.
+        zoomPane.toBack();
+
+        visualiserScene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
+        visualiserScene.getStylesheets().add("Stylesheet.css");
+    }
+
+    /*
+     * Sets all the celestial bodies to be seen in the visualiser scene.
+     */
+    private void setCelestialBodies() {
 
         distancePixel = 3000 / screenBounds.getHeight();
 
@@ -167,27 +214,6 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
                 centerX + (((2.395195786685187e12) / (1e9)) / distancePixel),
                 centerY - (((1.744450959214586e12) / (1e9)) / distancePixel), 15);
         uranus.getBody().getStyleClass().add("uranus");
-
-        timeText = new Text();
-        timeText.setId("timeText");
-
-        probeLaunch = new Button("Launch Probe!");
-        exitButton = new Button("Exit Simulation!");
-        probeLaunch.setOnAction((EventHandler<ActionEvent>) this);
-        exitButton.setOnAction((EventHandler<ActionEvent>) this);
-
-        InfoScreen.run();
-
-        root = new BorderPane();
-        root.setAlignment(timeText, Pos.BOTTOM_RIGHT);
-        root.setRight(infoBox);
-        root.setBottom(timeText);
-        root.getChildren().addAll(sun.getBody(), earth.getBody(), mercury.getBody(),
-                venus.getBody(), moon.getBody(), mars.getBody(), jupiter.getBody(),
-                saturn.getBody(), titan.getBody(), probe.getBody(), neptune.getBody());
-
-        visualiserScene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
-        visualiserScene.getStylesheets().add("Stylesheet.css");
     }
 
     /*
@@ -250,9 +276,79 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
             PlanetTransition.transition(titan, titanPath);
             PlanetTransition.transition(probe, probePath);
             PlanetTransition.transition(neptune, neptunePath);
+            PlanetTransition.transition(uranus, uranusPath);
         }
         if(e.getSource() == exitButton) {
             System.exit(0);
         }
     }
+
+    /*
+     * Handles scrolling related events.
+    */
+    private final EventHandler<ScrollEvent> scrollHandler = new EventHandler<ScrollEvent>() {
+
+        final double MAX_SCROLL_SCALE = 5.0, MIN_SCROLL_SCALE = 0.7;
+        double scaleChanger, xChanger, yChanger;
+
+        @Override
+        public void handle(ScrollEvent e) {
+
+            double currentScale = scrollScale.get();
+            double prevScale = currentScale;
+            double delta = 1.25;
+
+            if (e.getDeltaY() >= 0) {
+                currentScale *= delta;
+            } else if (e.getDeltaY() < 0){
+                currentScale /= delta;
+            }
+
+            currentScale = adjust(currentScale);
+
+            scaleChanger = (currentScale/prevScale) - 1;
+            xChanger = (e.getSceneX() - (screenBounds.getWidth()/2 + screenBounds.getMinX()));
+            yChanger = (e.getSceneY() - (screenBounds.getHeight()/2 + screenBounds.getMinY()));
+
+            scrollScale.set(currentScale);
+
+            zoomPane.setTranslateX(zoomPane.getTranslateX()-scaleChanger*xChanger);
+            zoomPane.setTranslateY(zoomPane.getTranslateY()-scaleChanger*yChanger);
+        }
+
+        // Prevents going over the scale bounds that were set above.
+        private double adjust(double scale) {
+            if(scale < MIN_SCROLL_SCALE) {
+                return MIN_SCROLL_SCALE;
+            }
+            if(scale > MAX_SCROLL_SCALE) {
+                return MAX_SCROLL_SCALE;
+            }
+            return scale;
+        }
+    };
+
+    /*
+     * Handles panning related events.
+     */
+    private final EventHandler<MouseEvent> pressHandler = new EventHandler<MouseEvent>() {
+
+        @Override
+        public void handle(MouseEvent e) {
+            initialSceneX = e.getSceneX();
+            initialSceneY = e.getSceneY();
+
+            xTranslation = zoomPane.getTranslateX();
+            yTranslation = zoomPane.getTranslateY();
+        }
+
+    };
+    private final EventHandler<MouseEvent> dragHandler = new EventHandler<MouseEvent>() {
+
+        @Override
+        public void handle(MouseEvent e) {
+            zoomPane.setTranslateX(xTranslation + e.getSceneX() - initialSceneX);
+            zoomPane.setTranslateY(yTranslation + e.getSceneY() - initialSceneY);
+        }
+    };
 }
