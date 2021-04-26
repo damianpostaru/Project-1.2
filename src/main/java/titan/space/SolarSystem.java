@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class SolarSystem extends ArrayList<Planet> {
     Vector3d[] accelerations;
     private final double G = 6.67408e-11;
+    static int count = 0;
     public SolarSystem(Vector3dInterface initialPosition, Vector3dInterface initialVelocity) {
         add(new Planet( new Vector3d(-6.806783239281648e+08, 1.080005533878725e+09, 6.564012751690170e+06), new Vector3d(-1.420511669610689e+01, -4.954714716629277e+00, 3.994237625449041e-01)));//sun
         add(new Planet(new Vector3d(6.047855986424127e+06, -6.801800047868888e+10, -5.702742359714534e+09), new Vector3d(3.892585189044652e+04, 2.978342247012996e+03, -3.327964151414740e+03)));//mercury
@@ -17,8 +18,8 @@ public class SolarSystem extends ArrayList<Planet> {
         add(new Planet(new Vector3d(1.781303138592153e+11, -7.551118436250277e+11, -8.532838524802327e+08), new Vector3d(1.255852555185220e+04, 3.622680192790968e+03, -2.958620380112444e+02)));//jupiter
         add(new Planet(new Vector3d(6.328646641500651e+11, -1.358172804527507e+12, -1.578520137930810e+09), new Vector3d(8.220842186554890e+03, 4.052137378979608e+03, -3.976224719266916e+02)));//saturn
         add(new Planet(new Vector3d(6.332873118527889e+11, -1.357175556995868e+12, -2.134637041453660e+09), new Vector3d(3.056877965721629e+03, 6.125612956428791e+03, -9.523587380845593e+02)));//titan
-        add(new Planet( new Vector3d(2.395195786685187e+12, 1.744450959214586e+12, -2.455116324031639e+10), new Vector3d(-4.059468635313243e+03, 5.187467354884825e+03, 7.182516236837899e+01)));//neptune
         add(new Planet(new Vector3d(4.382692942729203e+12, -9.093501655486243e+11, -8.227728929479486e+10), new Vector3d(1.068410720964204e+03, 5.354959501569486e+03, -1.343918199987533e+02)));//uranus
+        add(new Planet( new Vector3d(2.395195786685187e+12, 1.744450959214586e+12, -2.455116324031639e+10), new Vector3d(-4.059468635313243e+03, 5.187467354884825e+03, 7.182516236837899e+01)));//neptune
         add(new Shuttle((Vector3d) initialPosition.add(get(3).getPosition()), (Vector3d) initialVelocity.add(get(3).getVelocity()),5000000));
     }
 
