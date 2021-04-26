@@ -23,8 +23,6 @@ public class Solver implements ODESolverInterface {
         for (int i = 2; i < states.length; i++) {
             states[i] = verletStep(function, outputTimes[i], states[i - 2], states[i - 1], outputTimes[i] - outputTimes[i - 1]);
             PlanetTransition.addPath((State) states[i]);
-            State state = (State) states[i];
-            System.out.println(state.getSolarSystem().get(9).getPosition());
             accessTimes.add(outputTimes[i]);
         }
         return states;

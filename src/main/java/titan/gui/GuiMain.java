@@ -79,7 +79,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
 
         ProbeSimulator probeSimulator = new ProbeSimulator();
         Vector3d[] trajectory =
-                (Vector3d[]) probeSimulator.trajectory(initialPosition, initialVelocity, 31556926, 60);
+                (Vector3d[]) probeSimulator.trajectory(initialPosition, initialVelocity, 31536000, 60);
 
         singleStage.setFullScreen(true);
         singleStage.setResizable(false);
