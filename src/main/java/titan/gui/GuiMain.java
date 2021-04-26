@@ -144,8 +144,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
         root.setCenter(zoomPane);
         // Make the infoBox always appear on top in relation to the zoomPane
         // This allows the the buttons 'probeLaunch' and 'exitButton' to be clickable at all times.
-        infoBox.setViewOrder(0.0);
-        zoomPane.setViewOrder(1.0);
+        zoomPane.toBack();
 
         visualiserScene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
         visualiserScene.getStylesheets().add("Stylesheet.css");
@@ -277,6 +276,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
             PlanetTransition.transition(titan, titanPath);
             PlanetTransition.transition(probe, probePath);
             PlanetTransition.transition(neptune, neptunePath);
+            PlanetTransition.transition(uranus, uranusPath);
         }
         if(e.getSource() == exitButton) {
             System.exit(0);
@@ -286,7 +286,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
     /*
      * Handles scrolling related events.
     */
-    private final EventHandler<ScrollEvent> scrollHandler = new EventHandler<>() {
+    private final EventHandler<ScrollEvent> scrollHandler = new EventHandler<ScrollEvent>() {
 
         final double MAX_SCROLL_SCALE = 5.0, MIN_SCROLL_SCALE = 0.7;
         double scaleChanger, xChanger, yChanger;
@@ -331,7 +331,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
     /*
      * Handles panning related events.
      */
-    private final EventHandler<MouseEvent> pressHandler = new EventHandler<>() {
+    private final EventHandler<MouseEvent> pressHandler = new EventHandler<MouseEvent>() {
 
         @Override
         public void handle(MouseEvent e) {
@@ -343,7 +343,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
         }
 
     };
-    private final EventHandler<MouseEvent> dragHandler = new EventHandler<>() {
+    private final EventHandler<MouseEvent> dragHandler = new EventHandler<MouseEvent>() {
 
         @Override
         public void handle(MouseEvent e) {
