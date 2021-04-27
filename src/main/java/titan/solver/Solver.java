@@ -84,6 +84,7 @@ public class Solver implements ODESolverInterface {
         Vector3d[] acceleration = r.getAcceleration();
         for (int i = 0; i < solarSystem.size(); i++) {
             solarSystem.get(i).addMulPos(h * h, acceleration[i]);
+            //test
         }
 
         return newNextState;
