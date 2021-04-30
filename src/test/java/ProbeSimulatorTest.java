@@ -4,7 +4,9 @@ import org.junit.jupiter.api.Test;
 import titan.ProbeSimulator;
 import titan.interfaces.ProbeSimulatorInterface;
 import titan.interfaces.Vector3dInterface;
+import titan.space.Shuttle;
 import titan.space.Vector3d;
+import titan.solver.State;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -13,6 +15,27 @@ import java.lang.System;
 class ProbeSimulatorTest {
 
     static final double ACCURACY = 1; // 1 meter (might need to tweak that)
+
+    @Test void testFuelMassNotNegative() {
+        Vector3dInterface probe_relative_position = new Vector3d(6371e3,0,0);
+        Vector3dInterface probe_relative_velocity = new Vector3d(0,0,0); // 12.0 months
+        State initialState = new State(probe_relative_position,probe_relative_velocity);
+        Shuttle shuttle = initialState.getSolarSystem().getShuttle();
+        double time = Double.MAX_VALUE;//test for a long time to make sure all engine burns have been executed
+        assertEquals(0, Math.min(0,shuttle.calcFuelMass(time)));
+
+    }
+
+    @Test void testFuelMassNotTooMuchLeft() {
+        Vector3dInterface probe_relative_position = new Vector3d(6371e3,0,0);
+        Vector3dInterface probe_relative_velocity = new Vector3d(0,0,0); // 12.0 months
+        State initialState = new State(probe_relative_position,probe_relative_velocity);
+        Shuttle shuttle = initialState.getSolarSystem().getShuttle();
+        double time = Double.MAX_VALUE;//test for a long time to make sure all engine burns have been executed
+        double maxFuelLeft = 50000;//the maximum amount of fuel we want left at the end of the mission
+        assertEquals(maxFuelLeft, Math.max(maxFuelLeft,shuttle.calcFuelMass(time)));
+
+    }
 
     @Test void testTrajectoryOneDayX() {
 
