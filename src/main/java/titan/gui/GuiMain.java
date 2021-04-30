@@ -56,7 +56,7 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
 
     public static void main(String[] args) {
         initialPosition = new Vector3d(0.1, -6371e3, 0.1);
-        initialVelocity = new Vector3d(18044.44, -29351.0, -819.35);
+        initialVelocity = new Vector3d(0, 0, 0);//new Vector3d(18044.44, -29351.0, -819.35);
         launch(args);
     }
 
