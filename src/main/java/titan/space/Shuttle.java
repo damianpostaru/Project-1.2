@@ -6,8 +6,8 @@ public class Shuttle extends Planet {
     //contains data about each burn in the simulation stored as {force, start time , end time}
     //NOTE: make sure that the burns do not overlap in their times
     //NOTE: make sure engineDirections and engineTimings arrays are the same length
-    public static double[][] engineTimings = new double[][]{{75e6,0,900}};
-    public static Vector3d[] engineDirections = new Vector3d[]{new Vector3d(0,0,0)};
+    public static double[][] engineTimings = new double[][]{{80e6,0,960}};
+    public static Vector3d[] engineDirections = new Vector3d[]{new Vector3d(0.5235764373087488,-0.8516469345376796,-0.02377421266101488)};
 
     private final double fuelMass;
     private final double EFF_EXH_VEL = 40000;
