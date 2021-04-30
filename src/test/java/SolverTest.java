@@ -50,7 +50,7 @@ public class SolverTest {
 
     public static void main(String[] args) {
         TestFunction f = new TestFunction();
-        double[] states = solveRK(f, 0, 10, 1);
+        double[] states = solveRK(f, 2, 6, 1);
         for (double state : states) {
             System.out.println(state);
         }
