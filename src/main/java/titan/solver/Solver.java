@@ -68,16 +68,17 @@ public class Solver implements ODESolverInterface {
 
         State nextState = ((State) currentState).cloneState();
 
-        // 2y - lastY + a * h^2
         SolarSystem previousSystem = ((State) initialState).getSolarSystem();
         SolarSystem currentSystem = ((State) currentState).getSolarSystem();
         SolarSystem nextSystem = (nextState).getSolarSystem();
 
+        // 2y - lastY + a * h^2
         for (int i = 0; i < currentSystem.size(); i++) {
             nextSystem.get(i).mulPos(2);
             nextSystem.get(i).subPos(previousSystem.get(i).getPosition());
         }
 
+        // why a new object for the next state
         State newNextState = nextState.cloneState();
         SolarSystem solarSystem = newNextState.getSolarSystem();
         Rate r = (Rate) f.call(t, currentState);

@@ -1,5 +1,3 @@
-package titan.solver;
-
 public class SolverTest {
     public static double rungeKuttaStep(TestFunction function, double time, double yn, double stepSize) {
         double k1 = stepSize * function.call(time, yn);
@@ -9,15 +7,7 @@ public class SolverTest {
         return yn + (k1 + 2 * k2 + 2 * k3 + k4) / 6;
     }
 
-    //    public StateInterface verletStep(ODEFunctionInterface f, double t, double ynmin1, double yn, double h) {
-//
-//
-//        // 2y - lastY + a * h^2
-//        double ynplus1 = 2 * yn - ynmin1 +
-//
-//        return newNextState;
-//    }
-    public static double[] solve(TestFunction function, double y0, double finalTime, double stepSize) {
+    public static double[] solveRK(TestFunction function, double y0, double finalTime, double stepSize) {
         double[] states = new double[(int) (finalTime / stepSize) + 1];
         states[0] = y0;
         double time = 0;
@@ -35,9 +25,32 @@ public class SolverTest {
         return states;
     }
 
+    // TODO: fix acceleration
+
+//    public static double verletStep(TestFunction f, double t1, double y0, double y1, double h) {
+//        // is a the fval(t,y)? or have to include the physics
+//        return (2 * y1 - y0 + (y1 - y0)/t1 * h * h);
+//    }
+//
+//    public static double[] solveVerlet(TestFunction f, double y0, double tf, double h) {
+//        double[] states = new double[(int) (tf / h) + 1];
+//
+//        double t = 0;
+//        states[0] = y0;
+//        states[1] = rungeKuttaStep(f, t, y0, h);
+//        t+=h;
+//
+//        for (int i = 2; i < states.length; i++) {
+//            states[i] = verletStep(f, t, states[i-2], states[i-1], h);
+//            t += h;
+//        }
+//
+//        return states;
+//    }
+
     public static void main(String[] args) {
         TestFunction f = new TestFunction();
-        double[] states = solve(f, 0, 10, 0.01);
+        double[] states = solveRK(f, 0, 10, 1);
         for (double state : states) {
             System.out.println(state);
         }
