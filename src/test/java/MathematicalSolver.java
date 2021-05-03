@@ -3,7 +3,7 @@ public class MathematicalSolver {
         double k1 = function.call(time, yn);
         double k2 = function.call(time + stepSize / 2, yn + stepSize * k1 / 2);
         double k3 = function.call(time + stepSize / 2, yn + stepSize * k2 / 2);
-        double k4 = function.call(time + stepSize, stepSize * yn + k3);
+        double k4 = function.call(time + stepSize, yn + stepSize * k3);
         return yn + (k1 + 2 * k2 + 2 * k3 + k4) * stepSize / 6;
     }
 
@@ -50,7 +50,7 @@ public class MathematicalSolver {
 
     public static void main(String[] args) {
         TestFunction f = new TestFunction();
-        double[] states = solveRK(f, 0, 10, 1);
+        double[] states = solveRK(f, 2, 6, 1);
         for (double state : states) {
             System.out.println(state);
         }
