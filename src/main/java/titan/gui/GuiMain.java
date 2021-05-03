@@ -26,6 +26,8 @@ import titan.space.Vector3d;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javafx.scene.control.Slider;
+
 public class GuiMain extends Application implements EventHandler<ActionEvent> {
 
     static CelestialBody sun, earth, mercury, venus, moon, mars, jupiter, saturn, titan, probe,
@@ -111,6 +113,11 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
     public void setVisualiserScene() {
 
         setCelestialBodies();
+        
+        
+        Slider slider = prepareSlider() ;
+        Slider slider2 = prepareSlider2();
+
 
         timeText = new Text();
         timeText.setId("timeText");
@@ -136,15 +143,45 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
         zoomPane.setOnScroll(scrollHandler);
         zoomPane.setOnMousePressed(pressHandler);
         zoomPane.setOnMouseDragged(dragHandler);
+        
+         probe.getBody().translateXProperty().bind(slider.valueProperty());
+        sun.getBody().translateXProperty().bind(slider.valueProperty());
+        earth.getBody().translateXProperty().bind(slider.valueProperty());
+        mercury.getBody().translateXProperty().bind(slider.valueProperty());
+        moon.getBody().translateXProperty().bind(slider.valueProperty());
+        venus.getBody().translateXProperty().bind(slider.valueProperty());
+        titan.getBody().translateXProperty().bind(slider.valueProperty());
+        saturn.getBody().translateXProperty().bind(slider.valueProperty());
+        mars.getBody().translateXProperty().bind(slider.valueProperty());
+        jupiter.getBody().translateXProperty().bind(slider.valueProperty());
+        neptune.getBody().translateXProperty().bind(slider.valueProperty());
+        uranus.getBody().translateXProperty().bind(slider.valueProperty());
+
+        probe.getBody().translateYProperty().bind(slider2.valueProperty());
+        sun.getBody().translateYProperty().bind(slider2.valueProperty());
+        earth.getBody().translateYProperty().bind(slider2.valueProperty());
+        mercury.getBody().translateYProperty().bind(slider2.valueProperty());
+        moon.getBody().translateYProperty().bind(slider2.valueProperty());
+        venus.getBody().translateYProperty().bind(slider2.valueProperty());
+        titan.getBody().translateYProperty().bind(slider2.valueProperty());
+        saturn.getBody().translateYProperty().bind(slider2.valueProperty());
+        mars.getBody().translateYProperty().bind(slider2.valueProperty());
+        jupiter.getBody().translateYProperty().bind(slider2.valueProperty());
+        neptune.getBody().translateYProperty().bind(slider2.valueProperty());
+        uranus.getBody().translateYProperty().bind(slider2.valueProperty());
 
         BorderPane root = new BorderPane();
         root.setRight(infoBox);
         root.setAlignment(timeText, Pos.BOTTOM_RIGHT);
+        root.setBottom(slider);
+        root.setTop(slider2);
         root.setBottom(timeText);
         root.setCenter(zoomPane);
         // Make the infoBox always appear on top in relation to the zoomPane
         // This allows the the buttons 'probeLaunch' and 'exitButton' to be clickable at all times.
         zoomPane.toBack();
+        
+         
 
         visualiserScene = new Scene(root, screenBounds.getWidth(), screenBounds.getHeight());
         visualiserScene.getStylesheets().add("Stylesheet.css");
@@ -214,6 +251,31 @@ public class GuiMain extends Application implements EventHandler<ActionEvent> {
                 centerX + (((2.395195786685187e12) / (1e9)) / distancePixel),
                 centerY - (((1.744450959214586e12) / (1e9)) / distancePixel), 15);
         uranus.getBody().getStyleClass().add("uranus");
+    }
+    
+      private Slider prepareSlider(){
+        Slider slider = new Slider();
+         slider.setMax(800);
+         slider.setMin(-400);
+         slider.setPrefWidth(300d);
+         slider.setLayoutX(-150);
+         slider.setLayoutY( 200);
+         slider.setShowTickLabels(true);
+         //slider.setTranslateZ(5);
+         slider.setStyle("-fx-base: black");
+         return slider;
+    }
+    private Slider prepareSlider2(){
+        Slider slider2 = new Slider();
+        slider2.setMax(800);
+        slider2.setMin(-400);
+        slider2.setPrefWidth(300d);
+        slider2.setLayoutX(-150);
+        slider2.setLayoutY( 200);
+        slider2.setShowTickLabels(true);
+        slider2.setStyle("-fx-base: black");
+       // slider2.setOrientation(Orientation.VERTICAL);
+        return slider2;
     }
 
     /*
