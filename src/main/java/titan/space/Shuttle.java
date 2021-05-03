@@ -1,13 +1,15 @@
 package titan.space;
 
 import titan.interfaces.Vector3dInterface;
+import titan.space.Vector3d;
 
 public class Shuttle extends Planet {
     //contains data about each burn in the simulation stored as {force, start time , end time}
     //NOTE: make sure that the burns do not overlap in their times
+    //NOTE: for the most accurate result make sure the timings are divisible by the timestep used
     //NOTE: make sure engineDirections and engineTimings arrays are the same length
-    public static double[][] engineTimings = new double[][]{{80e6,0,960}};
-    public static Vector3d[] engineDirections = new Vector3d[]{new Vector3d(0.5235764373087488,-0.8516469345376796,-0.02377421266101488)};
+    private static double[][] engineTimings = new double[][]{{80e6,0,900}};
+    private static Vector3d[] engineDirections = new Vector3d[]{new Vector3d(18044.44, -29351.0, -819.35)};
 
     private final double fuelMass;
     private final double EFF_EXH_VEL = 40000;
@@ -24,7 +26,7 @@ public class Shuttle extends Planet {
             if(engineTimings[i][2] >= t && engineTimings[i][1] < t) {//check if the engine needs to be fired and return the acceleration
                 System.out.println("Fire the engines!!!");
                 double force = engineTimings[i][0];
-                Vector3d dir = engineDirections[i];
+                Vector3d dir = (Vector3d) engineDirections[i].mul(1.0/engineDirections[i].norm());//make sure the direction is a unit vector
                 double mass = calcFuelMass(t) + SolarSystemData.masses[11];
                 System.out.println(mass);
                 return (Vector3d) (dir.mul(force)).mul(1.0 / mass);
