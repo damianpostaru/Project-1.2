@@ -20,7 +20,7 @@ public class SolarSystem extends ArrayList<Planet> {
         add(new Planet(new Vector3d(6.332873118527889e+11, -1.357175556995868e+12, -2.134637041453660e+09), new Vector3d(3.056877965721629e+03, 6.125612956428791e+03, -9.523587380845593e+02)));//titan
         add(new Planet(new Vector3d(4.382692942729203e+12, -9.093501655486243e+11, -8.227728929479486e+10), new Vector3d(1.068410720964204e+03, 5.354959501569486e+03, -1.343918199987533e+02)));//uranus
         add(new Planet( new Vector3d(2.395195786685187e+12, 1.744450959214586e+12, -2.455116324031639e+10), new Vector3d(-4.059468635313243e+03, 5.187467354884825e+03, 7.182516236837899e+01)));//neptune
-        add(new Shuttle((Vector3d) initialPosition.add(get(3).getPosition()), (Vector3d) initialVelocity.add(get(3).getVelocity()),1.68e6));
+        add(new Shuttle((Vector3d) initialPosition.add(get(3).getPosition()), (Vector3d) initialVelocity.add(get(3).getVelocity())));
     }
 
     public Shuttle getShuttle() {
