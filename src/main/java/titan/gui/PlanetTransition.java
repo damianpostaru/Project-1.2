@@ -12,12 +12,31 @@ import titan.space.Vector3d;
 
 public class PlanetTransition extends GuiMain {
 
-    public static Planet sunPlanet, mercuryPlanet, venusPlanet, earthPlanet, moonPlanet,
-    marsPlanet, jupiterPlanet, saturnPlanet, titanPlanet, probePlanet, neptunePlanet, uranusPlanet;
-    public static Vector3d newSun, newMercury, newVenus, newEarth, newMoon, newMars, newJupiter,
-    newSaturn, newTitan, newProbe, newNeptune, newUranus;
-
     public static void createPath() {
+        instantiatePaths();
+        addAllStartPos();
+    }
+
+    private static void addAllStartPos() {
+        addStartPos(sunPath, sun);
+        addStartPos(mercuryPath, mercury);
+        addStartPos(venusPath, venus);
+        addStartPos(earthPath, earth);
+        addStartPos(moonPath, moon);
+        addStartPos(marsPath, mars);
+        addStartPos(jupiterPath, jupiter);
+        addStartPos(saturnPath, saturn);
+        addStartPos(titanPath, titan);
+        addStartPos(probePath, probe);
+        addStartPos(neptunePath, neptune);
+        addStartPos(uranusPath, uranus);
+    }
+
+    public static void addStartPos(Path planetPath, CelestialBody planet) {
+        planetPath.getElements().add(new MoveTo(planet.getX(), planet.getY()));
+    }
+
+    private static void instantiatePaths() {
         sunPath = new Path();
         mercuryPath = new Path();
         venusPath = new Path();
@@ -30,46 +49,31 @@ public class PlanetTransition extends GuiMain {
         probePath = new Path();
         neptunePath = new Path();
         uranusPath = new Path();
-
-        sunPath.getElements().add(new MoveTo(sun.getX(), sun.getY()));
-        mercuryPath.getElements().add(new MoveTo(mercury.getX(), mercury.getY()));
-        venusPath.getElements().add(new MoveTo(venus.getX(), venus.getY()));
-        earthPath.getElements().add(new MoveTo(earth.getX(), earth.getY()));
-        moonPath.getElements().add(new MoveTo(moon.getX(), moon.getY()));
-        marsPath.getElements().add(new MoveTo(mars.getX(), mars.getY()));
-        jupiterPath.getElements().add(new MoveTo(jupiter.getX(), jupiter.getY()));
-        saturnPath.getElements().add(new MoveTo(saturn.getX(), saturn.getY()));
-        titanPath.getElements().add(new MoveTo(titan.getX(), titan.getY()));
-        probePath.getElements().add(new MoveTo(probe.getX(), probe.getY()));
-        neptunePath.getElements().add(new MoveTo(neptune.getX(), neptune.getY()));
-        uranusPath.getElements().add(new MoveTo(uranus.getX(), uranus.getY()));
     }
 
 
     public static void addPath(State position) {
         SolarSystem solar = position.getSolarSystem();
 
-        addPath(solar, 0, sunPlanet, newSun, sunPath);
-        addPath(solar, 1, mercuryPlanet, newMercury, mercuryPath);
-        addPath(solar, 2, venusPlanet, newVenus, venusPath);
-        addPath(solar, 3, earthPlanet, newEarth, earthPath);
-        addPath(solar, 4, moonPlanet, newMoon, moonPath);
-        addPath(solar, 5, marsPlanet, newMars, marsPath);
-        addPath(solar, 6, jupiterPlanet, newJupiter, jupiterPath);
-        addPath(solar, 7, saturnPlanet, newSaturn, saturnPath);
-        addPath(solar, 8, titanPlanet, newTitan, titanPath);
-        addPath(solar, 9, neptunePlanet, newNeptune, neptunePath);
-        addPath(solar, 10, uranusPlanet, newUranus, uranusPath);
-        addPath(solar, 11, probePlanet, newProbe, probePath);
+        addPath(solar, 0, sunPath);
+        addPath(solar, 1, mercuryPath);
+        addPath(solar, 2, venusPath);
+        addPath(solar, 3, earthPath);
+        addPath(solar, 4, moonPath);
+        addPath(solar, 5, marsPath);
+        addPath(solar, 6, jupiterPath);
+        addPath(solar, 7, saturnPath);
+        addPath(solar, 8, titanPath);
+        addPath(solar, 9, neptunePath);
+        addPath(solar, 10, uranusPath);
+        addPath(solar, 11, probePath);
 
     }
 
-    private static void addPath(SolarSystem solar, int solarPosition, Planet planet,
-                               Vector3d planetVec, Path planetPath) {
-        planet = solar.get(solarPosition);
-        planetVec = (Vector3d) planet.getPosition();
-        planetPath.getElements().add(new LineTo(centerX + (planetVec.getX() / 1e9) / distancePixel,
-                centerY - (planetVec.getY() / 1e9) / distancePixel));
+    private static void addPath(SolarSystem solar, int solarPosition, Path planetPath) {
+        Planet planet = solar.get(solarPosition);
+        Vector3d planetVec = (Vector3d) planet.getPosition();
+        planetPath.getElements().add(new LineTo(centerX + (planetVec.getX() / 1e9) / distancePixel, centerY - (planetVec.getY() / 1e9) / distancePixel));
     }
 
     public static void transition(CelestialBody node, Path nodePath) {
