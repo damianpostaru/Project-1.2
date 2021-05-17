@@ -1,18 +1,18 @@
 package titan.space;
 
 public class EngineBurnsData {
-    final double force;
-    final double startTime;
-    final double endTime;
-    final double effExhVel;
-    final Vector3d dir;
+    private final double force;
+    private final double startTime;
+    private final double endTime;
+    private final double effExhVel;
+    private final Vector3d dir;
 
-    public EngineBurnsData(double f, double t1, double t2, double v, Vector3d d) {
-        force = f;
-        startTime = t1;
-        endTime = t2;
-        effExhVel = v;
-        dir = d;
+    public EngineBurnsData(double force, double startTime, double endTime, double effExhVel, Vector3d dir) {
+        this.force = force;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.effExhVel = effExhVel;
+        this.dir = dir;
     }
 
     public double getForce() {
@@ -31,10 +31,6 @@ public class EngineBurnsData {
         return effExhVel;
     }
 
-    public Vector3d getDir() {
-        return dir;
-    }
-
 
     public Vector3d calcAcceleration(double mass) {
         Vector3d unitDir = (Vector3d) dir.mul(1 / dir.norm());
@@ -42,7 +38,7 @@ public class EngineBurnsData {
     }
 
 
-    //returns a value of 1 if t > endTime, value of 0 when startTime < t <= endTime and -1 if t <= startTime
+    // returns a value of 1 if t > endTime, value of 0 when startTime < t <= endTime and -1 if t <= startTime
     public int compareTime(double t) {
         if (startTime < t && t <= endTime) {
             return 0;
@@ -51,6 +47,5 @@ public class EngineBurnsData {
         } else {
             return 1;
         }
-
     }
 }

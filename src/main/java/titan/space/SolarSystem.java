@@ -6,8 +6,7 @@ import java.util.ArrayList;
 
 public class SolarSystem extends ArrayList<Planet> {
     Vector3d[] accelerations;
-    private final double G = 6.67408e-11;
-    static int count = 0;
+
     public SolarSystem(Vector3dInterface initialPosition, Vector3dInterface initialVelocity) {
         add(new Planet( new Vector3d(-6.806783239281648e+08, 1.080005533878725e+09, 6.564012751690170e+06), new Vector3d(-1.420511669610689e+01, -4.954714716629277e+00, 3.994237625449041e-01)));//sun
         add(new Planet(new Vector3d(6.047855986424127e+06, -6.801800047868888e+10, -5.702742359714534e+09), new Vector3d(3.892585189044652e+04, 2.978342247012996e+03, -3.327964151414740e+03)));//mercury
@@ -39,6 +38,7 @@ public class SolarSystem extends ArrayList<Planet> {
                 Vector3d distanceCubed = (Vector3d) deltaPos.mul(Math.pow(1 / deltaPos.norm(), 3));
                 accelerations[i] = (Vector3d) accelerations[i].add(distanceCubed.mul(SolarSystemData.masses[j]));
             }
+            final double G = 6.67408e-11;
             accelerations[i] = (Vector3d) accelerations[i].mul(G);
         }
         accelerations[11] = (Vector3d) accelerations[11].add(((Shuttle)get(11)).calcEngineAcc(t));
@@ -47,10 +47,10 @@ public class SolarSystem extends ArrayList<Planet> {
 
     @Override
     public String toString() {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         for (Planet planet : this) {
-            output += planet.toString();
+            output.append(planet.toString());
         }
-        return output;
+        return output.toString();
     }
 }
