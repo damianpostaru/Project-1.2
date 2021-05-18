@@ -14,7 +14,6 @@ public class Planet {
     public void update(double step, Vector3dInterface acceleration) {
         velocity = (Vector3d) velocity.addMul(step, acceleration);
         position = (Vector3d) position.addMul(step, velocity);
-
     }
 
     public void addMulPos(double scalar, Vector3dInterface other) {

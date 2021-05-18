@@ -35,7 +35,6 @@ public class Solver implements ODESolverInterface {
         double time = 0;
         // bootstrap to get the last 2 positions using Runge-Kutta Solver
         states[1] = step(function, time, initialState, stepSize);
-
         time = time + stepSize;
 
         for (int i = 2; i < states.length; i++) {
@@ -58,18 +57,16 @@ public class Solver implements ODESolverInterface {
         Rate k3 = (Rate) function.call(time + stepSize / 2, state.addMul(stepSize, k2.mul(0.5)));
         Rate k4 = (Rate) function.call(time + stepSize, state.addMul(stepSize, k3));
         Rate k = k1.add(k2.mul(2).add(k3.mul(2).add(k4)));
-
         return state.addMul(stepSize, k.mul(1.0 / 6.0));
     }
 
-
     // Verlet solver implementation
-    public StateInterface verletStep(ODEFunctionInterface f, double t, StateInterface initialState, StateInterface currentState, double h) {
+    public StateInterface verletStep(ODEFunctionInterface f, double t, StateInterface previousState, StateInterface currentState, double h) {
 
         State nextState = ((State) currentState).cloneState();
 
         // 2y - lastY + a * h^2
-        SolarSystem previousSystem = ((State) initialState).getSolarSystem();
+        SolarSystem previousSystem = ((State) previousState).getSolarSystem();
         SolarSystem currentSystem = ((State) currentState).getSolarSystem();
         SolarSystem nextSystem = (nextState).getSolarSystem();
 
