@@ -6,8 +6,7 @@ import java.util.ArrayList;
 
 public class SolarSystem extends ArrayList<Planet> {
     Vector3d[] accelerations;
-    private final double G = 6.67408e-11;
-    static int count = 0;
+
     public SolarSystem(Vector3dInterface initialPosition, Vector3dInterface initialVelocity) {
         add(new Planet( new Vector3d(-6.806783239281648e+08, 1.080005533878725e+09, 6.564012751690170e+06), new Vector3d(-1.420511669610689e+01, -4.954714716629277e+00, 3.994237625449041e-01)));//sun
         add(new Planet(new Vector3d(6.047855986424127e+06, -6.801800047868888e+10, -5.702742359714534e+09), new Vector3d(3.892585189044652e+04, 2.978342247012996e+03, -3.327964151414740e+03)));//mercury
@@ -20,7 +19,7 @@ public class SolarSystem extends ArrayList<Planet> {
         add(new Planet(new Vector3d(6.332873118527889e+11, -1.357175556995868e+12, -2.134637041453660e+09), new Vector3d(3.056877965721629e+03, 6.125612956428791e+03, -9.523587380845593e+02)));//titan
         add(new Planet(new Vector3d(4.382692942729203e+12, -9.093501655486243e+11, -8.227728929479486e+10), new Vector3d(1.068410720964204e+03, 5.354959501569486e+03, -1.343918199987533e+02)));//uranus
         add(new Planet( new Vector3d(2.395195786685187e+12, 1.744450959214586e+12, -2.455116324031639e+10), new Vector3d(-4.059468635313243e+03, 5.187467354884825e+03, 7.182516236837899e+01)));//neptune
-        add(new Shuttle((Vector3d) initialPosition.add(get(3).getPosition()), (Vector3d) initialVelocity.add(get(3).getVelocity()),5000000));
+        add(new Shuttle((Vector3d) initialPosition.add(get(3).getPosition()), (Vector3d) initialVelocity.add(get(3).getVelocity())));
     }
 
     public Shuttle getShuttle() {
@@ -39,6 +38,7 @@ public class SolarSystem extends ArrayList<Planet> {
                 Vector3d distanceCubed = (Vector3d) deltaPos.mul(Math.pow(1 / deltaPos.norm(), 3));
                 accelerations[i] = (Vector3d) accelerations[i].add(distanceCubed.mul(SolarSystemData.masses[j]));
             }
+            final double G = 6.67408e-11;
             accelerations[i] = (Vector3d) accelerations[i].mul(G);
         }
         accelerations[11] = (Vector3d) accelerations[11].add(((Shuttle)get(11)).calcEngineAcc(t));
@@ -47,10 +47,10 @@ public class SolarSystem extends ArrayList<Planet> {
 
     @Override
     public String toString() {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         for (Planet planet : this) {
-            output += planet.toString();
+            output.append(planet.toString());
         }
-        return output;
+        return output.toString();
     }
 }
