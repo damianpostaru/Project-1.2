@@ -71,9 +71,11 @@ public class PlanetTransition extends GuiMain {
     }
 
     private static void addPath(SolarSystem solar, int solarPosition, Path planetPath) {
-        Planet planet = solar.get(solarPosition);
-        Vector3d planetVec = (Vector3d) planet.getPosition();
-        planetPath.getElements().add(new LineTo(centerX + (planetVec.getX() / 1e9) / distancePixel, centerY - (planetVec.getY() / 1e9) / distancePixel));
+        if (planetPath != null) {
+            Planet planet = solar.get(solarPosition);
+            Vector3d planetVec = (Vector3d) planet.getPosition();
+            planetPath.getElements().add(new LineTo(centerX + (planetVec.getX() / 1e9) / distancePixel, centerY - (planetVec.getY() / 1e9) / distancePixel));
+        }
     }
 
     public static void transition(CelestialBody node, Path nodePath) {
