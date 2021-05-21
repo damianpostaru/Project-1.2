@@ -85,7 +85,7 @@ public class GuiMain extends Application {
     /**
      * Handles scrolling related events.
      */
-    protected static final EventHandler<ScrollEvent> scrollHandler = new EventHandler<>() {
+    protected static final EventHandler<ScrollEvent> scrollHandler = new EventHandler<ScrollEvent>() {
 
         final double MAX_SCROLL_SCALE = 5.0, MIN_SCROLL_SCALE = 0.7;
         double scaleChanger, xChanger, yChanger;
@@ -127,7 +127,7 @@ public class GuiMain extends Application {
     /**
      * Handles panning related events.
      */
-    protected static final EventHandler<MouseEvent> pressHandler = new EventHandler<>() {
+    protected static final EventHandler<MouseEvent> pressHandler = new EventHandler<MouseEvent>() {
 
         @Override
         public void handle(MouseEvent e) {
@@ -139,7 +139,7 @@ public class GuiMain extends Application {
         }
 
     };
-    protected static final EventHandler<MouseEvent> dragHandler = new EventHandler<>() {
+    protected static final EventHandler<MouseEvent> dragHandler = new EventHandler<MouseEvent>() {
 
         @Override
         public void handle(MouseEvent e) {
