@@ -30,18 +30,32 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         State[] states = (State[]) solver.solve(new Function(), initialState, finalTime, stepSize);
         double bestDist = Double.MAX_VALUE;
         double bestTime = 0;
+        int bestIndex = -1;
+        Vector3d bestDiff = null;
+        int planetID = 8;
         for (int i = 0; i < states.length; i++) {
             trajectory[i] = states[i].getSolarSystem().getShuttle().getPosition();
-//            System.out.println(states[i].getSolarSystem().getShuttle().getPosition());
-            double dist = states[i].getSolarSystem().get(8).getPosition().dist(states[i].getSolarSystem().getShuttle().getPosition());
+
+
+            double dist = states[i].getSolarSystem().get(planetID).getPosition().dist(states[i].getSolarSystem().getShuttle().getPosition());
             if (dist < bestDist) {
+                bestIndex = i;
                 bestDist = dist;
                 bestTime = i * stepSize;
+                bestDiff = (Vector3d) states[i].getSolarSystem().get(planetID).getPosition().sub(states[i].getSolarSystem().getShuttle().getPosition());
+            }
+            if(i > 518000 && i < 521000) {
+                System.out.println((Vector3d) states[i].getSolarSystem().getShuttle().getPosition());
+                System.out.println((Vector3d) states[i].getSolarSystem().get(planetID).getPosition());
             }
         }
         System.out.println("Time of closest approach: " + bestTime);
         System.out.println("Distance of closest approach: " + bestDist);
-        if (bestDist <= SolarSystemData.radii[8]) {
+        System.out.println("Diff of closest approach: " + bestDiff);
+        System.out.println("Shuttle position of closest approach: " + states[bestIndex].getSolarSystem().get(planetID).getPosition());
+        System.out.println("Body position of closest approach: " + states[bestIndex].getSolarSystem().getShuttle().getPosition());
+
+        if (bestDist <= SolarSystemData.radii[planetID]) {
             System.out.println("Titan has been hit");
         }
         return trajectory;

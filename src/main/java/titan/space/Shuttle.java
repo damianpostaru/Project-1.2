@@ -1,9 +1,21 @@
 package titan.space;
 
 public class Shuttle extends Planet {
-    private static final EngineBurnsData[] engineBurns = new EngineBurnsData[]{new EngineBurnsData(30e6, 0, 780, 20000, new Vector3d(18044.44, -29351.0, -819.35))};
+    private static final EngineBurnsData[] engineBurns = new EngineBurnsData[]
+            {
+                    new EngineBurnsData(23e6, 0, 500, 20000, new Vector3d(-0.5, -1, 0)),
+                    new EngineBurnsData(16.788850e6, 37000000, 37000500, 20000, new Vector3d(103, -182 , 0)),
+                    new EngineBurnsData(0.8e6, 100000000, 100000500, 20000, new Vector3d(0, 0 , -1)),
+                    new EngineBurnsData(500, 100000500, 100001000, 20000, new Vector3d(-1, 1 , -1)),
+                    new EngineBurnsData(2500, 100001000, 100001500, 20000, new Vector3d(-8.7263, 14.56090, -15.5663)),
+                    new EngineBurnsData(2500, 100001500, 100002000, 20000, new Vector3d(-2, 7.937403, -9.856875)),
+                    //new EngineBurnsData(28e6, 37557600, 37557840, 20000, new Vector3d(0, -1 , 0)),
+                    //new EngineBurnsData(20e6, 720, 960, 20000, new Vector3d(0, -1, 0))
+                    //new EngineBurnsData(25, 6006000, 3e7, 60000, new Vector3d(-0.1, 1, 0))
 
-    private static final double fuelMass = 1.68e6;
+            };
+
+    private static final double fuelMass =1.8e6;
 
     public Shuttle(Vector3d initialPosition, Vector3d initialVelocity) {
         super(initialPosition, initialVelocity);
@@ -13,6 +25,8 @@ public class Shuttle extends Planet {
         for (EngineBurnsData engineBurn : engineBurns) {
             if (engineBurn.compareTime(t) == 0) { // check if the engine needs to be fired and return the acceleration
                 double mass = calcFuelMass(t) + SolarSystemData.masses[11];
+                //if(mass < 0)
+                System.out.println("Mass:" + mass);
                 return engineBurn.calcAcceleration(mass);
             }
         }

@@ -51,7 +51,7 @@ public class GuiMain extends Application {
 
 
     public static void main(String[] args) {
-        initialPosition = new Vector3d(0.1, -6371e3, 0.1);
+        initialPosition = new Vector3d(-6371e3, 0.1, 0.1);
         initialVelocity = new Vector3d(0, 0, 0);//new Vector3d(18044.44, -29351.0, -819.35);
         launch(args);
     }
@@ -73,7 +73,7 @@ public class GuiMain extends Application {
 
         PlanetTransition.createPath();
 
-        (new ProbeSimulator()).trajectory(initialPosition, initialVelocity, 31536000, 60);
+        (new ProbeSimulator()).trajectory(initialPosition, initialVelocity, 270000000, 500);//260000000
 
         singleStage.setFullScreen(true);
         singleStage.setResizable(false);
