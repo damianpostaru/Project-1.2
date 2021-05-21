@@ -8,7 +8,7 @@ public class SolarSystem extends ArrayList<Planet> {
     Vector3d[] accelerations;
 
     public SolarSystem(Vector3dInterface initialPosition, Vector3dInterface initialVelocity) {
-        add(new Planet( new Vector3d(-6.806783239281648e+08, 1.080005533878725e+09, 6.564012751690170e+06), new Vector3d(-1.420511669610689e+01, -4.954714716629277e+00, 3.994237625449041e-01)));//sun
+        add(new Planet(new Vector3d(-6.806783239281648e+08, 1.080005533878725e+09, 6.564012751690170e+06), new Vector3d(-1.420511669610689e+01, -4.954714716629277e+00, 3.994237625449041e-01)));//sun
         add(new Planet(new Vector3d(6.047855986424127e+06, -6.801800047868888e+10, -5.702742359714534e+09), new Vector3d(3.892585189044652e+04, 2.978342247012996e+03, -3.327964151414740e+03)));//mercury
         add(new Planet(new Vector3d(-9.435345478592035e+10, 5.350359551033670e+10, 6.131453014410347e+09), new Vector3d(-1.726404287724406e+04, -3.073432518238123e+04, 5.741783385280979e-04)));//venus
         add(new Planet(new Vector3d(-1.471922101663588e+11, -2.860995816266412e+10, 8.278183193596080e+06), new Vector3d(5.427193405797901e+03, -2.931056622265021e+04, 6.575428158157592e-01)));//earth
@@ -18,7 +18,7 @@ public class SolarSystem extends ArrayList<Planet> {
         add(new Planet(new Vector3d(6.328646641500651e+11, -1.358172804527507e+12, -1.578520137930810e+09), new Vector3d(8.220842186554890e+03, 4.052137378979608e+03, -3.976224719266916e+02)));//saturn
         add(new Planet(new Vector3d(6.332873118527889e+11, -1.357175556995868e+12, -2.134637041453660e+09), new Vector3d(3.056877965721629e+03, 6.125612956428791e+03, -9.523587380845593e+02)));//titan
         add(new Planet(new Vector3d(4.382692942729203e+12, -9.093501655486243e+11, -8.227728929479486e+10), new Vector3d(1.068410720964204e+03, 5.354959501569486e+03, -1.343918199987533e+02)));//neptune
-        add(new Planet( new Vector3d(2.395195786685187e+12, 1.744450959214586e+12, -2.455116324031639e+10), new Vector3d(-4.059468635313243e+03, 5.187467354884825e+03, 7.182516236837899e+01)));//uranus
+        add(new Planet(new Vector3d(2.395195786685187e+12, 1.744450959214586e+12, -2.455116324031639e+10), new Vector3d(-4.059468635313243e+03, 5.187467354884825e+03, 7.182516236837899e+01)));//uranus
         add(new Shuttle((Vector3d) initialPosition.add(get(3).getPosition()), (Vector3d) initialVelocity.add(get(3).getVelocity())));
     }
 
@@ -41,7 +41,7 @@ public class SolarSystem extends ArrayList<Planet> {
             final double G = 6.67408e-11;
             accelerations[i] = (Vector3d) accelerations[i].mul(G);
         }
-        accelerations[11] = (Vector3d) accelerations[11].add(((Shuttle)get(11)).calcEngineAcc(t));
+        accelerations[11] = (Vector3d) accelerations[11].add(((Shuttle) get(11)).calcEngineAcc(t));
         return accelerations;
     }
 
