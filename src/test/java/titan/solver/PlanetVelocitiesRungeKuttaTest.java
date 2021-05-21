@@ -3,15 +3,14 @@ package titan.solver;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import titan.interfaces.Vector3dInterface;
-import titan.space.Planet;
 import titan.space.Vector3d;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PlanetVelocitiesVerletTest {
+public class PlanetVelocitiesRungeKuttaTest {
 
     private static final List<Vector3d> velocitiesAfterOneDay = new ArrayList<>();
     private static final List<Vector3d> velocitiesAfterOneYear = new ArrayList<>();
@@ -22,86 +21,86 @@ public class PlanetVelocitiesVerletTest {
     private static final Vector3d initialPosition = new Vector3d(0.1, -6371e3, 0.1);
     private static final Vector3d initialVelocity = new Vector3d(0, 0, 0);
     private static final State initialState = new State(initialPosition, initialVelocity);
-    private static State[] verletStates;
+    private static State[] rkStates;
     private static double biggestDifference = 0;
     private static int count = 0;
 
     @BeforeAll
     static void setUp() {
-        verletStates = (State[]) solver.solve(new Function(), initialState, finalTime, stepSize);
+        rkStates = (State[]) solver.rungeKuttaSolve(new Function(), initialState, finalTime, stepSize);
         setVelocitiesAfterOneDay();
         setVelocitiesAfterOneYear();
     }
 
     @Test
-    void verletSolverSunTest() {
+    void rkSolverSunTest() {
         checkVelocityAfterOneDay(0);
         checkVelocityAfterOneYear(0);
     }
 
     @Test
-    void verletSolverMercuryTest() {
+    void rkSolverMercuryTest() {
         checkVelocityAfterOneDay(1);
         checkVelocityAfterOneYear(1);
     }
 
     @Test
-    void verletSolverVenusTest() {
+    void rkSolverVenusTest() {
         checkVelocityAfterOneDay(2);
         checkVelocityAfterOneYear(2);
     }
 
     @Test
-    void verletSolverEarthTest() {
+    void rkSolverEarthTest() {
         checkVelocityAfterOneDay(3);
         checkVelocityAfterOneYear(3);
     }
 
     @Test
-    void verletSolverMoonTest() {
+    void rkSolverMoonTest() {
         checkVelocityAfterOneDay(4);
         checkVelocityAfterOneYear(4);
     }
 
     @Test
-    void verletSolverMarsTest() {
+    void rkSolverMarsTest() {
         checkVelocityAfterOneDay(5);
         checkVelocityAfterOneYear(5);
     }
 
     @Test
-    void verletSolverJupiterTest() {
+    void rkSolverJupiterTest() {
         checkVelocityAfterOneDay(6);
         checkVelocityAfterOneYear(6);
     }
 
     @Test
-    void verletSolverSaturnTest() {
+    void rkSolverSaturnTest() {
         checkVelocityAfterOneDay(7);
         checkVelocityAfterOneYear(7);
     }
 
     @Test
-    void verletSolverTitanTest() {
+    void rkSolverTitanTest() {
         checkVelocityAfterOneDay(8);
         checkVelocityAfterOneYear(8);
     }
 
     @Test
-    void verletSolverNeptuneTest() {
+    void rkSolverNeptuneTest() {
         checkVelocityAfterOneDay(9);
         checkVelocityAfterOneYear(9);
     }
 
     @Test
-    void verletSolverUranusTest() {
+    void rkSolverUranusTest() {
         checkVelocityAfterOneDay(10);
         checkVelocityAfterOneYear(10);
     }
 
     private void checkVelocityAfterOneDay(int i) {
         Vector3dInterface expectedVelocity = velocitiesAfterOneDay.get(i);
-        Vector3dInterface actualVelocity = verletStates[360].getSolarSystem().get(i).getVelocity();
+        Vector3dInterface actualVelocity = rkStates[360].getSolarSystem().get(i).getVelocity();
         printVelocity(expectedVelocity.getX(), actualVelocity.getX(), "One Day Expected " +
                 "X-Velocity: ", "One Day Actual X-Velocity: ");
         printVelocity(expectedVelocity.getY(), actualVelocity.getY(), "One Day Expected " +
@@ -116,7 +115,7 @@ public class PlanetVelocitiesVerletTest {
     private void checkVelocityAfterOneYear(int i) {
         Vector3dInterface expectedVelocity = velocitiesAfterOneYear.get(i);
         Vector3dInterface actualVelocity =
-                verletStates[131400].getSolarSystem().get(i).getVelocity();
+                rkStates[131400].getSolarSystem().get(i).getVelocity();
         printVelocity(expectedVelocity.getX(), actualVelocity.getX(), "One Year Expected " +
                 "X-Velocity: ", "One Year Actual X-Velocity: ");
         printVelocity(expectedVelocity.getY(), actualVelocity.getY(), "One Year Expected " +
@@ -215,5 +214,4 @@ public class PlanetVelocitiesVerletTest {
         velocitiesAfterOneYear.add(new Vector3d(-4.435842138445760E+03, 4.892621228775580E+03,
                 7.573025407170590E+01));
     }
-
 }
