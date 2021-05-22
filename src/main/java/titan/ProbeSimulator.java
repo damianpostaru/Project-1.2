@@ -32,7 +32,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         double bestTime = 0;
         int bestIndex = -1;
         Vector3d bestDiff = null;
-        int planetID = 8;
+        int planetID = 3;
         for (int i = 0; i < states.length; i++) {
             trajectory[i] = states[i].getSolarSystem().getShuttle().getPosition();
 
@@ -44,7 +44,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
                 bestTime = i * stepSize;
                 bestDiff = (Vector3d) states[i].getSolarSystem().get(planetID).getPosition().sub(states[i].getSolarSystem().getShuttle().getPosition());
             }
-            if(i > 519900 && i < 521000) {
+            if(i > 590425 && i < 590450) {
                 //System.out.println((Vector3d) states[i].getSolarSystem().getShuttle().getPosition());
                 //System.out.println((Vector3d) states[i].getSolarSystem().get(planetID).getPosition());
                 System.out.println((Vector3d) states[i].getSolarSystem().getShuttle().getPosition().sub(states[i].getSolarSystem().get(planetID).getPosition()));
