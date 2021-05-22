@@ -32,7 +32,7 @@ class ProbeSimulatorTest {
         State initialState = new State(probe_relative_position,probe_relative_velocity);
         Shuttle shuttle = initialState.getSolarSystem().getShuttle();
         double time = Double.MAX_VALUE;//test for a long time to make sure all engine burns have been executed
-        double maxFuelLeft = 50000;//the maximum amount of fuel we want left at the end of the mission
+        double maxFuelLeft = 150000;//the maximum amount of fuel we want left at the end of the mission
         assertEquals(maxFuelLeft, Math.max(maxFuelLeft,shuttle.calcFuelMass(time)));
 
     }
