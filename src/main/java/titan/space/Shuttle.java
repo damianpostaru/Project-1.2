@@ -8,8 +8,12 @@ public class Shuttle extends Planet {
                     new EngineBurnsData(0.8e6, 100000000, 100000500, 20000, new Vector3d(0, 0 , -1)),
                     new EngineBurnsData(500, 100000500, 100001000, 20000, new Vector3d(-1, 1 , -1)),
                     new EngineBurnsData(2500, 100001000, 100001500, 20000, new Vector3d(-8.7263, 14.56090, -15.5663)),
-                    new EngineBurnsData(2500, 100001500, 100002000, 20000, new Vector3d(-2, 7.937403, -9.856875)),
-                    //new EngineBurnsData(28e6, 37557600, 37557840, 20000, new Vector3d(0, -1 , 0)),
+                    new EngineBurnsData(2500, 100001500, 100002000, 20000, new Vector3d(-2, 7.937403, -9.896875)),
+                    new EngineBurnsData(10000, 259781000, 259781500, 20000, new Vector3d(1,0,0)),
+                    new EngineBurnsData(7225000, 259796000, 259796500, 20000, new Vector3d(0,0,1)),
+                    new EngineBurnsData(5.375e6, 259796500, 259797000, 20000, new Vector3d(0,1.22,0)),
+                    new EngineBurnsData(0.10e6,  259823000,  259823500, 20000, new Vector3d(0,-1,0)),
+                    new EngineBurnsData(21e6, 260000000, 260000500, 20000, new Vector3d(-1,-1,0)),
                     //new EngineBurnsData(20e6, 720, 960, 20000, new Vector3d(0, -1, 0))
                     //new EngineBurnsData(25, 6006000, 3e7, 60000, new Vector3d(-0.1, 1, 0))
 

@@ -44,11 +44,14 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
                 bestTime = i * stepSize;
                 bestDiff = (Vector3d) states[i].getSolarSystem().get(planetID).getPosition().sub(states[i].getSolarSystem().getShuttle().getPosition());
             }
-            if(i > 518000 && i < 521000) {
-                System.out.println((Vector3d) states[i].getSolarSystem().getShuttle().getPosition());
-                System.out.println((Vector3d) states[i].getSolarSystem().get(planetID).getPosition());
+            if(i > 519900 && i < 521000) {
+                //System.out.println((Vector3d) states[i].getSolarSystem().getShuttle().getPosition());
+                //System.out.println((Vector3d) states[i].getSolarSystem().get(planetID).getPosition());
+                System.out.println((Vector3d) states[i].getSolarSystem().getShuttle().getPosition().sub(states[i].getSolarSystem().get(planetID).getPosition()));
             }
         }
+        Vector3d extraDiff = (Vector3d) states[bestIndex-1].getSolarSystem().get(planetID).getPosition().sub(states[bestIndex-1].getSolarSystem().getShuttle().getPosition());
+        System.out.println("relative velocity: " + (Vector3d) bestDiff.sub(extraDiff));
         System.out.println("Time of closest approach: " + bestTime);
         System.out.println("Distance of closest approach: " + bestDist);
         System.out.println("Diff of closest approach: " + bestDiff);
