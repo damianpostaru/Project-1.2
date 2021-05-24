@@ -28,8 +28,6 @@ public class Shuttle extends Planet {
         for (EngineBurnsData engineBurn : engineBurns) {
             if (engineBurn.compareTime(t) == 0) { // check if the engine needs to be fired and return the acceleration
                 double mass = calcFuelMass(t) + SolarSystemData.masses[11];
-                //if(mass < 0)
-                System.out.println("Mass:" + mass);
                 return engineBurn.calcAcceleration(mass);
             }
         }
