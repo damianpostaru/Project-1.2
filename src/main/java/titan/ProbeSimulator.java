@@ -25,23 +25,29 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         State initialState = new State(initialPosition, initialVelocity);
         System.out.println("Probe starting position: " + initialPosition);
         System.out.println("Probe starting velocity: " + initialVelocity);
-//        System.out.println("Probe trajectory: ");
         Solver solver = new Solver();
         State[] states = (State[]) solver.solve(new Function(), initialState, finalTime, stepSize);
         double bestDist = Double.MAX_VALUE;
         double bestTime = 0;
+        int bestIndex = -1;
+        int planetID = 8;
         for (int i = 0; i < states.length; i++) {
             trajectory[i] = states[i].getSolarSystem().getShuttle().getPosition();
-//            System.out.println(states[i].getSolarSystem().getShuttle().getPosition());
-            double dist = states[i].getSolarSystem().get(8).getPosition().dist(states[i].getSolarSystem().getShuttle().getPosition());
+
+
+            double dist = states[i].getSolarSystem().get(planetID).getPosition().dist(states[i].getSolarSystem().getShuttle().getPosition());
             if (dist < bestDist) {
+                bestIndex = i;
                 bestDist = dist;
                 bestTime = i * stepSize;
             }
         }
         System.out.println("Time of closest approach: " + bestTime);
         System.out.println("Distance of closest approach: " + bestDist);
-        if (bestDist <= SolarSystemData.radii[8]) {
+        System.out.println("Shuttle position of closest approach: " + states[bestIndex].getSolarSystem().get(planetID).getPosition());
+        System.out.println("Body position of closest approach: " + states[bestIndex].getSolarSystem().getShuttle().getPosition());
+
+        if (bestDist <= SolarSystemData.radii[planetID]) {
             System.out.println("Titan has been hit");
         }
         return trajectory;
