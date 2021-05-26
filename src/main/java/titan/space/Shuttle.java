@@ -1,8 +1,7 @@
 package titan.space;
 
 public class Shuttle extends Planet {
-    private static final EngineBurnsData[] engineBurns = new EngineBurnsData[]
-            {
+    private static final EngineBurnsData[] engineBurns = new EngineBurnsData[] {
                     new EngineBurnsData(23e6, 0, 500, 20000, new Vector3d(-0.5, -1, 0)),
                     new EngineBurnsData(16.788850e6, 37000000, 37000500, 20000, new Vector3d(103, -182 , 0)),
                     new EngineBurnsData(0.8e6, 100000000, 100000500, 20000, new Vector3d(0, 0 , -1)),
