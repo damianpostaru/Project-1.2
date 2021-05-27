@@ -50,4 +50,9 @@ public class Shuttle extends Planet {
         }
         return fuelMass - burnedFuelMass;
     }
+
+    public EngineBurnsData[] getBurnData()
+    {
+        return engineBurns;
+    }
 }
