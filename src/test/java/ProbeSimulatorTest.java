@@ -1,17 +1,11 @@
-import static org.junit.jupiter.api.Assertions.*;
-
 import org.junit.jupiter.api.Test;
-import titan.ProbeSimulator;
-import titan.interfaces.ProbeSimulatorInterface;
 import titan.interfaces.Vector3dInterface;
+import titan.solver.State;
 import titan.space.EngineBurnsData;
 import titan.space.Shuttle;
 import titan.space.Vector3d;
-import titan.solver.State;
 
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.System;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ProbeSimulatorTest {
 
@@ -41,8 +35,8 @@ class ProbeSimulatorTest {
         Shuttle shuttle = initialState.getSolarSystem().getShuttle();
         double force = 0;
         EngineBurnsData[] engineBurns = shuttle.getBurnData();
-        for (int i = 0; i < engineBurns.length; i++) {
-            force += engineBurns[i].getForce();
+        for (EngineBurnsData engineBurn : engineBurns) {
+            force += engineBurn.getForce();
         }
         double maxForce = 30e6;
         assertEquals(maxForce, Math.max(maxForce,force/ engineBurns.length));
@@ -53,11 +47,9 @@ class ProbeSimulatorTest {
         Shuttle shuttle = initialState.getSolarSystem().getShuttle();
         double minForce = 0;
         EngineBurnsData[] engineBurns = shuttle.getBurnData();
-        for (int i = 0; i < engineBurns.length; i++) {
-            if(engineBurns[i].getForce() < minForce)
-            minForce = engineBurns[i].getForce();
+        for (EngineBurnsData engineBurn : engineBurns) {
+            if (engineBurn.getForce() < minForce) minForce = engineBurn.getForce();
         }
-        double maxForce = 30e6;
         assertEquals(0, Math.max(0,minForce));
     }
 
