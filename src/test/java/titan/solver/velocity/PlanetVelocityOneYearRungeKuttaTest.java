@@ -1,95 +1,97 @@
-package titan.solver;
+package titan.solver.velocity;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import titan.interfaces.Vector3dInterface;
-import titan.space.Planet;
+import titan.solver.Function;
+import titan.solver.Solver;
+import titan.solver.State;
 import titan.space.Vector3d;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PlanetVelocityOneYearVerletTest {
+public class PlanetVelocityOneYearRungeKuttaTest {
 
     private static final List<Vector3d> velocitiesAfterOneYear = new ArrayList<>();
     private static final Solver solver = new Solver();
     private static final int finalTime = 31536000;
-    private static final int stepSize = 240;
-    private final double ACCURACY = 1;
+    private static final int stepSize = 500;
+    private final double ACCURACY = 94600;
     private static final Vector3d initialPosition = new Vector3d(-6371e3, 0.1, 0.1);
     private static final Vector3d initialVelocity = new Vector3d(0, 0, 0);
     private static final State initialState = new State(initialPosition, initialVelocity);
-    private static State[] verletStates;
+    private static State[] rkStates;
     private static double biggestDifference = 0;
     private static int count = 0;
 
     @BeforeAll
     static void setUp() {
-        verletStates = (State[]) solver.solve(new Function(), initialState, finalTime, stepSize);
+        rkStates = (State[]) solver.rungeKuttaSolve(new Function(), initialState, finalTime, stepSize);
         setVelocitiesAfterOneYear();
     }
 
     @Test
-    void verletSolverSunTest() {
+    void rkSolverSunTest() {
         checkVelocityAfterOneYear(0);
     }
 
     @Test
-    void verletSolverMercuryTest() {
+    void rkSolverMercuryTest() {
         checkVelocityAfterOneYear(1);
     }
 
     @Test
-    void verletSolverVenusTest() {
+    void rkSolverVenusTest() {
         checkVelocityAfterOneYear(2);
     }
 
     @Test
-    void verletSolverEarthTest() {
+    void rkSolverEarthTest() {
         checkVelocityAfterOneYear(3);
     }
 
     @Test
-    void verletSolverMoonTest() {
+    void rkSolverMoonTest() {
         checkVelocityAfterOneYear(4);
     }
 
     @Test
-    void verletSolverMarsTest() {
+    void rkSolverMarsTest() {
         checkVelocityAfterOneYear(5);
     }
 
     @Test
-    void verletSolverJupiterTest() {
+    void rkSolverJupiterTest() {
         checkVelocityAfterOneYear(6);
     }
 
     @Test
-    void verletSolverSaturnTest() {
+    void rkSolverSaturnTest() {
         checkVelocityAfterOneYear(7);
     }
 
     @Test
-    void verletSolverTitanTest() {
+    void rkSolverTitanTest() {
         checkVelocityAfterOneYear(8);
     }
 
     @Test
-    void verletSolverNeptuneTest() {
+    void rkSolverNeptuneTest() {
         checkVelocityAfterOneYear(9);
     }
 
     @Test
-    void verletSolverUranusTest() {
+    void rkSolverUranusTest() {
         checkVelocityAfterOneYear(10);
     }
 
     private void checkVelocityAfterOneYear(int i) {
         Vector3dInterface expectedVelocity = velocitiesAfterOneYear.get(i);
         Vector3dInterface actualVelocity =
-                verletStates[(int) Math.ceil(finalTime/ stepSize)].getSolarSystem().get(i).getVelocity();
+                rkStates[(int) Math.ceil(finalTime/stepSize)].getSolarSystem().get(i).getVelocity();
         double difference = expectedVelocity.dist(actualVelocity);
         System.out.println(difference);
         if (difference > biggestDifference) {
@@ -135,5 +137,4 @@ public class PlanetVelocityOneYearVerletTest {
         velocitiesAfterOneYear.add(new Vector3d(-4.435842138445760E+03, 4.892621228775580E+03,
                 7.573025407170590E+01));
     }
-
 }

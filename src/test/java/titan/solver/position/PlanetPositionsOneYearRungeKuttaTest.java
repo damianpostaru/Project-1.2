@@ -1,8 +1,11 @@
-package titan.solver;
+package titan.solver.position;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import titan.interfaces.Vector3dInterface;
+import titan.solver.Function;
+import titan.solver.Solver;
+import titan.solver.State;
 import titan.space.Vector3d;
 
 import java.util.ArrayList;
@@ -10,13 +13,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class PlanetPositionsOneYearVerletTest {
+class PlanetPositionsOneYearRungeKuttaTest {
 
     private static final List<Vector3d> positionsAfterOneYear = new ArrayList<>();
     private static final Solver solver = new Solver();
     private static final double finalTime = 31536000;
-    private static final double stepSize = 240;
-    private final double ACCURACY = 1;
+    private static final double stepSize = 500;
+    private final double ACCURACY = 3410000000000.0;
     private static final Vector3d initialPosition = new Vector3d(-6371e3, 0.1, 0.1);
     private static final Vector3d initialVelocity = new Vector3d(0, 0, 0);
     private static final State initialState = new State(initialPosition, initialVelocity);
@@ -26,7 +29,7 @@ class PlanetPositionsOneYearVerletTest {
 
     @BeforeAll
     static void setUp() {
-        states = (State[]) solver.solve(new Function(), initialState, finalTime, stepSize);
+        states = (State[]) solver.rungeKuttaSolve(new Function(), initialState, finalTime, stepSize);
         setPositionsAfterOneYear();
     }
 
@@ -89,11 +92,11 @@ class PlanetPositionsOneYearVerletTest {
         Vector3dInterface expectedPosition = positionsAfterOneYear.get(i);
         Vector3dInterface actualPosition = states[(int) Math.ceil(finalTime / stepSize)].getSolarSystem().get(i).getPosition();
         double difference = expectedPosition.dist(actualPosition);
-        System.out.println(difference);
+        System.out.println(difference / 1000);
         if (difference > biggestDifference) {
             biggestDifference = difference;
             count++;
-            System.out.println("Biggest Difference: " + biggestDifference + " count: " + count);
+            System.out.println("Biggest Difference: " + (biggestDifference / 1000) + " count: " + count);
         }
         assertEquals(difference, 0, ACCURACY);
     }
@@ -102,7 +105,7 @@ class PlanetPositionsOneYearVerletTest {
         /* Sun */
         positionsAfterOneYear.add(new Vector3d(-1.082901546284580E+09, 8.147721163745780E+08, 1.863744464428420E+07));
         /* Mercury */
-        positionsAfterOneYear.add(new Vector3d(3.950842791655450E+10, - 4.720264660931200E+10, - 7.628642664193490E+09));
+        positionsAfterOneYear.add(new Vector3d(3.950842791655450E+10, -4.720264660931200E+10, -7.628642664193490E+09));
         /* Venus */
         positionsAfterOneYear.add(new Vector3d(1.037791016188340E+11, 2.825331531868220E+10, -5.655906754344890E+09));
         /* Earth */
