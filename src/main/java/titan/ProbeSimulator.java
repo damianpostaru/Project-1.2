@@ -41,6 +41,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
                 bestDist = dist;
                 bestTime = i * stepSize;
             }
+
         }
         System.out.println("Time of closest approach: " + bestTime);
         System.out.println("Distance of closest approach: " + bestDist);

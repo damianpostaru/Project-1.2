@@ -1,5 +1,6 @@
 package titan.gui;
 
+import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -80,6 +81,7 @@ public class PlanetTransition extends GuiMain {
 
     public static void transition(CelestialBody node, Path nodePath) {
         PathTransition bodyTransition = new PathTransition();
+        //bodyTransition.setInterpolator(Interpolator.DISCRETE);
         bodyTransition.setDuration(Duration.seconds(15));
         bodyTransition.setNode(node.getBody());
         bodyTransition.setPath(nodePath);
