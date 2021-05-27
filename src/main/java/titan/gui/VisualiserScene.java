@@ -1,12 +1,16 @@
 package titan.gui;
 
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Translate;
 
 import static titan.gui.Util.startTimerTask;
 
@@ -36,6 +40,66 @@ public class VisualiserScene extends GuiMain {
 
         exitButton.setOnAction(e -> System.exit(0));
 
+
+
+
+        Slider slider1 = new Slider();
+
+        slider1.setMax(800);
+        slider1.setMin(-800);
+        slider1.setPrefWidth(300d);
+        slider1.setLayoutX(-150);
+        slider1.setLayoutY( 200);
+        slider1.setShowTickLabels(false);
+        slider1.setStyle("-fx-base: yellow");
+
+
+
+
+        Translate translate = new Translate();
+
+        slider1.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<?extends Number> observable, Number oldValue, Number newValue){
+                translate.setX((double) newValue);
+
+            }
+        });
+
+        Slider slider2 = new Slider();
+
+        slider2.setMax(800);
+        slider2.setMin(-800);
+        slider2.setPrefWidth(300d);
+        slider2.setLayoutX(-150);
+        slider2.setLayoutY(200);
+        slider2.setShowTickLabels(false);
+        slider2.setStyle("-fx-base: yellow");
+
+
+
+        slider2.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue <?extends Number>observable, Number oldValue, Number newValue){
+
+                translate.setY((double) newValue);
+            }
+        });
+
+        probe.getBody().getTransforms().add(translate);
+        sun.getBody().getTransforms().add(translate);
+        earth.getBody().getTransforms().add(translate);
+        mercury.getBody().getTransforms().add(translate);
+        moon.getBody().getTransforms().add(translate);
+        venus.getBody().getTransforms().add(translate);
+        titan.getBody().getTransforms().add(translate);
+        saturn.getBody().getTransforms().add(translate);
+        mars.getBody().getTransforms().add(translate);
+        jupiter.getBody().getTransforms().add(translate);
+        neptune.getBody().getTransforms().add(translate);
+        uranus.getBody().getTransforms().add(translate);
+
+
+
+
         InfoScreen.run();
 
         scrollScale = new SimpleDoubleProperty(1.0);
@@ -53,8 +117,9 @@ public class VisualiserScene extends GuiMain {
 
         BorderPane root = new BorderPane();
         root.setRight(infoBox);
-        BorderPane.setAlignment(timeText, Pos.BOTTOM_RIGHT);
-        root.setBottom(timeText);
+        root.setAlignment(timeText, Pos.BOTTOM_RIGHT);
+        root.setBottom(slider1);
+        root.setTop(slider2);
         root.setCenter(zoomPane);
         // Make the infoBox always appear on top in relation to the zoomPane
         // This allows the the buttons 'probeLaunch' and 'exitButton' to be clickable at all times.
