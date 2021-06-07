@@ -3,6 +3,7 @@
     
 ## Gradle
 #### Run from terminal
+    docker compose up
     gradle run
   
 #### Run from intellij
