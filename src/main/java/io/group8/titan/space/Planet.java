@@ -3,19 +3,20 @@ package io.group8.titan.space;
 import io.group8.titan.interfaces.Vector3dInterface;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+
+import static javax.persistence.CascadeType.ALL;
 
 @Entity
 @NoArgsConstructor
 public class Planet {
 
     @Id
+    @GeneratedValue
     private Long id;
-    @OneToOne
+    @OneToOne(cascade = ALL)
     private Vector3d position;
-    @OneToOne
+    @OneToOne(cascade = ALL)
     private Vector3d velocity;
     private String name;
 

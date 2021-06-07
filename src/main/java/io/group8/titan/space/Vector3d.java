@@ -3,6 +3,7 @@ package io.group8.titan.space;
 import io.group8.titan.interfaces.Vector3dInterface;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 import static java.lang.Math.pow;
@@ -12,6 +13,7 @@ import static java.lang.Math.sqrt;
 public class Vector3d implements Vector3dInterface {
 
     @Id
+    @GeneratedValue
     private Long id;
     private double x;
     private double y;

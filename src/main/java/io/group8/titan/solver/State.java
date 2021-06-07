@@ -18,6 +18,14 @@ public class State implements StateInterface {
         solarSystem = new SolarSystem(initialPosition, initialVelocity);
     }
 
+    public State(SolarSystem solarSystem) {
+        this.solarSystem = solarSystem;
+        initialPosition = null;
+        initialVelocity = null;
+    }
+
+
+
     public StateInterface addMul(double step, RateInterface rate) {
         State nextState = cloneState();
         SolarSystem solarSystem = nextState.getSolarSystem();

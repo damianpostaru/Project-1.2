@@ -5,9 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.persistence.CascadeType.ALL;
 
 @Data
 @AllArgsConstructor
@@ -16,8 +21,9 @@ import java.util.List;
 public class SolarSystem{
 
     @Id
+    @GeneratedValue
     private Long id;
-    @OneToMany
+    @OneToMany(cascade = ALL)
     private final List<Planet> planets = new ArrayList<>();
 
     public SolarSystem(Vector3dInterface initialPosition, Vector3dInterface initialVelocity) {

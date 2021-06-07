@@ -28,6 +28,7 @@ public class Solver implements ODESolverInterface {
         return states;
     }
 
+
     @Override
     public StateInterface[] solve(ODEFunctionInterface function, StateInterface initialState, double finalTime, double stepSize) {
         StateInterface[] states = new State[(int) Math.ceil(finalTime / stepSize) + 1];
@@ -39,6 +40,7 @@ public class Solver implements ODESolverInterface {
 
         for (int i = 2; i < states.length; i++) {
             states[i] = verletStep(function, time, states[i - 2], states[i - 1], stepSize);
+            Client.addSystem(((State) step(function, time, states[i - 1], stepSize)).getSolarSystem());
             PlanetTransition.addPath((State) states[i]);
             if ((finalTime - time) / stepSize < 1) {
                 time += (finalTime - time) % stepSize;
