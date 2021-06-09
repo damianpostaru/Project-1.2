@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TitanApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TitanApplication.class, args);
+//        SpringApplication.run(TitanApplication.class, args);
         GuiMain.run(args);
     }
 }

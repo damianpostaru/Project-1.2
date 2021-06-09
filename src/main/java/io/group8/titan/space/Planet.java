@@ -3,64 +3,59 @@ package io.group8.titan.space;
 import io.group8.titan.interfaces.Vector3dInterface;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import static javax.persistence.CascadeType.ALL;
-
-@Entity
+//@Entity
 @NoArgsConstructor
 public class Planet {
 
-    @Id
-    @GeneratedValue
-    private Long id;
-    @OneToOne(cascade = ALL)
-    private Vector3d position;
-    @OneToOne(cascade = ALL)
-    private Vector3d velocity;
+//    @Id
+//    @GeneratedValue
+//    private Long id;
+//    @OneToOne(cascade = ALL)
+    private List<Vector3d> positions;
+//    @OneToOne(cascade = ALL)
+    private List<Vector3d> velocities;
     private String name;
+    private int stateIndex;
 
     public Planet(String name, Vector3d initialPosition, Vector3d initialVelocity) {
-        position = initialPosition;
-        velocity = initialVelocity;
+        positions = new ArrayList<>();
+        velocities = new ArrayList<>();
+        positions.add(initialPosition);
+        velocities.add(initialVelocity);
         this.name = name;
+        stateIndex = 0;
     }
 
     public void update(double step, Vector3dInterface acceleration) {
-        velocity = (Vector3d) velocity.addMul(step, acceleration);
-        position = (Vector3d) position.addMul(step, velocity);
+        velocities.add((Vector3d) velocities.get(stateIndex).addMul(step, acceleration));
+        positions.add((Vector3d) positions.get(stateIndex).addMul(step, velocities.get(stateIndex)));
+        stateIndex++;
     }
 
-    public void addMulPos(double scalar, Vector3dInterface other) {
-        position = (Vector3d) position.addMul(scalar, other);
-    }
-
-    // two helper methods for the computation of Verlet
-    public void mulPos(double scalar) {
-        position = (Vector3d) position.mul(scalar);
-    }
-
-    public void subPos(Vector3dInterface pos) {
-        position = (Vector3d) position.sub(pos);
-    }
+//    public void addMulPos(double scalar, Vector3dInterface other) {
+//        position = (Vector3d) position.addMul(scalar, other);
+//    }
 
     public Vector3dInterface getPosition() {
-        return position;
+        return positions.get(stateIndex);
     }
 
-    public void setPosition(Vector3d position) {
-        this.position = position;
-    }
-
-    public void setVelocity(Vector3d velocity) {
-        this.velocity = velocity;
-    }
+//    public void setPosition(Vector3d position) {
+//        this.position = position;
+//    }
+//
+//    public void setVelocity(Vector3d velocity) {
+//        this.velocity = velocity;
+//    }
 
     public Vector3dInterface getVelocity() {
-        return velocity;
+        return velocities.get(stateIndex);
     }
 
     public String toString() {
-        return "[" + " pos: " + position.toString() + " vel: " + velocity.toString() + "]";
+        return "[" + " pos: " + positions.toString() + " vel: " + velocities.toString() + "]";
     }
 }

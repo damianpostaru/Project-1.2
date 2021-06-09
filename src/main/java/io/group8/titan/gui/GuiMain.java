@@ -56,6 +56,14 @@ public class GuiMain extends Application {
         launch(args);
     }
 
+    public static Vector3dInterface getInitialPosition() {
+        return initialPosition;
+    }
+
+    public static Vector3dInterface getInitialVelocity() {
+        return initialVelocity;
+    }
+
     @Override
     public void start(Stage primaryStage) {
 

@@ -17,39 +17,41 @@ public class Solver implements ODESolverInterface {
 
     @Override
     public StateInterface[] solve(ODEFunctionInterface function, StateInterface initialState, double[] outputTimes) {
-        StateInterface[] states = new StateInterface[outputTimes.length];
-        states[0] = initialState;
-        states[1] = step(function, outputTimes[1], initialState, 60);
-        for (int i = 2; i < states.length; i++) {
-            states[i] = verletStep(function, outputTimes[i], states[i - 2], states[i - 1], outputTimes[i] - outputTimes[i - 1]);
-            PlanetTransition.addPath((State) states[i]);
-            accessTimes.add(outputTimes[i]);
-        }
-        return states;
+//        StateInterface[] states = new StateInterface[outputTimes.length];
+//        states[0] = initialState;
+//        states[1] = step(function, outputTimes[1], initialState, 60);
+//        for (int i = 2; i < states.length; i++) {
+//            states[i] = verletStep(function, outputTimes[i], states[i - 2], states[i - 1], outputTimes[i] - outputTimes[i - 1]);
+//            PlanetTransition.addPath((State) states[i]);
+//            accessTimes.add(outputTimes[i]);
+//        }
+//        return states;
+        return null;
     }
 
 
     @Override
     public StateInterface[] solve(ODEFunctionInterface function, StateInterface initialState, double finalTime, double stepSize) {
-        StateInterface[] states = new State[(int) Math.ceil(finalTime / stepSize) + 1];
-        states[0] = initialState;
-        double time = 0;
-        // bootstrap to get the last 2 positions using Runge-Kutta Solver
-        states[1] = step(function, time, initialState, stepSize);
-        time = time + stepSize;
-
-        for (int i = 2; i < states.length; i++) {
-            states[i] = verletStep(function, time, states[i - 2], states[i - 1], stepSize);
-            Client.addSystem(((State) step(function, time, states[i - 1], stepSize)).getSolarSystem());
-            PlanetTransition.addPath((State) states[i]);
-            if ((finalTime - time) / stepSize < 1) {
-                time += (finalTime - time) % stepSize;
-            } else {
-                time += stepSize;
-            }
-            accessTimes.add(time);
-        }
-        return states;
+//        StateInterface[] states = new State[(int) Math.ceil(finalTime / stepSize) + 1];
+//        states[0] = initialState;
+//        double time = 0;
+//        // bootstrap to get the last 2 positions using Runge-Kutta Solver
+//        states[1] = step(function, time, initialState, stepSize);
+//        time = time + stepSize;
+//
+//        for (int i = 2; i < states.length; i++) {
+//            states[i] = verletStep(function, time, states[i - 2], states[i - 1], stepSize);
+////            Client.addSystem(((State) step(function, time, states[i - 1], stepSize)).getSolarSystem());
+//            PlanetTransition.addPath((State) states[i]);
+//            if ((finalTime - time) / stepSize < 1) {
+//                time += (finalTime - time) % stepSize;
+//            } else {
+//                time += stepSize;
+//            }
+//            accessTimes.add(time);
+//        }
+//        return states;
+        return null;
     }
 
     public StateInterface[] rungeKuttaSolve(ODEFunctionInterface function, StateInterface initialState, double finalTime, double stepSize) {
@@ -58,6 +60,7 @@ public class Solver implements ODESolverInterface {
         double time = 0;
         for (int i = 1; i < states.length; i++) {
             states[i] = step(function, time, states[i - 1], stepSize);
+            PlanetTransition.addPath((State) states[i]);
             if ((finalTime - time) / stepSize < 1) {
                 time += (finalTime - time) % stepSize;
             } else {
@@ -78,31 +81,30 @@ public class Solver implements ODESolverInterface {
         return state.addMul(stepSize, k.mul(1.0 / 6.0));
     }
 
-    // Verlet solver implementation
-    public StateInterface verletStep(ODEFunctionInterface f, double t, StateInterface previousState, StateInterface currentState, double h) {
-
-        State nextState = ((State) currentState).cloneState();
-
-        SolarSystem previousSystem = ((State) previousState).getSolarSystem();
-        SolarSystem currentSystem = ((State) currentState).getSolarSystem();
-        SolarSystem nextSystem = (nextState).getSolarSystem();
-
-        // 2y - lastY + a * h^2
-        for (int i = 0; i < currentSystem.size(); i++) {
-            nextSystem.get(i).mulPos(2);
-            nextSystem.get(i).subPos(previousSystem.get(i).getPosition());
-        }
-
-        State newNextState = nextState.cloneState();
-        SolarSystem solarSystem = newNextState.getSolarSystem();
-        Rate r = (Rate) f.call(t, currentState);
-        Vector3d[] acceleration = r.getAcceleration();
-        for (int i = 0; i < solarSystem.size(); i++) {
-            solarSystem.get(i).addMulPos(h * h, acceleration[i]);
-        }
-
-        return newNextState;
-    }
+//    // Verlet solver implementation
+//    public StateInterface verletStep(ODEFunctionInterface f, double t, StateInterface previousState, StateInterface currentState, double h) {
+//
+//        State nextState = ((State) currentState).cloneState();
+//
+//        SolarSystem previousSystem = ((State) previousState).getSolarSystem();
+//        SolarSystem currentSystem = ((State) currentState).getSolarSystem();
+//        SolarSystem nextSystem = (nextState).getSolarSystem();
+//
+//        // 2y - lastY + a * h^2
+//        for (int i = 0; i < currentSystem.size(); i++) {
+//            nextSystem.get(i).setPosition((Vector3d) nextSystem.get(i).getPosition().mul(2).sub(previousSystem.get(i).getPosition()));
+//        }
+//
+//        State newNextState = nextState.cloneState();
+//        SolarSystem solarSystem = newNextState.getSolarSystem();
+//        Rate r = (Rate) f.call(t, currentState);
+//        Vector3d[] acceleration = r.getAcceleration();
+//        for (int i = 0; i < solarSystem.size(); i++) {
+//            solarSystem.get(i).addMulPos(h * h, acceleration[i]);
+//        }
+//
+//        return newNextState;
+//    }
 
     public static List<Double> getAccessTimes() {
         return accessTimes;

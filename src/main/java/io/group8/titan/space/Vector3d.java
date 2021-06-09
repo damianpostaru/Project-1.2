@@ -9,12 +9,12 @@ import javax.persistence.Id;
 import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
-@Entity
+//@Entity
 public class Vector3d implements Vector3dInterface {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+//    @Id
+//    @GeneratedValue
+//    private Long id;
     private double x;
     private double y;
     private double z;

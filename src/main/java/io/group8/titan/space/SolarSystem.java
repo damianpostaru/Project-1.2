@@ -1,32 +1,30 @@
 package io.group8.titan.space;
 
+import io.group8.titan.gui.GuiMain;
 import io.group8.titan.interfaces.Vector3dInterface;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-
-import static javax.persistence.CascadeType.ALL;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class SolarSystem{
+//@Entity
+public class SolarSystem {
 
-    @Id
-    @GeneratedValue
+    private static SolarSystem INSTANCE;
+
+    //    @Id
+//    @GeneratedValue
     private Long id;
-    @OneToMany(cascade = ALL)
+    //    @OneToMany(cascade = ALL)
     private final List<Planet> planets = new ArrayList<>();
 
-    public SolarSystem(Vector3dInterface initialPosition, Vector3dInterface initialVelocity) {
+
+    private SolarSystem(Vector3dInterface initialPosition, Vector3dInterface initialVelocity) {
         planets.add(new Planet("Sun", new Vector3d(-6.806783239281648e+08, 1.080005533878725e+09, 6.564012751690170e+06), new Vector3d(-1.420511669610689e+01, -4.954714716629277e+00, 3.994237625449041e-01)));//sun
         planets.add(new Planet("Mercury", new Vector3d(6.047855986424127e+06, -6.801800047868888e+10, -5.702742359714534e+09), new Vector3d(3.892585189044652e+04, 2.978342247012996e+03, -3.327964151414740e+03)));//mercury
         planets.add(new Planet("Venus", new Vector3d(-9.435345478592035e+10, 5.350359551033670e+10, 6.131453014410347e+09), new Vector3d(-1.726404287724406e+04, -3.073432518238123e+04, 5.741783385280979e-04)));//venus
@@ -39,6 +37,13 @@ public class SolarSystem{
         planets.add(new Planet("Neptune", new Vector3d(4.382692942729203e+12, -9.093501655486243e+11, -8.227728929479486e+10), new Vector3d(1.068410720964204e+03, 5.354959501569486e+03, -1.343918199987533e+02)));//neptune
         planets.add(new Planet("Uranus", new Vector3d(2.395195786685187e+12, 1.744450959214586e+12, -2.455116324031639e+10), new Vector3d(-4.059468635313243e+03, 5.187467354884825e+03, 7.182516236837899e+01)));//uranus
         planets.add(new Shuttle((Vector3d) initialPosition.add(planets.get(3).getPosition()), (Vector3d) initialVelocity.add(planets.get(3).getVelocity())));
+    }
+
+    public static SolarSystem getInstance() {
+        if (INSTANCE == null) {
+            return new SolarSystem(GuiMain.getInitialPosition(), GuiMain.getInitialVelocity());
+        }
+        return INSTANCE;
     }
 
     public Shuttle getShuttle() {
@@ -61,6 +66,7 @@ public class SolarSystem{
             accelerations[i] = (Vector3d) accelerations[i].mul(G);
         }
         accelerations[11] = (Vector3d) accelerations[11].add(((Shuttle) planets.get(11)).calcEngineAcc(t));
+        System.out.println(accelerations[11]);
         return accelerations;
     }
 
