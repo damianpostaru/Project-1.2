@@ -7,7 +7,7 @@ import io.group8.titan.space.Vector3d;
 
 public class State implements StateInterface {
 
-    private static SolarSystem solarSystem;
+    public static SolarSystem solarSystem;
     private int stateIndex;
 
     public State() {

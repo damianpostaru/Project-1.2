@@ -28,14 +28,14 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         System.out.println("Probe starting position: " + initialPosition);
         System.out.println("Probe starting velocity: " + initialVelocity);
         Solver solver = new Solver();
-        State[] states = (State[]) solver.rungeKuttaSolve(new Function(), initialState, finalTime, stepSize);
+        State[] states = (State[]) solver.solve(new Function(), initialState, finalTime, stepSize);
         double bestDist = Double.MAX_VALUE;
         double bestTime = 0;
         int bestIndex = -1;
         int planetID = 8;
         for (int i = 0; i < states.length; i++) {
             trajectory[i] = states[i].getSolarSystem().getShuttle().getPosition();
-//            System.out.println(trajectory[i]);
+            System.out.println(trajectory[i]);
 
 
             double dist = states[i].getSolarSystem().get(planetID).getPosition().dist(states[i].getSolarSystem().getShuttle().getPosition());
@@ -46,7 +46,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
             }
 
         }
-        System.out.println(Arrays.toString(trajectory));
+//        System.out.println(Arrays.toString(trajectory));
 
         System.out.println("Time of closest approach: " + bestTime);
         System.out.println("Distance of closest approach: " + bestDist);

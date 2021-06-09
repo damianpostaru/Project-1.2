@@ -3,6 +3,9 @@ package io.group8.titan.space;
 import io.group8.titan.interfaces.Vector3dInterface;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +15,7 @@ public class Planet {
 
 //    @Id
 //    @GeneratedValue
-//    private Long id;
+    private Long id;
 //    @OneToOne(cascade = ALL)
     private List<Vector3d> positions;
 //    @OneToOne(cascade = ALL)
@@ -35,9 +38,15 @@ public class Planet {
         stateIndex++;
     }
 
-//    public void addMulPos(double scalar, Vector3dInterface other) {
-//        position = (Vector3d) position.addMul(scalar, other);
-//    }
+    public void addMulPos(double scalar, Vector3dInterface other) {
+        positions.add((Vector3d) positions.get(stateIndex).addMul(scalar, other));
+        stateIndex++;
+    }
+
+    public void setPosition(Vector3d position) {
+        positions.set(stateIndex, position);
+    }
+
 
     public Vector3dInterface getPosition() {
         return positions.get(stateIndex);
@@ -56,6 +65,6 @@ public class Planet {
     }
 
     public String toString() {
-        return "[" + " pos: " + positions.toString() + " vel: " + velocities.toString() + "]";
+        return "[ name: " + name + ", pos: " + positions.toString() + " vel: " + velocities.toString() + "]";
     }
 }

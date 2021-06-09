@@ -21,7 +21,7 @@ public class SolarSystem {
 //    @GeneratedValue
     private Long id;
     //    @OneToMany(cascade = ALL)
-    private final List<Planet> planets = new ArrayList<>();
+    private List<Planet> planets = new ArrayList<>();
 
 
     private SolarSystem(Vector3dInterface initialPosition, Vector3dInterface initialVelocity) {
@@ -39,9 +39,18 @@ public class SolarSystem {
         planets.add(new Shuttle((Vector3d) initialPosition.add(planets.get(3).getPosition()), (Vector3d) initialVelocity.add(planets.get(3).getVelocity())));
     }
 
+    public List<Planet> getPlanets() {
+        return planets;
+    }
+
+    public void setPlanets(List<Planet> planets) {
+        this.planets = planets;
+    }
+
     public static SolarSystem getInstance() {
         if (INSTANCE == null) {
-            return new SolarSystem(GuiMain.getInitialPosition(), GuiMain.getInitialVelocity());
+            INSTANCE = new SolarSystem(GuiMain.getInitialPosition(), GuiMain.getInitialVelocity());
+            return INSTANCE;
         }
         return INSTANCE;
     }
@@ -66,7 +75,7 @@ public class SolarSystem {
             accelerations[i] = (Vector3d) accelerations[i].mul(G);
         }
         accelerations[11] = (Vector3d) accelerations[11].add(((Shuttle) planets.get(11)).calcEngineAcc(t));
-        System.out.println(accelerations[11]);
+//        System.out.println(accelerations[11]);
         return accelerations;
     }
 
