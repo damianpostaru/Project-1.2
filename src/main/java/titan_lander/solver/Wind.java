@@ -13,7 +13,7 @@ public class Wind
     private double deltaFactor;
     private final double DENSITY = 1;
     private final double DRAG_COEFF = 0.47;
-    private final double AREA = ;//pi * r^2*
+    private final double AREA = 3.52*3.52*Math.PI;//pi * r^2
     public Wind(double flipChance,double deltaFactor)
     {
         this.deltaFactor = deltaFactor;
