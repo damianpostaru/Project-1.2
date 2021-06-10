@@ -35,7 +35,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         int planetID = 8;
         for (int i = 0; i < states.length; i++) {
             trajectory[i] = states[i].getSolarSystem().getShuttle().getPosition();
-            System.out.println(trajectory[i]);
+//            System.out.println(trajectory[i]);
 
 
             double dist = states[i].getSolarSystem().get(planetID).getPosition().dist(states[i].getSolarSystem().getShuttle().getPosition());

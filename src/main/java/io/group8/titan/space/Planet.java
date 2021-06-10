@@ -13,12 +13,12 @@ import java.util.List;
 @NoArgsConstructor
 public class Planet {
 
-//    @Id
+    //    @Id
 //    @GeneratedValue
     private Long id;
-//    @OneToOne(cascade = ALL)
+    //    @OneToOne(cascade = ALL)
     private List<Vector3d> positions;
-//    @OneToOne(cascade = ALL)
+    //    @OneToOne(cascade = ALL)
     private List<Vector3d> velocities;
     private String name;
     private int stateIndex;
@@ -47,18 +47,22 @@ public class Planet {
         positions.set(stateIndex, position);
     }
 
+    public void setPosition(Vector3d position, int index) {
+        if (index > positions.size()) {
+            positions.add(position);
+            stateIndex++;
+        } else {
+            positions.set(index, position);
+        }
+    }
 
     public Vector3dInterface getPosition() {
         return positions.get(stateIndex);
     }
 
-//    public void setPosition(Vector3d position) {
-//        this.position = position;
-//    }
-//
-//    public void setVelocity(Vector3d velocity) {
-//        this.velocity = velocity;
-//    }
+    public Vector3dInterface getPosition(int index) {
+        return positions.get(index);
+    }
 
     public Vector3dInterface getVelocity() {
         return velocities.get(stateIndex);

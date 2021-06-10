@@ -2,6 +2,8 @@ package io.group8.titan.solver;
 
 import io.group8.titan.interfaces.RateInterface;
 import io.group8.titan.interfaces.StateInterface;
+import io.group8.titan.interfaces.Vector3dInterface;
+import io.group8.titan.space.Planet;
 import io.group8.titan.space.SolarSystem;
 import io.group8.titan.space.Vector3d;
 
@@ -13,6 +15,12 @@ public class State implements StateInterface {
     public State() {
         stateIndex = 0;
         solarSystem = SolarSystem.getInstance();
+    }
+
+    public State newState() {
+        State newState = new State();
+        newState.stateIndex = this.stateIndex + 1;
+        return newState;
     }
 
     public StateInterface addMul(double step, RateInterface rate) {
@@ -34,6 +42,18 @@ public class State implements StateInterface {
             solarSystem.get(i).update(step, acceleration[i]);
         }
         return nextState;
+    }
+
+    public Planet getPlanet(int planetIndex) {
+        return solarSystem.get(planetIndex);
+    }
+
+    public Vector3dInterface getPlanetPosition(int planetIndex) {
+        return solarSystem.get(planetIndex).getPosition(stateIndex);
+    }
+
+    public void addPosition(int planetIndex, Vector3dInterface position){
+        solarSystem.get(planetIndex).setPosition((Vector3d) position, stateIndex);
     }
 
     public String toString() {
