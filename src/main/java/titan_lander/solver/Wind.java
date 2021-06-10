@@ -14,6 +14,7 @@ public class Wind
     private final double DENSITY = 1;
     private final double DRAG_COEFF = 0.47;
     private final double AREA = 3.52*3.52*Math.PI;//pi * r^2
+
     public Wind(double flipChance,double deltaFactor)
     {
         this.deltaFactor = deltaFactor;
@@ -21,16 +22,18 @@ public class Wind
         leftOrRight = true;
         random = new Random();
     }
+
     //get the force of the wind
-    public Vector3d getWindForce(AbstractLander lander)
+    public Vector3d getWindForce(Vector3d landerVelocity,double altitude)
     {
         //get the velocity without the angular velocity
-        Vector3d landerSpeed = new Vector3d(lander.getPosition().getX(), lander.getPosition().getY(),0);
-
-        Vector3d windSpeed = new Vector3d(getWind(lander.getPosition().getY()),0,0);
-        Vector3d deltaVelocity = (Vector3d) windSpeed.sub(lander.getVelocity());
+        Vector3d landerSpeed = new Vector3d(landerVelocity.getX(), landerVelocity.getY(),0);
+        double windVelocity = getWind(altitude);
+        Vector3d windSpeedVector = new Vector3d(windVelocity,0,0);//new Vector3d(100,0,0);
+        Vector3d deltaVelocity = (Vector3d) windSpeedVector.sub(landerSpeed);
 
         Vector3d force = (Vector3d) squareVector(deltaVelocity).mul( DENSITY * DRAG_COEFF * AREA * 0.5);
+
         return  force;
     }
 
@@ -43,6 +46,7 @@ public class Wind
         {
             leftOrRight = !leftOrRight;
         }
+
         return leftOrRight ? windSpeed : windSpeed*-1;
     }
 
@@ -83,10 +87,10 @@ public class Wind
 
     private Vector3d squareVector(Vector3d v)
     {
-        double x = v.getX() * v.getX();
-        double y = v.getY() * v.getY();
-        double z = v.getZ() * v.getZ();
+        double norm = v.norm();
+        Vector3d dir = (Vector3d) v.mul(1/norm);
+        norm *= norm;//get the square of the length
 
-        return new Vector3d(x,y,z);
+        return (Vector3d) dir.mul(norm);
     }
 }
