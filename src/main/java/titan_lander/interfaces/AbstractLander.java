@@ -6,7 +6,7 @@ import titan.space.Vector3d;
 /**
  * class to represent the state of the lander
  */
-abstract class AbstractLander implements StateInterface
+public abstract class AbstractLander implements StateInterface
 {
     private Vector3d position;//stores (x,y,theta)
     private Vector3d velocity;//stores (x-velocity,y-velocity,angular velocity), e.g. (x_dot,y_dot,theta_dot)
