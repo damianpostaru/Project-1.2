@@ -55,19 +55,19 @@ public class Wind
     private double getWindAtAltitude(double altitude)
     {
         double value = 0;
-        if(altitude >= 120)
+        if(altitude >= 120000)
         {
             value = 100.0;
-        }else if(altitude < 120 && altitude >= 73)
+        }else if(altitude < 120000 && altitude >= 73000)
         {
-            value = (95.0/47) * altitude + (100 - (95.0/47)*120);
-        }else if(altitude < 73 && altitude >= 65)
+            value = (95.0/47000) * altitude + (100 - (95.0/47000)*120000);
+        }else if(altitude < 73000 && altitude >= 65000)
         {
-            value = (-30.0/8) * altitude + (35 - (-30.0/8)*65);
+            value = (-30.0/8000) * altitude + (35 - (-30.0/8000)*65000);
         }
         else
         {
-            value = 35.0/65 * altitude;
+            value = 35.0/65000 * altitude;
         }
         return value;
     }
