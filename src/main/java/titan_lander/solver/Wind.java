@@ -1,7 +1,6 @@
 package titan_lander.solver;
 
 import titan.space.Vector3d;
-import titan_lander.interfaces.AbstractLander;
 
 import java.util.Random;
 
@@ -14,9 +13,11 @@ public class Wind
     private final double DENSITY = 1;
     private final double DRAG_COEFF = 0.47;
     private final double AREA = 3.52*3.52*Math.PI;//pi * r^2
+    Noise noise;
 
-    public Wind(double flipChance,double deltaFactor)
+    public Wind(double flipChance,double deltaFactor,int maxHeight)
     {
+        noise = new Noise(1,0, maxHeight , 100);
         this.deltaFactor = deltaFactor;
         windFlipChance = flipChance;
         leftOrRight = true;
@@ -41,7 +42,7 @@ public class Wind
     private double getWind(double altitude)
     {
         double windSpeed = getWindAtAltitude(altitude);
-        windSpeed *= getRandomFactor();
+        windSpeed *= getRandomFactor(altitude);
         if(random.nextDouble() < windFlipChance)//let the wind have a chance to change direction
         {
             leftOrRight = !leftOrRight;
@@ -73,16 +74,16 @@ public class Wind
     }
 
     //returns a random number with the value 1 +- deltafactor
-    private double getRandomFactor()
+    private double getRandomFactor(double x)
     {
-        double factor = 1 + randomDouble() * deltaFactor;
+        double factor = 1 + randomDouble(x) * deltaFactor;
         return factor;
     }
 
     //returns a random double between -1 and 1
-    private double randomDouble()
+    private double randomDouble(double x)
     {
-        return random.nextDouble() * 2 - 1;
+        return noise.getValue(x);
     }
 
     private Vector3d squareVector(Vector3d v)
