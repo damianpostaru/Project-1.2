@@ -1,7 +1,6 @@
 package titan_lander.solver;
 
 import titan.space.Vector3d;
-import titan_lander.interfaces.AbstractLander;
 
 import java.util.Random;
 
@@ -14,9 +13,11 @@ public class Wind
     private final double DENSITY = 1;
     private final double DRAG_COEFF = 0.47;
     private final double AREA = 3.52*3.52*Math.PI;//pi * r^2
+    Noise noise;
 
-    public Wind(double flipChance,double deltaFactor)
+    public Wind(double flipChance,double deltaFactor,int maxHeight)
     {
+        noise = new Noise(1,0, maxHeight , 500);
         this.deltaFactor = deltaFactor;
         windFlipChance = flipChance;
         leftOrRight = true;
@@ -41,7 +42,7 @@ public class Wind
     private double getWind(double altitude)
     {
         double windSpeed = getWindAtAltitude(altitude);
-        windSpeed *= getRandomFactor();
+        windSpeed *= getRandomFactor(altitude);
         if(random.nextDouble() < windFlipChance)//let the wind have a chance to change direction
         {
             leftOrRight = !leftOrRight;
@@ -55,27 +56,27 @@ public class Wind
     private double getWindAtAltitude(double altitude)
     {
         double value = 0;
-        if(altitude >= 120)
+        if(altitude >= 120000)
         {
             value = 100.0;
-        }else if(altitude < 120 && altitude >= 73)
+        }else if(altitude < 120000 && altitude >= 73000)
         {
-            value = (95.0/47) * altitude + (100 - (95.0/47)*120);
-        }else if(altitude < 73 && altitude >= 65)
+            value = (95.0/47000) * altitude + (100 - (95.0/47000)*120000);
+        }else if(altitude < 73000 && altitude >= 65000)
         {
-            value = (-30.0/8) * altitude + (35 - (-30.0/8)*65);
+            value = (-30.0/8000) * altitude + (35 - (-30.0/8000)*65000);
         }
         else
         {
-            value = 35.0/65 * altitude;
+            value = 35.0/65000 * altitude;
         }
         return value;
     }
 
     //returns a random number with the value 1 +- deltafactor
-    private double getRandomFactor()
+    private double getRandomFactor(double x)
     {
-        double factor = 1 + randomDouble() * deltaFactor;
+        double factor = 1 + noise.getValue(x) * deltaFactor;
         return factor;
     }
 
