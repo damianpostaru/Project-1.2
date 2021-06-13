@@ -15,13 +15,13 @@ public class Planet {
 
     //    @Id
 //    @GeneratedValue
-    private Long id;
+//    private Long id;
     //    @OneToOne(cascade = ALL)
-    private List<Vector3d> positions;
+    protected List<Vector3d> positions;
     //    @OneToOne(cascade = ALL)
-    private List<Vector3d> velocities;
-    private String name;
-    private int stateIndex;
+    protected List<Vector3d> velocities;
+    protected String name;
+    protected int stateIndex;
 
     public Planet(String name, Vector3d initialPosition, Vector3d initialVelocity) {
         positions = new ArrayList<>();
@@ -32,6 +32,13 @@ public class Planet {
         stateIndex = 0;
     }
 
+    private Planet(String name, List<Vector3d> positions, List<Vector3d> velocities, int stateIndex) {
+        this.name = name;
+        this.positions = positions;
+        this.velocities = velocities;
+        this.stateIndex = stateIndex;
+    }
+
     public void update(double step, Vector3dInterface acceleration) {
         velocities.add((Vector3d) velocities.get(stateIndex).addMul(step, acceleration));
         positions.add((Vector3d) positions.get(stateIndex).addMul(step, velocities.get(stateIndex)));
@@ -39,8 +46,7 @@ public class Planet {
     }
 
     public void addMulPos(double scalar, Vector3dInterface other) {
-        positions.add((Vector3d) positions.get(stateIndex).addMul(scalar, other));
-        stateIndex++;
+        positions.set(stateIndex, (Vector3d) positions.get(stateIndex).addMul(scalar, other));
     }
 
     public void setPosition(Vector3d position) {
@@ -48,7 +54,7 @@ public class Planet {
     }
 
     public void setPosition(Vector3d position, int index) {
-        if (index > positions.size()) {
+        if (index > positions.size() - 1) {
             positions.add(position);
             stateIndex++;
         } else {
@@ -70,5 +76,17 @@ public class Planet {
 
     public String toString() {
         return "[ name: " + name + ", pos: " + positions.toString() + " vel: " + velocities.toString() + "]";
+    }
+
+    public Planet copy() {
+        List<Vector3d> copyPositions = new ArrayList<>();
+        for (Vector3d position : positions) {
+            copyPositions.add(position.copy());
+        }
+        List<Vector3d> copyVelocities = new ArrayList<>();
+        for (Vector3d velocity : velocities) {
+            copyVelocities.add(velocity.copy());
+        }
+        return new Planet(name, copyPositions, copyVelocities, stateIndex);
     }
 }

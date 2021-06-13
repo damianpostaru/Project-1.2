@@ -19,7 +19,7 @@ public class SolarSystem {
 
     //    @Id
 //    @GeneratedValue
-    private Long id;
+//    private Long id;
     //    @OneToMany(cascade = ALL)
     private List<Planet> planets = new ArrayList<>();
 
@@ -47,9 +47,9 @@ public class SolarSystem {
         this.planets = planets;
     }
 
-    public static SolarSystem getInstance() {
+    public static SolarSystem getInstance(Vector3dInterface initialPosition, Vector3dInterface initialVelocity) {
         if (INSTANCE == null) {
-            INSTANCE = new SolarSystem(GuiMain.getInitialPosition(), GuiMain.getInitialVelocity());
+            INSTANCE = new SolarSystem(initialPosition, initialVelocity);
             return INSTANCE;
         }
         return INSTANCE;

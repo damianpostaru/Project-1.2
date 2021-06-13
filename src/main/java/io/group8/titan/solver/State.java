@@ -4,27 +4,34 @@ import io.group8.titan.interfaces.RateInterface;
 import io.group8.titan.interfaces.StateInterface;
 import io.group8.titan.interfaces.Vector3dInterface;
 import io.group8.titan.space.Planet;
+import io.group8.titan.space.Shuttle;
 import io.group8.titan.space.SolarSystem;
 import io.group8.titan.space.Vector3d;
+
+import java.util.List;
 
 public class State implements StateInterface {
 
     public static SolarSystem solarSystem;
     private int stateIndex;
+    private final Vector3dInterface initialPosition;
+    private final Vector3dInterface initialVelocity;
 
-    public State() {
+    public State(Vector3dInterface initialPosition, Vector3dInterface initialVelocity) {
         stateIndex = 0;
-        solarSystem = SolarSystem.getInstance();
+        solarSystem = SolarSystem.getInstance(initialPosition, initialVelocity);
+        this.initialVelocity = initialVelocity;
+        this.initialPosition = initialPosition;
     }
 
     public State newState() {
-        State newState = new State();
+        State newState = new State(initialPosition, initialVelocity);
         newState.stateIndex = this.stateIndex + 1;
         return newState;
     }
 
     public StateInterface addMul(double step, RateInterface rate) {
-        State nextState = new State();
+        State nextState = new State(initialPosition, initialVelocity);
         Rate r = (Rate) rate;
         Vector3d[] acceleration = r.getAcceleration();
         for (int i = 0; i < solarSystem.size(); i++) {
@@ -35,7 +42,7 @@ public class State implements StateInterface {
     }
 
     public StateInterface addMulRunge(double step, RateInterface rate) {
-        State nextState = new State();
+        State nextState = new State(initialPosition, initialVelocity);
         Rate r = (Rate) rate;
         Vector3d[] acceleration = r.getAcceleration();
         for (int i = 0; i < solarSystem.size(); i++) {
@@ -44,15 +51,19 @@ public class State implements StateInterface {
         return nextState;
     }
 
-    public Planet getPlanet(int planetIndex) {
-        return solarSystem.get(planetIndex);
+    public Shuttle getShuttle() {
+        return solarSystem.getShuttle();
+    }
+
+    public List<Planet> getPlanets() {
+        return solarSystem.getPlanets();
     }
 
     public Vector3dInterface getPlanetPosition(int planetIndex) {
         return solarSystem.get(planetIndex).getPosition(stateIndex);
     }
 
-    public void addPosition(int planetIndex, Vector3dInterface position){
+    public void addPosition(int planetIndex, Vector3dInterface position) {
         solarSystem.get(planetIndex).setPosition((Vector3d) position, stateIndex);
     }
 

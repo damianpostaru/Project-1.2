@@ -74,16 +74,29 @@ public class Solver implements ODESolverInterface {
 
     // Runge-Kutta Step
     public StateInterface step(ODEFunctionInterface function, double time, StateInterface state, double stepSize) {
+        List<Planet> planetsBackup = getPlanetsBackup((State) state);
         Rate k1 = (Rate) function.call(time, state);
-        List<Planet> planetsBackup = new ArrayList<>();
-//        Collections.copy(planetsBackup, State.solarSystem.getPlanets());
-//        planetsBackup.addAll(State.solarSystem.getPlanets());
         Rate k2 = (Rate) function.call(time + stepSize / 2, ((State) state).addMulRunge(stepSize, k1.mul(0.5)));
+        State.solarSystem.setPlanets(planetsBackup);
+        planetsBackup = getPlanetsBackup((State) state);
         Rate k3 = (Rate) function.call(time + stepSize / 2, ((State) state).addMulRunge(stepSize, k2.mul(0.5)));
+        State.solarSystem.setPlanets(planetsBackup);
+        planetsBackup = getPlanetsBackup((State) state);
         Rate k4 = (Rate) function.call(time + stepSize, ((State) state).addMulRunge(stepSize, k3));
         Rate k = k1.add(k2.mul(2).add(k3.mul(2).add(k4)));
         State.solarSystem.setPlanets(planetsBackup);
         return state.addMul(stepSize, k.mul(1.0 / 6.0));
+    }
+
+    private List<Planet> getPlanetsBackup(State state) {
+        List<Planet> planetsBackup = new ArrayList<>();
+        List<Planet> planets = state.getPlanets();
+        for (int i = 0, planetsSize = planets.size() - 1; i < planetsSize; i++) {
+            Planet planet = planets.get(i);
+            planetsBackup.add(planet.copy());
+        }
+        planetsBackup.add(state.getShuttle().copy());
+        return planetsBackup;
     }
 
     // Verlet solver implementation
@@ -97,13 +110,11 @@ public class Solver implements ODESolverInterface {
             nextState.addPosition(i, ((State) currentState).getPlanetPosition(i).mul(2).sub(((State) previousState).getPlanetPosition(i)));
         }
 
-//        nextSystem.get(i).setPosition((Vector3d) nextSystem.get(i).getPosition().mul(2).sub(previousSystem.get(i).getPosition()));
         Rate r = (Rate) f.call(t, currentState);
         Vector3d[] acceleration = r.getAcceleration();
         for (int i = 0; i < solarSystem.size(); i++) {
             solarSystem.get(i).addMulPos(h * h, acceleration[i]);
         }
-
         return nextState;
     }
 

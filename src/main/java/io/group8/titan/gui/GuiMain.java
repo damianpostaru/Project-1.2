@@ -80,8 +80,8 @@ public class GuiMain extends Application {
         VisualiserScene.setVisualiserScene();
 
         PlanetTransition.createPath();
-
-        (new ProbeSimulator()).trajectory(initialPosition, initialVelocity, 2.95217E8, 500);
+//2.95217E8, 500
+        (new ProbeSimulator()).trajectory(initialPosition, initialVelocity, 31536000, 60);
 
         singleStage.setFullScreen(true);
         singleStage.setResizable(false);
