@@ -17,7 +17,7 @@ public class Wind
 
     public Wind(double flipChance,double deltaFactor,int maxHeight)
     {
-        noise = new Noise(1,0, maxHeight , 100);
+        noise = new Noise(1,0, maxHeight , 500);
         this.deltaFactor = deltaFactor;
         windFlipChance = flipChance;
         leftOrRight = true;
@@ -76,14 +76,14 @@ public class Wind
     //returns a random number with the value 1 +- deltafactor
     private double getRandomFactor(double x)
     {
-        double factor = 1 + randomDouble(x) * deltaFactor;
+        double factor = 1 + noise.getValue(x) * deltaFactor;
         return factor;
     }
 
     //returns a random double between -1 and 1
-    private double randomDouble(double x)
+    private double randomDouble()
     {
-        return noise.getValue(x);
+        return random.nextDouble() * 2 - 1;
     }
 
     private Vector3d squareVector(Vector3d v)
