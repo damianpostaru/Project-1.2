@@ -7,6 +7,7 @@ import io.group8.titan.interfaces.StateInterface;
 import io.group8.titan.space.Planet;
 import io.group8.titan.space.SolarSystem;
 import io.group8.titan.space.Vector3d;
+import org.hibernate.engine.transaction.jta.platform.internal.SynchronizationRegistryBasedSynchronizationStrategy;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,6 +53,9 @@ public class Solver implements ODESolverInterface {
             }
             accessTimes.add(time);
         }
+//        for (StateInterface state : states) {
+//            System.out.println(((State) state).getPlanetPosition(8));
+//        }
         return states;
     }
 
