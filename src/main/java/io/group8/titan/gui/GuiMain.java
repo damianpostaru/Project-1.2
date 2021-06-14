@@ -81,7 +81,7 @@ public class GuiMain extends Application {
 
         PlanetTransition.createPath();
 //2.95217E8, 500
-        (new ProbeSimulator()).trajectory(initialPosition, initialVelocity, 31536000, 60);
+        (new ProbeSimulator()).trajectory(initialPosition, initialVelocity, 2.95217E8, 500);
 
         singleStage.setFullScreen(true);
         singleStage.setResizable(false);

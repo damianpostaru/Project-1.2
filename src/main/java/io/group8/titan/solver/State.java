@@ -63,6 +63,14 @@ public class State implements StateInterface {
         return solarSystem.get(planetIndex).getPosition(stateIndex);
     }
 
+    public Vector3dInterface getShuttlePosition() {
+        return solarSystem.getShuttle().getPosition(stateIndex);
+    }
+
+    public Vector3d[] calcAcc(double t) {
+        return solarSystem.calcAcc(t, stateIndex);
+    }
+
     public void addPosition(int planetIndex, Vector3dInterface position) {
         solarSystem.get(planetIndex).setPosition((Vector3d) position, stateIndex);
     }

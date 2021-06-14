@@ -62,7 +62,7 @@ public class Planet {
         }
     }
 
-    public Vector3dInterface getPosition() {
+    public Vector3dInterface getLatestPosition() {
         return positions.get(stateIndex);
     }
 
@@ -72,6 +72,10 @@ public class Planet {
 
     public Vector3dInterface getVelocity() {
         return velocities.get(stateIndex);
+    }
+
+    public Vector3dInterface getVelocity(int index) {
+        return velocities.get(index);
     }
 
     public String toString() {

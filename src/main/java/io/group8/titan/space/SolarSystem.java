@@ -1,6 +1,5 @@
 package io.group8.titan.space;
 
-import io.group8.titan.gui.GuiMain;
 import io.group8.titan.interfaces.Vector3dInterface;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,7 +35,7 @@ public class SolarSystem {
         planets.add(new Planet("Titan", new Vector3d(6.332873118527889e+11, -1.357175556995868e+12, -2.134637041453660e+09), new Vector3d(3.056877965721629e+03, 6.125612956428791e+03, -9.523587380845593e+02)));//titan
         planets.add(new Planet("Neptune", new Vector3d(4.382692942729203e+12, -9.093501655486243e+11, -8.227728929479486e+10), new Vector3d(1.068410720964204e+03, 5.354959501569486e+03, -1.343918199987533e+02)));//neptune
         planets.add(new Planet("Uranus", new Vector3d(2.395195786685187e+12, 1.744450959214586e+12, -2.455116324031639e+10), new Vector3d(-4.059468635313243e+03, 5.187467354884825e+03, 7.182516236837899e+01)));//uranus
-        planets.add(new Shuttle((Vector3d) initialPosition.add(planets.get(3).getPosition()), (Vector3d) initialVelocity.add(planets.get(3).getVelocity())));
+        planets.add(new Shuttle((Vector3d) initialPosition.add(planets.get(3).getPosition(0)), (Vector3d) initialVelocity.add(planets.get(3).getVelocity(0))));
     }
 
     public List<Planet> getPlanets() {
@@ -59,7 +58,7 @@ public class SolarSystem {
         return (Shuttle) planets.get(11);
     }
 
-    public Vector3d[] calcAcc(double t) {
+    public Vector3d[] calcAcc(double t, int stateIndex) {
         Vector3d[] accelerations = new Vector3d[planets.size()];
         for (int i = 0; i < accelerations.length; i++) {
             accelerations[i] = new Vector3d(0, 0, 0);
@@ -67,7 +66,7 @@ public class SolarSystem {
                 if (i == j) {
                     continue;
                 }
-                Vector3d deltaPos = (Vector3d) planets.get(j).getPosition().sub(planets.get(i).getPosition());
+                Vector3d deltaPos = (Vector3d) planets.get(j).getPosition(stateIndex).sub(planets.get(i).getPosition(stateIndex));
                 Vector3d distanceCubed = (Vector3d) deltaPos.mul(Math.pow(1 / deltaPos.norm(), 3));
                 accelerations[i] = (Vector3d) accelerations[i].add(distanceCubed.mul(SolarSystemData.masses[j]));
             }
