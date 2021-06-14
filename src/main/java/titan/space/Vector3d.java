@@ -10,7 +10,8 @@ public class Vector3d implements Vector3dInterface {
     private double y;
     private double z;
 
-    public Vector3d() {}
+    public Vector3d() {
+    }
 
     public Vector3d(double x, double y, double z) {
         this.x = x;
@@ -62,6 +63,15 @@ public class Vector3d implements Vector3dInterface {
     public Vector3dInterface mul(double scalar) {
         return new Vector3d(x * scalar, y * scalar, z * scalar);
     }
+
+//    /**
+//     * The matrix multiplication
+//     * @param num treated as a one-row and one-column matrix
+//     * @return
+//     */
+//    public double vectorMul(double num) {
+//        return (this.x * num + this.y * num + this.z * num);
+//    }
 
     @Override
     public Vector3dInterface addMul(double scalar, Vector3dInterface other) {
