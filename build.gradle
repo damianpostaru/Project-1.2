@@ -4,7 +4,7 @@ plugins {
     id "application"
 }
 
-mainClassName = 'titan.gui.GuiMain'
+mainClassName = 'titan_lander.gui.LanderVisualizer'
 
 
 javafx {
