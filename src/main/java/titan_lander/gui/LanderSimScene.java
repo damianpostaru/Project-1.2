@@ -1,15 +1,15 @@
 package titan_lander.gui;
 
+import javafx.animation.*;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
+import javafx.scene.shape.*;
+import javafx.util.Duration;
 import titan.gui.PlanetTransition;
 import titan.space.Vector3d;
 
@@ -32,9 +32,10 @@ public class LanderSimScene extends LanderVisualizer
         buttonBox.getChildren().addAll(probeLaunch,exitButton);
 
         drawLanderPath();
+        pathLines = new Pane(landerPath,node);
 
         BorderPane root = new BorderPane();
-        root.setCenter(landerPath);
+        root.setCenter(pathLines);
         root.setRight(buttonBox);
         root.getStyleClass().add("landerBackground");;
 
@@ -45,7 +46,6 @@ public class LanderSimScene extends LanderVisualizer
 
     public static void drawLanderPath()
     {
-        Vector3d firstVector = metersToPixels(landerPathVectors[0]);
         MoveTo firstMove = new MoveTo(firstVector.getX(),firstVector.getY());
         landerPath = new Path(firstMove);
 
@@ -59,6 +59,19 @@ public class LanderSimScene extends LanderVisualizer
 
     public static void animateLander()
     {
-        //animate lander
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(1);
+        timeline.setAutoReverse(false);
+        for (int i = 1; i < landerPathVectors.length; i++)
+        {
+            Vector3d v = metersToPixels(landerPathVectors[i]);
+            Vector3d v2 = metersToPixels(landerPathVectors[i-1]);
+            KeyValue rotation = new KeyValue(landerView.rotateProperty(),v.getZ());
+            KeyValue xPos = new KeyValue(landerView.xProperty(),v.getX());
+            KeyValue yPos = new KeyValue(landerView.yProperty(),v.getY());
+            timeline.getKeyFrames().add(new KeyFrame(Duration.millis(100),rotation,xPos,yPos));
+        }
+        System.out.println("OI");
+        timeline.play();
     }
 }
