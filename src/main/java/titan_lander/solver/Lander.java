@@ -27,8 +27,11 @@ public class Lander extends AbstractLander {
     }
 
 
+    // don't have to print the trajectory this time
+    // so no clone should be done
     @Override
     public StateInterface addMul(double step, RateInterface rate) {
-        return null;
+        this.update(step,((LanderRate) rate).getAcceleration());
+        return this;
     }
 }
