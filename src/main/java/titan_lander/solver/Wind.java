@@ -8,20 +8,40 @@ public class Wind
 {
     private boolean leftOrRight;//true is wind speed to positive x, false to negative x
     private Random random;
-    private double windFlipChance;
     private double deltaFactor;
     private final double DENSITY = 1;
     private final double DRAG_COEFF = 0.47;
     private final double AREA = 3.52*3.52*Math.PI;//pi * r^2
+    private double minFlipHeight;
+    private double maxFlipHeight;
     Noise noise;
 
-    public Wind(double flipChance,double deltaFactor,int maxHeight)
+    public Wind(double deltaFactor,int maxHeight)
     {
+        random = new Random();
         noise = new Noise(1,0, maxHeight , 500);
         this.deltaFactor = deltaFactor;
-        windFlipChance = flipChance;
-        leftOrRight = true;
-        random = new Random();
+        if(randomDouble() < 0)
+        {
+            leftOrRight = true;
+        }else
+        {
+            leftOrRight = false;
+        }
+
+
+        //choose random heights
+        double height1 = maxHeight * random.nextDouble();
+        double height2 = maxHeight * random.nextDouble();
+        if(height1 < height2)
+        {
+            minFlipHeight = height1;
+            maxFlipHeight = height2;
+        }else
+        {
+            minFlipHeight = height2;
+            maxFlipHeight = height1;
+        }
     }
 
     //get the force of the wind
@@ -39,16 +59,17 @@ public class Wind
     }
 
     //returns the wind at an altitude with random fluctuations added
-    private double getWind(double altitude)
+    public double getWind(double altitude)
     {
         double windSpeed = getWindAtAltitude(altitude);
         windSpeed *= getRandomFactor(altitude);
-        if(random.nextDouble() < windFlipChance)//let the wind have a chance to change direction
+        boolean direction = leftOrRight;
+        if(minFlipHeight <= altitude && altitude <= maxFlipHeight)//let the wind have a chance to change direction
         {
-            leftOrRight = !leftOrRight;
+            direction = !leftOrRight;
         }
 
-        return leftOrRight ? windSpeed : windSpeed*-1;
+        return direction ? windSpeed : windSpeed*-1;
     }
 
     //returns the windspeed at an altitude using a function made using the data from the Huygens mission
