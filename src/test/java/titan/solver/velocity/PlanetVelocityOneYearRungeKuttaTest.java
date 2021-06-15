@@ -90,7 +90,7 @@ public class PlanetVelocityOneYearRungeKuttaTest {
 
     private void checkVelocityAfterOneYear(int i) {
         Vector3dInterface expectedVelocity = velocitiesAfterOneYear.get(i);
-        Vector3dInterface actualVelocity = rkStates[(int) Math.ceil(finalTime / stepSize)].getSolarSystem().get(i).getVelocity();
+        Vector3dInterface actualVelocity = rkStates[(int) Math.ceil(finalTime / stepSize)].getPlanetVelocity(i);
         double difference = expectedVelocity.dist(actualVelocity);
         System.out.println(difference / 1000);
         if (difference > biggestDifference) {

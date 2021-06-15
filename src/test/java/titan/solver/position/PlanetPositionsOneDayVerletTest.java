@@ -90,7 +90,7 @@ class PlanetPositionsOneDayVerletTest {
 
     private void checkPositionAfterOneDay(int i) {
         Vector3dInterface expectedPosition = positionsAfterOneDay.get(i);
-        Vector3dInterface actualPosition = states[(int) Math.ceil(finalTime / stepSize / 365)].getSolarSystem().get(i).getPosition();
+        Vector3dInterface actualPosition = states[(int) Math.ceil(finalTime / stepSize / 365)].getPlanetPosition(i);
         double difference = expectedPosition.dist(actualPosition);
         System.out.println(difference / 1000);
         if (difference > biggestDifference) {

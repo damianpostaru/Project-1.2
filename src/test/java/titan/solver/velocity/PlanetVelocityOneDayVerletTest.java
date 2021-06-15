@@ -19,7 +19,7 @@ public class PlanetVelocityOneDayVerletTest {
     private static final Solver solver = new Solver();
     private static final double finalTime = 31536000;
     private static final double stepSize = 500;
-    private final double ACCURACY = 2380;
+    private final double ACCURACY = 39336;
     private static final Vector3d initialPosition = new Vector3d(-6371e3, 0.1, 0.1);
     private static final Vector3d initialVelocity = new Vector3d(0, 0, 0);
     private static final State initialState = new State(initialPosition, initialVelocity);
@@ -90,7 +90,7 @@ public class PlanetVelocityOneDayVerletTest {
 
     private void checkVelocityAfterOneDay(int i) {
         Vector3dInterface expectedVelocity = velocitiesAfterOneDay.get(i);
-        Vector3dInterface actualVelocity = verletStates[(int) Math.ceil(finalTime / stepSize / 365)].getSolarSystem().get(i).getVelocity();
+        Vector3dInterface actualVelocity = verletStates[(int) Math.ceil(finalTime / stepSize / 365)].getPlanetVelocity(i);
         double difference = expectedVelocity.dist(actualVelocity);
         System.out.println(difference / 1000);
         if (difference > biggestDifference) {
@@ -98,7 +98,7 @@ public class PlanetVelocityOneDayVerletTest {
             count++;
             System.out.println("Biggest Difference: " + biggestDifference + " count: " + count);
         }
-        assertEquals(difference, 0, ACCURACY);
+        assertEquals(0, difference, ACCURACY);
     }
 
     public static void setVelocitiesAfterOneDay() {

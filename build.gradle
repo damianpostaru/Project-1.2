@@ -1,34 +1,28 @@
 plugins {
-    id 'java'
     id 'org.openjfx.javafxplugin' version '0.0.9'
     id "application"
+    id 'java'
 }
 
 mainClassName = 'titan.gui.GuiMain'
 
+group = 'io.group8'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
 
 javafx {
     version = "15.0.1"
     modules = ['javafx.controls']
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
-
 repositories {
     mavenCentral()
 }
 
-test {
-    useJUnitPlatform()
+dependencies {
+    implementation 'org.junit.jupiter:junit-jupiter:5.7.1'
 }
 
-dependencies {
-    testCompile 'org.junit.jupiter:junit-jupiter:5.7.1'
-
-    compileOnly 'org.projectlombok:lombok:1.18.20'
-    annotationProcessor 'org.projectlombok:lombok:1.18.20'
-
-    testCompileOnly 'org.projectlombok:lombok:1.18.20'
-    testAnnotationProcessor 'org.projectlombok:lombok:1.18.20'
+test {
+    useJUnitPlatform()
 }

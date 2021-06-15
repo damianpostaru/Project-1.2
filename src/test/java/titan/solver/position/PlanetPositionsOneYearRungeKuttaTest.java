@@ -19,7 +19,7 @@ class PlanetPositionsOneYearRungeKuttaTest {
     private static final Solver solver = new Solver();
     private static final double finalTime = 31536000;
     private static final double stepSize = 500;
-    private final double ACCURACY = 3410000000000.0;
+    private final double ACCURACY = 1180000000000.0;
     private static final Vector3d initialPosition = new Vector3d(-6371e3, 0.1, 0.1);
     private static final Vector3d initialVelocity = new Vector3d(0, 0, 0);
     private static final State initialState = new State(initialPosition, initialVelocity);
@@ -90,7 +90,7 @@ class PlanetPositionsOneYearRungeKuttaTest {
 
     private void checkPositionAfterOneYear(int i) {
         Vector3dInterface expectedPosition = positionsAfterOneYear.get(i);
-        Vector3dInterface actualPosition = states[(int) Math.ceil(finalTime / stepSize)].getSolarSystem().get(i).getPosition();
+        Vector3dInterface actualPosition = states[(int) Math.ceil(finalTime / stepSize)].getPlanetPosition(i);
         double difference = expectedPosition.dist(actualPosition);
         System.out.println(difference / 1000);
         if (difference > biggestDifference) {
@@ -121,9 +121,9 @@ class PlanetPositionsOneYearRungeKuttaTest {
         /* Titan */
         positionsAfterOneYear.add(new Vector3d(8.789384100968740E+11, -1.204002291074610E+12, -1.435729928774680E+10));
         /* Neptune */
-        positionsAfterOneYear.add(new Vector3d(2.261199091016790E+12, 1.903465617218640E+12, -2.222474353840990E+10));
-        /* Uranus */
         positionsAfterOneYear.add(new Vector3d(4.413142564759280E+12, -7.398714862901390E+11, -8.646907932385070E+10));
+        /* Uranus */
+        positionsAfterOneYear.add(new Vector3d(2.261199091016790E+12, 1.903465617218640E+12, -2.222474353840990E+10));
     }
 
 }

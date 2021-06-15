@@ -1,6 +1,5 @@
 package titan.gui;
 
-import javafx.animation.Interpolator;
 import javafx.animation.PathTransition;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -74,7 +73,7 @@ public class PlanetTransition extends GuiMain {
     private static void addPath(SolarSystem solar, int solarPosition, Path planetPath) {
         if (planetPath != null) {
             Planet planet = solar.get(solarPosition);
-            Vector3d planetVec = (Vector3d) planet.getPosition();
+            Vector3d planetVec = (Vector3d) planet.getLatestPosition();
             planetPath.getElements().add(new LineTo(centerX + (planetVec.getX() / 1e9) / distancePixel, centerY - (planetVec.getY() / 1e9) / distancePixel));
         }
     }

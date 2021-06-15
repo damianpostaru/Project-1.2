@@ -6,6 +6,7 @@ import static java.lang.Math.pow;
 import static java.lang.Math.sqrt;
 
 public class Vector3d implements Vector3dInterface {
+
     private double x;
     private double y;
     private double z;
@@ -91,5 +92,9 @@ public class Vector3d implements Vector3dInterface {
     @Override
     public String toString() {
         return "(" + x + "," + y + "," + z + ")";
+    }
+
+    public Vector3d copy() {
+        return new Vector3d(x, y, z);
     }
 }

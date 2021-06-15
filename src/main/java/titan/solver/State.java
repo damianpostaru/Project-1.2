@@ -3,30 +3,70 @@ package titan.solver;
 import titan.interfaces.RateInterface;
 import titan.interfaces.StateInterface;
 import titan.interfaces.Vector3dInterface;
+import titan.space.Planet;
+import titan.space.Shuttle;
 import titan.space.SolarSystem;
 import titan.space.Vector3d;
 
+import java.util.List;
+
 public class State implements StateInterface {
 
-    private final SolarSystem solarSystem;
+    public static SolarSystem solarSystem;
+    private int stateIndex;
     private final Vector3dInterface initialPosition;
     private final Vector3dInterface initialVelocity;
 
     public State(Vector3dInterface initialPosition, Vector3dInterface initialVelocity) {
-        this.initialPosition = initialPosition;
+        stateIndex = 0;
+        solarSystem = SolarSystem.getInstance(initialPosition, initialVelocity);
         this.initialVelocity = initialVelocity;
-        solarSystem = new SolarSystem(initialPosition, initialVelocity);
+        this.initialPosition = initialPosition;
+    }
+
+    public State newState() {
+        State newState = new State(initialPosition, initialVelocity);
+        newState.stateIndex = this.stateIndex + 1;
+        return newState;
     }
 
     public StateInterface addMul(double step, RateInterface rate) {
-        State nextState = cloneState();
-        SolarSystem solarSystem = nextState.getSolarSystem();
+        State nextState = new State(initialPosition, initialVelocity);
         Rate r = (Rate) rate;
         Vector3d[] acceleration = r.getAcceleration();
         for (int i = 0; i < solarSystem.size(); i++) {
             solarSystem.get(i).update(step, acceleration[i]);
         }
+        nextState.stateIndex = this.stateIndex + 1;
         return nextState;
+    }
+
+    public Shuttle getShuttle() {
+        return solarSystem.getShuttle();
+    }
+
+    public List<Planet> getPlanets() {
+        return solarSystem.getPlanets();
+    }
+
+    public Vector3dInterface getPlanetPosition(int planetIndex) {
+        return solarSystem.get(planetIndex).getPosition(stateIndex);
+    }
+
+    public Vector3dInterface getPlanetVelocity(int planetIndex) {
+        return solarSystem.get(planetIndex).getVelocity(stateIndex);
+    }
+
+    public Vector3dInterface getShuttlePosition() {
+        return solarSystem.getShuttle().getPosition(stateIndex);
+    }
+
+    public Vector3d[] calcAcc(double t) {
+        return solarSystem.calcAcc(t, stateIndex);
+    }
+
+    public void addPosition(int planetIndex, Vector3dInterface position) {
+        solarSystem.get(planetIndex).setPosition((Vector3d) position, stateIndex);
     }
 
     public String toString() {
@@ -35,17 +75,5 @@ public class State implements StateInterface {
 
     public SolarSystem getSolarSystem() {
         return solarSystem;
-    }
-
-    public State cloneState() {
-        State newState = new State(initialPosition, initialVelocity);
-        SolarSystem solarSystem = newState.getSolarSystem();
-        for (int i = 0; i < this.solarSystem.size(); i++) {
-            Vector3dInterface position = this.solarSystem.get(i).getPosition();
-            Vector3dInterface velocity = this.solarSystem.get(i).getVelocity();
-            solarSystem.get(i).setPosition(new Vector3d(position.getX(), position.getY(), position.getZ()));
-            solarSystem.get(i).setVelocity(new Vector3d(velocity.getX(), velocity.getY(), velocity.getZ()));
-        }
-        return newState;
     }
 }
