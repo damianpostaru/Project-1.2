@@ -1,0 +1,51 @@
+package titan_lander.interfaces;
+
+import titan.interfaces.StateInterface;
+import titan.space.Vector3d;
+
+/**
+ * class to represent the state of the lander
+ */
+public abstract class AbstractLander implements StateInterface
+{
+    private Vector3d position;//stores (x,y,theta)
+    private Vector3d velocity;//stores (x-velocity,y-velocity,angular velocity), e.g. (x_dot,y_dot,theta_dot)
+    private ControllerInterface controller;
+
+    public AbstractLander(ControllerInterface controller , Vector3d initialPos, Vector3d initialVel)
+    {
+        position = initialPos;
+        velocity = initialVel;
+        this.controller = controller;
+    }
+
+    /**
+     * Update the landers position and velocity using acceleration
+     *
+     * @param step The time-step of the update
+     * @param acc the accelleration applied on the lander
+     */
+    abstract void update(double step, Vector3d acc);
+
+
+    /**
+     * Calculate the acceleration of the lander at a specific time
+     *
+     * @param t The time to evaluate the accelaration
+     * @return a vector containing the x-accelaration, y-accelaration and the angular acceleration
+     */
+    abstract Vector3d calcAcc(double t);
+    
+    public Vector3d getPosition()
+    {
+        return position;
+    } 
+
+    public Vector3d getVelocity() {
+        return velocity;
+    }
+
+    public ControllerInterface getController() {
+        return controller;
+    }
+}
