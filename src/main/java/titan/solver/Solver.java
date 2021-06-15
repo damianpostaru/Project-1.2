@@ -75,7 +75,11 @@ public class Solver implements ODESolverInterface {
         List<Planet> planetsBackup = getPlanetsBackup((State) state);
         Rate k1 = (Rate) function.call(time, state);
         Rate k2 = (Rate) function.call(time + stepSize / 2, state.addMul(stepSize, k1.mul(0.5)));
+        State.solarSystem.setPlanets(planetsBackup);
+        planetsBackup = getPlanetsBackup((State) state);
         Rate k3 = (Rate) function.call(time + stepSize / 2, state.addMul(stepSize, k2.mul(0.5)));
+        State.solarSystem.setPlanets(planetsBackup);
+        planetsBackup = getPlanetsBackup((State) state);
         Rate k4 = (Rate) function.call(time + stepSize, state.addMul(stepSize, k3));
         Rate k = k1.add(k2.mul(2).add(k3.mul(2).add(k4)));
         State.solarSystem.setPlanets(planetsBackup);
@@ -107,7 +111,7 @@ public class Solver implements ODESolverInterface {
         Rate r = (Rate) f.call(t, currentState);
         Vector3d[] acceleration = r.getAcceleration();
         for (int i = 0; i < solarSystem.size(); i++) {
-            solarSystem.get(i).addMulPos(h * h, acceleration[i]);
+            solarSystem.get(i).addMulPos(h, acceleration[i]);
         }
         return nextState;
     }

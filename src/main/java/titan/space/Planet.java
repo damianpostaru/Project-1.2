@@ -38,7 +38,9 @@ public class Planet {
     }
 
     public void addMulPos(double scalar, Vector3dInterface other) {
-        positions.set(stateIndex, (Vector3d) positions.get(stateIndex).addMul(scalar, other));
+        Vector3d positionBackup = positions.get(stateIndex).copy();
+        positions.set(stateIndex, (Vector3d) positions.get(stateIndex).addMul(scalar * scalar, other));
+        velocities.add((Vector3d) positions.get(stateIndex).sub(positionBackup).mul(1 / scalar));
     }
 
     public void setPosition(Vector3d position) {
