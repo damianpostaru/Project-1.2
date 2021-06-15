@@ -6,7 +6,7 @@ plugins {
     id 'java'
 }
 
-mainClassName = 'io.group8.titan.TitanApplication'
+mainClassName = 'titan.gui.GuiMain'
 
 group = 'io.group8'
 version = '0.0.1-SNAPSHOT'
@@ -17,25 +17,14 @@ javafx {
     modules = ['javafx.controls']
 }
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-}
-
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
 }
 
 test {
