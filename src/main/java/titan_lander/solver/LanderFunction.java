@@ -3,7 +3,6 @@ package titan_lander.solver;
 import titan.interfaces.ODEFunctionInterface;
 import titan.interfaces.RateInterface;
 import titan.interfaces.StateInterface;
-import titan.solver.State;
 
 public class LanderFunction implements ODEFunctionInterface {
 

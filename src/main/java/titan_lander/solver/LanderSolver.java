@@ -1,20 +1,11 @@
 package titan_lander.solver;
 
-import titan.gui.PlanetTransition;
 import titan.interfaces.ODEFunctionInterface;
-import titan.interfaces.ODESolverInterface;
 import titan.interfaces.StateInterface;
-import titan.solver.Rate;
 import titan.solver.Solver;
-import titan.solver.State;
-import titan.space.SolarSystem;
-import titan.space.Vector3d;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class LanderSolver extends Solver {
-    // potential problem with extends: the accessTime variable for GUI
+    // potential problem with extends: the static accessTime variable for GUI
 
     // Runge-Kutta step with new Rate
     @Override

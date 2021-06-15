@@ -9,7 +9,6 @@ import titan_lander.interfaces.ControllerInterface;
 
 public class Lander extends AbstractLander {
 
-
     public Lander(ControllerInterface controller, Vector3d initialPos, Vector3d initialVel) {
         super(controller, initialPos, initialVel);
     }
