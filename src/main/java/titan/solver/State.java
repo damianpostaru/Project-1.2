@@ -41,16 +41,6 @@ public class State implements StateInterface {
         return nextState;
     }
 
-    public StateInterface addMulRunge(double step, RateInterface rate) {
-        State nextState = new State(initialPosition, initialVelocity);
-        Rate r = (Rate) rate;
-        Vector3d[] acceleration = r.getAcceleration();
-        for (int i = 0; i < solarSystem.size(); i++) {
-            solarSystem.get(i).update(step, acceleration[i]);
-        }
-        return nextState;
-    }
-
     public Shuttle getShuttle() {
         return solarSystem.getShuttle();
     }
