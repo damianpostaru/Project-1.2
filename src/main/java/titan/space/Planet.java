@@ -33,7 +33,7 @@ public class Planet {
 
     public void update(double step, Vector3dInterface acceleration) {
         velocities.add((Vector3d) velocities.get(stateIndex).addMul(step, acceleration));
-        positions.add((Vector3d) positions.get(stateIndex).addMul(step, velocities.get(stateIndex)));
+        positions.add((Vector3d) positions.get(stateIndex).addMul(step, velocities.get(stateIndex + 1)));
         stateIndex++;
     }
 
