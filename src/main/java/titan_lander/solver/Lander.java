@@ -19,19 +19,21 @@ public class Lander extends AbstractLander {
         super.setPosition((Vector3d) super.getPosition().addMul(step, super.getVelocity()));
     }
 
-    public Vector3d calcAcc(double t){
+    public Vector3d calcAcc(double t) {
         // calculation of the acceleration is a matter of the controller
         // Controller controller = new Controller(t);
         // return new Vector3d(controller.getX(),controller.getY(),controller.getTheta());
         return null;
     }
 
-
-    // don't have to print the trajectory this time
-    // so no clone should be done
     @Override
     public StateInterface addMul(double step, RateInterface rate) {
-        this.update(step,((LanderRate) rate).getAcceleration());
-        return this;
+        Lander newLander = (Lander) cloneLander(this);
+        newLander.update(step, ((LanderRate) rate).getAcceleration());
+        return newLander;
+    }
+
+    public StateInterface cloneLander(Lander lander) {
+        return new Lander(lander.getController(), lander.getPosition(), lander.getVelocity());
     }
 }
