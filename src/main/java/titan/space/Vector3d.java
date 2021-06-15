@@ -65,6 +65,15 @@ public class Vector3d implements Vector3dInterface {
         return new Vector3d(x * scalar, y * scalar, z * scalar);
     }
 
+//    /**
+//     * The matrix multiplication
+//     * @param num treated as a one-row and one-column matrix
+//     * @return
+//     */
+//    public double vectorMul(double num) {
+//        return (this.x * num + this.y * num + this.z * num);
+//    }
+
     @Override
     public Vector3dInterface addMul(double scalar, Vector3dInterface other) {
         return add(other.mul(scalar));
