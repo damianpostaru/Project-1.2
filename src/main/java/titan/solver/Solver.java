@@ -39,14 +39,18 @@ public class Solver implements ODESolverInterface {
         // bootstrap to get the last 2 positions using Runge-Kutta Solver
         states[1] = step(function, time, initialState, stepSize);
         time = time + stepSize;
-
+        System.out.println("0%");
         for (int i = 2; i < states.length; i++) {
             states[i] = verletStep(function, time, states[i - 2], states[i - 1], stepSize);
-            PlanetTransition.addPath((State) states[i]);
             if ((finalTime - time) / stepSize < 1) {
                 time += (finalTime - time) % stepSize;
             } else {
                 time += stepSize;
+            }
+
+            if(time % 100000 == 0)
+            {
+                System.out.println("\r" + time/finalTime * 100 + "%");
             }
             accessTimes.add(time);
         }
@@ -65,6 +69,7 @@ public class Solver implements ODESolverInterface {
             } else {
                 time += stepSize;
             }
+
             accessTimes.add(time);
         }
         return states;

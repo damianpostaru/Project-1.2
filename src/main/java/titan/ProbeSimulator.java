@@ -1,5 +1,6 @@
 package titan;
 
+import titan.gui.PlanetTransition;
 import titan.interfaces.ProbeSimulatorInterface;
 import titan.interfaces.Vector3dInterface;
 import titan.solver.Function;
@@ -36,12 +37,16 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         for (int i = 0; i < states.length; i++) {
             trajectory[i] = states[i].getShuttlePosition();
 //            System.out.println(trajectory[i]);
-
+            //PlanetTransition.addPath( states[i]);
             double dist = states[i].getPlanetPosition(planetID).dist(states[i].getShuttlePosition());
             if (dist < bestDist) {
                 bestIndex = i;
                 bestDist = dist;
                 bestTime = i * stepSize;
+            }
+            if(i*stepSize % 100000 == 0)
+            {
+                System.out.println("\r" + i*stepSize/finalTime * 100 + "%");
             }
 
         }

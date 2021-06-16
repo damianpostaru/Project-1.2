@@ -1,5 +1,6 @@
 package titan.gui;
 
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.event.EventHandler;
@@ -18,6 +19,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import titan.ProbeSimulator;
 import titan.interfaces.Vector3dInterface;
+import titan.solver.State;
 import titan.space.Vector3d;
 
 import java.util.Timer;
@@ -25,15 +27,15 @@ import java.util.TimerTask;
 
 public class GuiMain extends Application {
 
-    static CelestialBody sun, earth, mercury, venus, moon, mars, jupiter, saturn, titan, probe, neptune, uranus;
+    static CelestialBody[] planetBodies = new CelestialBody[12];//sun, earth, mercury, venus, moon, mars, jupiter, saturn, titan, probe, neptune, uranus;
     static Rectangle2D screenBounds;
     protected static Stage singleStage;
     protected static Scene introScene, visualiserScene;
     public static Button beginButton, probeLaunch, exitButton;
     public static double centerX, centerY, distancePixel;
-    public static Path sunPath, mercuryPath, venusPath, earthPath, moonPath, marsPath, jupiterPath, saturnPath, titanPath, probePath, neptunePath, uranusPath;
+    public static Timeline[] planetPaths = new Timeline[12];//sunPath, mercuryPath, venusPath, earthPath, moonPath, marsPath, jupiterPath, saturnPath, titanPath, probePath, neptunePath, uranusPath;
     public static VBox infoBox;
-    public static HBox sunBox, mercuryBox, venusBox, earthBox, moonBox, marsBox, jupiterBox, saturnBox, titanBox, probeBox, neptuneBox, uranusBox;
+    public static HBox[] planetContainers = new HBox[12];//sunBox, mercuryBox, venusBox, earthBox, moonBox, marsBox, jupiterBox, saturnBox, titanBox, probeBox, neptuneBox, uranusBox;
     private static Vector3dInterface initialPosition, initialVelocity;
 
     // Timer Related Variables
@@ -44,6 +46,11 @@ public class GuiMain extends Application {
     protected static boolean isTimerTaskRunning;
     protected static int timerTime;
 
+    //Animation time related variables
+    protected static double keyTime;
+    protected static final double finalTime = 2.95217E8;
+    protected static final double timeStep = 500;
+
     // Zoom Related Variables
     protected static DoubleProperty scrollScale;
     protected static Pane zoomPane;
@@ -53,6 +60,9 @@ public class GuiMain extends Application {
     public static void main(String[] args) {
         initialPosition = new Vector3d(-6371e3, 0.1, 0.1);
         initialVelocity = new Vector3d(0, 0, 0); // new Vector3d(18044.44, -29351.0, -819.35);
+        double MaxAnimationTimeInMillis = 30000;
+        double timesteps = finalTime/timeStep;
+        keyTime = MaxAnimationTimeInMillis/timesteps;
         launch(args);
     }
 
@@ -80,9 +90,8 @@ public class GuiMain extends Application {
         VisualiserScene.setVisualiserScene();
 
         PlanetTransition.createPath();
-//2.95217E8, 500
-        (new ProbeSimulator()).trajectory(initialPosition, initialVelocity, 2.95217E8, 500);
-
+        //2.95217E8, 500
+        (new ProbeSimulator()).trajectory(initialPosition, initialVelocity, finalTime , timeStep);
         singleStage.setFullScreen(true);
         singleStage.setResizable(false);
         singleStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);

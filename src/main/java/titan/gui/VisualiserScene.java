@@ -3,7 +3,9 @@ package titan.gui;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
@@ -25,23 +27,12 @@ public class VisualiserScene extends GuiMain {
         exitButton = new Button("Exit Simulation!");
         probeLaunch.setOnAction(e -> {
             startTimerTask();
-            PlanetTransition.transition(mercury, mercuryPath);
-            PlanetTransition.transition(venus, venusPath);
-            PlanetTransition.transition(earth, earthPath);
-            PlanetTransition.transition(moon, moonPath);
-            PlanetTransition.transition(mars, marsPath);
-            PlanetTransition.transition(jupiter, jupiterPath);
-            PlanetTransition.transition(saturn, saturnPath);
-            PlanetTransition.transition(titan, titanPath);
-            PlanetTransition.transition(probe, probePath);
-            PlanetTransition.transition(neptune, neptunePath);
-            PlanetTransition.transition(uranus, uranusPath);
+            for (int i = 0; i < planetPaths.length; i++) {
+                PlanetTransition.transition( planetPaths[i]);
+            }
         });
 
         exitButton.setOnAction(e -> System.exit(0));
-
-
-
 
         Slider slider1 = new Slider();
 
@@ -52,9 +43,6 @@ public class VisualiserScene extends GuiMain {
         slider1.setLayoutY( 200);
         slider1.setShowTickLabels(false);
         slider1.setStyle("-fx-base: yellow");
-
-
-
 
         Translate translate = new Translate();
 
@@ -84,21 +72,9 @@ public class VisualiserScene extends GuiMain {
             }
         });
 
-        probe.getBody().getTransforms().add(translate);
-        sun.getBody().getTransforms().add(translate);
-        earth.getBody().getTransforms().add(translate);
-        mercury.getBody().getTransforms().add(translate);
-        moon.getBody().getTransforms().add(translate);
-        venus.getBody().getTransforms().add(translate);
-        titan.getBody().getTransforms().add(translate);
-        saturn.getBody().getTransforms().add(translate);
-        mars.getBody().getTransforms().add(translate);
-        jupiter.getBody().getTransforms().add(translate);
-        neptune.getBody().getTransforms().add(translate);
-        uranus.getBody().getTransforms().add(translate);
-
-
-
+        for (int i = 0; i < planetBodies.length; i++) {
+            planetBodies[i].getBody().getTransforms().add(translate);
+        }
 
         InfoScreen.run();
 
@@ -106,7 +82,11 @@ public class VisualiserScene extends GuiMain {
         zoomPane = new Pane();
         zoomPane.scaleXProperty().bind(scrollScale);
         zoomPane.scaleYProperty().bind(scrollScale);
-        zoomPane.getChildren().addAll(sun.getBody(), earth.getBody(), mercury.getBody(), venus.getBody(), moon.getBody(), mars.getBody(), jupiter.getBody(), saturn.getBody(), uranus.getBody(), neptune.getBody(), titan.getBody(), probe.getBody());
+
+        ObservableList<Node> zoomChildren = zoomPane.getChildren();
+        for (int i = 0; i < planetBodies.length; i++) {
+            zoomChildren.add(planetBodies[i].getBody());
+        }
         // Initially displayed Solar System position
         zoomPane.setTranslateX(-screenBounds.getWidth() / 4);
         zoomPane.setTranslateY(-screenBounds.getHeight() / 4);
