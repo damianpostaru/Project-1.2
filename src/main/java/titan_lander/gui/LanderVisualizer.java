@@ -32,7 +32,6 @@ public class LanderVisualizer extends Application
     static final double CONVERSION_FACTOR = 3.2000e-03;
     public static Pane pathLines;
     public static Path landerPath;
-    public static Circle node;
     public static Vector3d firstVector;
     public static Image landerSprite;
     public static ImageView landerView;
@@ -57,11 +56,10 @@ public class LanderVisualizer extends Application
 
         for (int i = 0; i < landerPathVectors.length; i++)
         {
-            landerPathVectors[i] = new Vector3d(0,height - (i * (height/ landerPathVectors.length)),i);
+            landerPathVectors[i] = new Vector3d(0,height - (Math.pow(1.3,i)),i);
         }
 
         firstVector = metersToPixels(landerPathVectors[0]);
-        node = new Circle(firstVector.getX(),firstVector.getY(),25);
 
 
 
