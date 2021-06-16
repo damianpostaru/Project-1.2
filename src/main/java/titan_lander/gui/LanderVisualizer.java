@@ -2,7 +2,6 @@ package titan_lander.gui;
 
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -10,12 +9,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.LineTo;
 import javafx.scene.shape.Path;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import titan.interfaces.StateInterface;
 import titan.space.Vector3d;
+import titan_lander.solver.Lander;
 
 //Class to visualize a path, will create a window and show the lander at each position including the previous path
 
@@ -101,5 +100,13 @@ public class LanderVisualizer extends Application
         output[i] = new Vector3d(0,height - (Math.pow(1.3,i)),i);
         }
         return output;
+    }
+
+    private Vector3d[] getPathVectors(StateInterface[] states){
+        Vector3d[] path = new Vector3d[states.length];
+        for (int i = 0; i < states.length; i++) {
+            path[i] = ((Lander)states[i]).getPosition();
+        }
+        return path;
     }
 }
