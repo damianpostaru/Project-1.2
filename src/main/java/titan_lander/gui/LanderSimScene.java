@@ -62,20 +62,14 @@ public class LanderSimScene extends LanderVisualizer
         Timeline timeline = new Timeline();
         timeline.setCycleCount(1);
         timeline.setAutoReverse(false);
-        Vector3d v1 = metersToPixels(landerPathVectors[0]);
 
-        timeline.getKeyFrames().add(new KeyFrame(Duration.ZERO,
-                new KeyValue(landerView.rotateProperty(),v1.getZ()),
-                new KeyValue(landerView.xProperty(),v1.getX()),
-                new KeyValue(landerView.yProperty(),v1.getY())));
-
-        for (int i = 1; i < landerPathVectors.length; i++)
+        for (int i = 0; i < landerPathVectors.length; i++)
         {
             Vector3d v = metersToPixels(landerPathVectors[i]);
 
             KeyValue rotation = new KeyValue(landerView.rotateProperty(),v.getZ());
-            KeyValue xPos = new KeyValue(landerView.xProperty(),v.getX());
-            KeyValue yPos = new KeyValue(landerView.yProperty(),v.getY());
+            KeyValue xPos = new KeyValue(landerView.xProperty(),v.getX() - imgSize/2);
+            KeyValue yPos = new KeyValue(landerView.yProperty(),v.getY() - imgSize/2);
             timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10 * i),rotation,xPos,yPos));
         }
         System.out.println("OI");
