@@ -13,41 +13,41 @@ public class Util extends GuiMain {
 
         distancePixel = 3000 / screenBounds.getHeight();
 
-        sun = new CelestialBody("Sun", centerX + (((-6.806783239281648e8) / (1e9)) / distancePixel), centerY - (((1.080005533878725e9) / (1e9)) / distancePixel), 15);
-        sun.getBody().getStyleClass().add("sun");
+        planetBodies[0] = new CelestialBody("Sun", centerX + (((-6.806783239281648e8) / (1e9)) / distancePixel), centerY - (((1.080005533878725e9) / (1e9)) / distancePixel), 15);
+        planetBodies[0].getBody().getStyleClass().add("sun");
 
-        earth = new CelestialBody("Earth", centerX + (((-1.471922101663588e11) / (1e9)) / distancePixel), centerY - (((-2.860995816266412e10) / (1e9)) / distancePixel), 11);
-        earth.getBody().getStyleClass().add("earth");
+        planetBodies[1] = new CelestialBody("Mercury", centerX + (((6.047855986424127e6) / (1e9)) / distancePixel), centerY - (((-6.801800047868888e10) / (1e9)) / distancePixel), 6);
+        planetBodies[1].getBody().getStyleClass().add("mercury");
 
-        mercury = new CelestialBody("Mercury", centerX + (((6.047855986424127e6) / (1e9)) / distancePixel), centerY - (((-6.801800047868888e10) / (1e9)) / distancePixel), 6);
-        mercury.getBody().getStyleClass().add("mercury");
+        planetBodies[2] = new CelestialBody("Venus", centerX + (((-9.435345478592035e10) / (1e9)) / distancePixel), centerY - (((5.350359551033670e10) / (1e9)) / distancePixel), 7);
+        planetBodies[2].getBody().getStyleClass().add("venus");
 
-        venus = new CelestialBody("Venus", centerX + (((-9.435345478592035e10) / (1e9)) / distancePixel), centerY - (((5.350359551033670e10) / (1e9)) / distancePixel), 7);
-        venus.getBody().getStyleClass().add("venus");
+        planetBodies[3] = new CelestialBody("Earth", centerX + (((-1.471922101663588e11) / (1e9)) / distancePixel), centerY - (((-2.860995816266412e10) / (1e9)) / distancePixel), 11);
+        planetBodies[3].getBody().getStyleClass().add("earth");
 
-        moon = new CelestialBody("Moon", centerX + (((-1.472343904597218e11) / (1e9)) / distancePixel), centerY - (((-2.822578361503422e10) / (1e9)) / distancePixel), 5);
-        moon.getBody().getStyleClass().add("moon");
+        planetBodies[4] = new CelestialBody("Moon", centerX + (((-1.472343904597218e11) / (1e9)) / distancePixel), centerY - (((-2.822578361503422e10) / (1e9)) / distancePixel), 5);
+        planetBodies[4].getBody().getStyleClass().add("moon");
 
-        mars = new CelestialBody("Mars", centerX + (((-3.615638921529161e10) / (1e9)) / distancePixel), centerY - (((-2.167633037046744e11) / (1e9)) / distancePixel), 7);
-        mars.getBody().getStyleClass().add("mars");
+        planetBodies[5] = new CelestialBody("Mars", centerX + (((-3.615638921529161e10) / (1e9)) / distancePixel), centerY - (((-2.167633037046744e11) / (1e9)) / distancePixel), 7);
+        planetBodies[5].getBody().getStyleClass().add("mars");
 
-        jupiter = new CelestialBody("Jupiter", centerX + (((1.781303138592153e11) / (1e9)) / distancePixel), centerY - (((-7.551118436250277e11) / (1e9)) / distancePixel), 13);
-        jupiter.getBody().getStyleClass().add("jupiter");
+        planetBodies[6] = new CelestialBody("Jupiter", centerX + (((1.781303138592153e11) / (1e9)) / distancePixel), centerY - (((-7.551118436250277e11) / (1e9)) / distancePixel), 13);
+        planetBodies[6].getBody().getStyleClass().add("jupiter");
 
-        saturn = new CelestialBody("Saturn", centerX + (((6.328646641500651e11) / (1e9)) / distancePixel), centerY - (((-1.358172804527507e12) / (1e9)) / distancePixel), 13);
-        saturn.getBody().getStyleClass().add("saturn");
+        planetBodies[7] = new CelestialBody("Saturn", centerX + (((6.328646641500651e11) / (1e9)) / distancePixel), centerY - (((-1.358172804527507e12) / (1e9)) / distancePixel), 13);
+        planetBodies[7].getBody().getStyleClass().add("saturn");
 
-        titan = new CelestialBody("Titan", centerX + (((6.332873118527889e11) / (1e9)) / distancePixel), centerY - (((-1.357175556995868e12) / (1e9)) / distancePixel), 6);
-        titan.getBody().getStyleClass().add("titan");
+        planetBodies[8] = new CelestialBody("Titan", centerX + (((6.332873118527889e11) / (1e9)) / distancePixel), centerY - (((-1.357175556995868e12) / (1e9)) / distancePixel), 6);
+        planetBodies[8].getBody().getStyleClass().add("titan");
 
-        probe = new CelestialBody("Probe", centerX + (((-1.471922101663588e11) / (1e9)) / distancePixel) + (0.1 / 1e9), centerY - (((-2.860995816266412e10) / (1e9)) / distancePixel) - (6371e3 / 1e9), 4);
-        probe.getBody().getStyleClass().add("probe");
+        planetBodies[9] = new CelestialBody("Neptune", centerX + (((4.382692942729203e12) / (1e9)) / distancePixel), centerY - (((-9.093501655486243e11) / (1e9)) / distancePixel), 15);
+        planetBodies[9].getBody().getStyleClass().add(("neptune"));
 
-        neptune = new CelestialBody("Neptune", centerX + (((4.382692942729203e12) / (1e9)) / distancePixel), centerY - (((-9.093501655486243e11) / (1e9)) / distancePixel), 15);
-        neptune.getBody().getStyleClass().add(("neptune"));
+        planetBodies[10] = new CelestialBody("Uranus", centerX + (((2.395195786685187e12) / (1e9)) / distancePixel), centerY - (((1.744450959214586e12) / (1e9)) / distancePixel), 15);
+        planetBodies[10].getBody().getStyleClass().add("uranus");
 
-        uranus = new CelestialBody("Uranus", centerX + (((2.395195786685187e12) / (1e9)) / distancePixel), centerY - (((1.744450959214586e12) / (1e9)) / distancePixel), 15);
-        uranus.getBody().getStyleClass().add("uranus");
+        planetBodies[11] = new CelestialBody("Probe", centerX + (((-1.471922101663588e11) / (1e9)) / distancePixel) + (0.1 / 1e9), centerY - (((-2.860995816266412e10) / (1e9)) / distancePixel) - (6371e3 / 1e9), 4);
+        planetBodies[11].getBody().getStyleClass().add("probe");
     }
 
     /**

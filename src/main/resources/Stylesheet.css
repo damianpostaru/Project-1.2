@@ -36,6 +36,10 @@
     /*-fx-background-color: black;*/
 }
 
+.landerBackground {
+    -fx-background-image: url('LanderBackground.png');
+}
+
 
 .sun {
     -fx-fill: #ebc728;

@@ -1,6 +1,11 @@
 package titan.gui;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
 import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -10,6 +15,8 @@ import titan.space.Planet;
 import titan.space.SolarSystem;
 import titan.space.Vector3d;
 
+import java.util.List;
+
 public class PlanetTransition extends GuiMain {
 
     public static void createPath() {
@@ -18,72 +25,48 @@ public class PlanetTransition extends GuiMain {
     }
 
     private static void addAllStartPos() {
-        addStartPos(sunPath, sun);
-        addStartPos(mercuryPath, mercury);
-        addStartPos(venusPath, venus);
-        addStartPos(earthPath, earth);
-        addStartPos(moonPath, moon);
-        addStartPos(marsPath, mars);
-        addStartPos(jupiterPath, jupiter);
-        addStartPos(saturnPath, saturn);
-        addStartPos(titanPath, titan);
-        addStartPos(probePath, probe);
-        addStartPos(neptunePath, neptune);
-        addStartPos(uranusPath, uranus);
-    }
-
-    public static void addStartPos(Path planetPath, CelestialBody planet) {
-        planetPath.getElements().add(new MoveTo(planet.getX(), planet.getY()));
-    }
-
-    private static void instantiatePaths() {
-        sunPath = new Path();
-        mercuryPath = new Path();
-        venusPath = new Path();
-        earthPath = new Path();
-        moonPath = new Path();
-        marsPath = new Path();
-        jupiterPath = new Path();
-        saturnPath = new Path();
-        titanPath = new Path();
-        probePath = new Path();
-        neptunePath = new Path();
-        uranusPath = new Path();
-    }
-
-
-    public static void addPath(State position) {
-        SolarSystem solar = position.getSolarSystem();
-
-        addPath(solar, 0, sunPath);
-        addPath(solar, 1, mercuryPath);
-        addPath(solar, 2, venusPath);
-        addPath(solar, 3, earthPath);
-        addPath(solar, 4, moonPath);
-        addPath(solar, 5, marsPath);
-        addPath(solar, 6, jupiterPath);
-        addPath(solar, 7, saturnPath);
-        addPath(solar, 8, titanPath);
-        addPath(solar, 9, neptunePath);
-        addPath(solar, 10, uranusPath);
-        addPath(solar, 11, probePath);
-
-    }
-
-    private static void addPath(SolarSystem solar, int solarPosition, Path planetPath) {
-        if (planetPath != null) {
-            Planet planet = solar.get(solarPosition);
-            Vector3d planetVec = (Vector3d) planet.getLatestPosition();
-            planetPath.getElements().add(new LineTo(centerX + (planetVec.getX() / 1e9) / distancePixel, centerY - (planetVec.getY() / 1e9) / distancePixel));
+        for (int i = 0; i < planetPaths.length ; i++) {
+            addStartPos(planetPaths[i], planetBodies[i]);
         }
     }
 
-    public static void transition(CelestialBody node, Path nodePath) {
-        PathTransition bodyTransition = new PathTransition();
-        //bodyTransition.setInterpolator(Interpolator.DISCRETE);
-        bodyTransition.setDuration(Duration.seconds(15));
-        bodyTransition.setNode(node.getBody());
-        bodyTransition.setPath(nodePath);
-        bodyTransition.play();
+    public static void addStartPos(Timeline planetPath, CelestialBody planet) {
+        Circle body = planet.getBody();
+        KeyValue X = new KeyValue(body.centerXProperty(),planet.getX());
+        KeyValue Y = new KeyValue(body.centerYProperty(),planet.getY());
+        planetPath.getKeyFrames().add(new KeyFrame(Duration.ZERO,X,Y));
+    }
+
+    private static void instantiatePaths() {
+        for (int i = 0; i < planetPaths.length; i++) {
+            planetPaths[i] = new Timeline();
+        }
+    }
+
+
+    public static void addPath(State[] states) {
+        SolarSystem solar = states[0].getSolarSystem();//only one instance of the solar system
+        for (int q = 0; q < planetPaths.length; q++)
+        {
+            ObservableList<KeyFrame> keyframes = planetPaths[q].getKeyFrames();
+            List<Vector3d> positions = solar.get(q).getPositions();
+            int size = 0;
+            System.out.println("PLanet: " + q);
+            //due to performance reasons we can add all timesteps to the animation
+            for (int i = 0; i < positions.size(); i += 100)
+            {
+                Vector3d v = positions.get(i);
+                KeyValue X = new KeyValue(planetBodies[q].getBody().centerXProperty(),centerX + (v.getX() / 1e9) / distancePixel);
+                KeyValue Y = new KeyValue(planetBodies[q].getBody().centerYProperty(),centerY - (v.getY() / 1e9) / distancePixel);
+                size++;
+                keyframes.add(new KeyFrame(Duration.millis(i * keyTime),X,Y));
+            }
+        }
+    }
+
+    public static void transition(Timeline nodePath) {
+        nodePath.setCycleCount(1);
+        nodePath.setAutoReverse(false);
+        nodePath.play();
     }
 }

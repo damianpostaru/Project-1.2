@@ -63,6 +63,9 @@ public class Planet {
     public Vector3dInterface getPosition(int index) {
         return positions.get(index);
     }
+    public List<Vector3d> getPositions() {
+        return positions;
+    }
 
     public Vector3dInterface getVelocity() {
         return velocities.get(stateIndex);
