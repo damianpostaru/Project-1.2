@@ -1,7 +1,9 @@
 package titan.gui;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -10,138 +12,110 @@ import javafx.scene.shape.Circle;
 
 public class InfoScreen extends GuiMain {
 
-    public static Label planetLabel, sunLabel, mercuryLabel, venusLabel, earthLabel, moonLabel,
-    marsLabel, jupiterLabel, saturnLabel, titanLabel, probeLabel, uranusLabel, neptuneLabel;
+    public static Label[] planetLabels = new Label[13];//planetLabel, sunLabel, mercuryLabel, venusLabel, earthLabel, moonLabel,
+   // marsLabel, jupiterLabel, saturnLabel, titanLabel, probeLabel, uranusLabel, neptuneLabel;
 
-    public static Circle sun2, mercury2, venus2, earth2, moon2, mars2, jupiter2, saturn2, titan2,
-    probe2, uranus2, neptune2;
+    public static Circle[] circles = new Circle[12];//sun2, mercury2, venus2, earth2, moon2, mars2, jupiter2, saturn2, titan2,
+    // probe2, uranus2, neptune2;
 
     public static void run() {
         labelCreator();
         circleCreator();
 
-        sunBox = new HBox(25);
-        sunBox.getChildren().addAll(sunLabel, sun2);
+        for (int q = 1; q < planetLabels.length; q++) {
+            planetContainers[q-1] = new HBox(25);
+            planetContainers[q-1].getChildren().addAll(planetLabels[q], circles[q-1]);
+        }
 
-        mercuryBox = new HBox(25);
-        mercuryBox.getChildren().addAll(mercuryLabel, mercury2);
-
-        venusBox = new HBox(25);
-        venusBox.getChildren().addAll(venusLabel, venus2);
-
-        earthBox = new HBox(25);
-        earthBox.getChildren().addAll(earthLabel, earth2);
-
-        moonBox = new HBox(25);
-        moonBox.getChildren().addAll(moonLabel, moon2);
-
-        marsBox = new HBox(25);
-        marsBox.getChildren().addAll(marsLabel, mars2);
-
-        jupiterBox = new HBox(25);
-        jupiterBox.getChildren().addAll(jupiterLabel, jupiter2);
-
-        saturnBox = new HBox(25);
-        saturnBox.getChildren().addAll(saturnLabel, saturn2);
-
-        titanBox = new HBox(25);
-        titanBox.getChildren().addAll(titanLabel, titan2);
-
-        uranusBox = new HBox(25);
-        uranusBox.getChildren().addAll(uranusLabel, uranus2);
-
-        neptuneBox = new HBox(25);
-        neptuneBox.getChildren().addAll(neptuneLabel, neptune2);
-
-        probeBox = new HBox(25);
-        probeBox.getChildren().addAll(probeLabel, probe2);
 
         infoBox = new VBox(screenBounds.getHeight()/(20*2));
-        infoBox.getChildren().addAll(planetLabel, sunBox, mercuryBox, venusBox, earthBox, moonBox
-                , marsBox, jupiterBox, saturnBox, titanBox, uranusBox, neptuneBox, probeBox,
-                probeLaunch,
-                exitButton);
+        ObservableList<Node> children = infoBox.getChildren();
+        children.add(planetLabels[0]);
+        for (int i = 0; i < planetContainers.length; i++) {
+            children.add(planetContainers[i]);
+        }
+        children.addAll(probeLaunch,exitButton);
         infoBox.setPadding(new Insets(0, 50, 0, 0));
         infoBox.getStyleClass().add("Label");
         infoBox.setAlignment(Pos.CENTER);
     }
 
     public static void labelCreator() {
-        planetLabel = new Label("Planets: ");
-        planetLabel.getStyleClass().add("planetLabel");
+        planetLabels[0] = new Label("Planets: ");
+        planetLabels[0].getStyleClass().add("planetLabel");
 
-        sunLabel = new Label("Sun");
-        sunLabel.getStyleClass().add("planetLabel");
+        planetLabels[1] = new Label("Sun");
+        planetLabels[1].getStyleClass().add("planetLabel");
 
-        mercuryLabel = new Label("Mercury");
-        mercuryLabel.getStyleClass().add("planetLabel");
+        planetLabels[2] = new Label("Mercury");
+        planetLabels[2].getStyleClass().add("planetLabel");
 
-        venusLabel = new Label("Venus");
-        venusLabel.getStyleClass().add("planetLabel");
+        planetLabels[3] = new Label("Venus");
+        planetLabels[3].getStyleClass().add("planetLabel");
 
-        earthLabel = new Label("Earth");
-        earthLabel.getStyleClass().add("planetLabel");
+        planetLabels[4] = new Label("Earth");
+        planetLabels[4].getStyleClass().add("planetLabel");
 
-        moonLabel = new Label("Moon");
-        moonLabel.getStyleClass().add("planetLabel");
+        planetLabels[5] = new Label("Moon");
+        planetLabels[5].getStyleClass().add("planetLabel");
 
-        marsLabel = new Label("Mars");
-        marsLabel.getStyleClass().add("planetLabel");
+        planetLabels[6] = new Label("Mars");
+        planetLabels[6].getStyleClass().add("planetLabel");
 
-        jupiterLabel = new Label("Jupiter");
-        jupiterLabel.getStyleClass().add("planetLabel");
+        planetLabels[7] = new Label("Jupiter");
+        planetLabels[7].getStyleClass().add("planetLabel");
 
-        saturnLabel = new Label("Saturn");
-        saturnLabel.getStyleClass().add("planetLabel");
+        planetLabels[8] = new Label("Saturn");
+        planetLabels[8].getStyleClass().add("planetLabel");
 
-        titanLabel = new Label("Titan");
-        titanLabel.getStyleClass().add("planetLabel");
+        planetLabels[9] = new Label("Titan");
+        planetLabels[9].getStyleClass().add("planetLabel");
 
-        probeLabel = new Label("Probe");
-        probeLabel.getStyleClass().add("planetLabel");
+        planetLabels[10] = new Label("Probe");
+        planetLabels[10].getStyleClass().add("planetLabel");
 
-        uranusLabel = new Label("Uranus");
-        uranusLabel.getStyleClass().add("planetLabel");
+        planetLabels[11] = new Label("Uranus");
+        planetLabels[11].getStyleClass().add("planetLabel");
 
-        neptuneLabel = new Label("Neptune");
-        neptuneLabel.getStyleClass().add("planetLabel");
+        planetLabels[12] = new Label("Neptune");
+        planetLabels[12].getStyleClass().add("planetLabel");
     }
 
     public static void circleCreator() {
-        sun2 = new Circle(15);
-        sun2.getStyleClass().add("sun");
+        circles[0] = new Circle(15);
+        circles[0].getStyleClass().add("sun");
 
-        mercury2 = new Circle(6);
-        mercury2.getStyleClass().add("mercury");
+        circles[1] = new Circle(6);
+        circles[1].getStyleClass().add("mercury");
 
-        venus2 = new Circle(7);
-        venus2.getStyleClass().add("venus");
+        circles[2] = new Circle(7);
+        circles[2].getStyleClass().add("venus");
 
-        earth2 = new Circle(11);
-        earth2.getStyleClass().add("earth");
+        circles[3] = new Circle(11);
+        circles[3].getStyleClass().add("earth");
 
-        moon2 = new Circle(5);
-        moon2.getStyleClass().add("moon");
+        circles[4] = new Circle(5);
+        circles[4].getStyleClass().add("moon");
 
-        mars2 = new Circle(7);
-        mars2.getStyleClass().add("mars");
+        circles[5] = new Circle(7);
+        circles[5].getStyleClass().add("mars");
 
-        jupiter2 = new Circle(13);
-        jupiter2.getStyleClass().add("jupiter");
+        circles[6] = new Circle(13);
+        circles[6].getStyleClass().add("jupiter");
 
-        saturn2 = new Circle(13);
-        saturn2.getStyleClass().add("saturn");
+        circles[7] = new Circle(13);
+        circles[7].getStyleClass().add("saturn");
 
-        titan2 = new Circle(6);
-        titan2.getStyleClass().add("titan");
+        circles[8] = new Circle(6);
+        circles[8].getStyleClass().add("titan");
 
-        probe2 = new Circle(4);
-        probe2.getStyleClass().add("probe");
+        circles[9] = new Circle(4);
+        circles[9].getStyleClass().add("probe");
 
-        uranus2 = new Circle(15);
-        uranus2.getStyleClass().add("uranus");
+        circles[10] = new Circle(15);
+        circles[10].getStyleClass().add("uranus");
 
-        neptune2 = new Circle(15);
-        neptune2.getStyleClass().add("neptune");
+        circles[11] = new Circle(15);
+        circles[11].getStyleClass().add("neptune");
     }
 }
