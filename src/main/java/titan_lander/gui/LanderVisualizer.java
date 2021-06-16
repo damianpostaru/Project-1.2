@@ -35,6 +35,7 @@ public class LanderVisualizer extends Application
     public static Vector3d firstVector;
     public static Image landerSprite;
     public static ImageView landerView;
+    public static final double imgSize = 100;
     public static final double totalTime = 15*1000;
     @Override
     public void start(Stage primaryStage)
@@ -51,17 +52,9 @@ public class LanderVisualizer extends Application
         //get the path of the lander from the simulation:
 
         //temporary solution until we made the simulation work
-        landerPathVectors = new Vector3d[1000];
-        double height = 200000;
-
-        for (int i = 0; i < landerPathVectors.length; i++)
-        {
-            landerPathVectors[i] = new Vector3d(0,height - (Math.pow(1.3,i)),i);
-        }
+        landerPathVectors = getPathVectors();
 
         firstVector = metersToPixels(landerPathVectors[0]);
-
-
 
         LanderIntroScene.setIntroScene();
         LanderSimScene.setVisualizerScene();
@@ -70,7 +63,7 @@ public class LanderVisualizer extends Application
         landerView = new ImageView(landerSprite);
         setLanderVector(landerPathVectors[0]);
         landerView.setPreserveRatio(true);
-        landerView.setFitHeight(100);
+        landerView.setFitHeight(imgSize);
 
         pathLines.getChildren().add(landerView);
 
@@ -96,7 +89,17 @@ public class LanderVisualizer extends Application
     {
         Vector3d pixelCoor = metersToPixels(state);
         landerView.setRotate(pixelCoor.getZ());//maybe update to degrees, depends on lander implementation
-        landerView.setX(pixelCoor.getX());
-        landerView.setY(pixelCoor.getY());
+        landerView.setX(pixelCoor.getX() - imgSize/2);
+        landerView.setY(pixelCoor.getY() - imgSize/2);
+    }
+
+    private Vector3d[] getPathVectors()
+    {
+        Vector3d[] output = new Vector3d[1000];
+        double height = 200000;
+        for (int i = 0; i < output.length; i++) {
+        output[i] = new Vector3d(0,height - (Math.pow(1.3,i)),i);
+        }
+        return output;
     }
 }
