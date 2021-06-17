@@ -70,9 +70,8 @@ public class LanderSimScene extends LanderVisualizer
             KeyValue rotation = new KeyValue(landerView.rotateProperty(),v.getZ());
             KeyValue xPos = new KeyValue(landerView.xProperty(),v.getX() - imgSize/2);
             KeyValue yPos = new KeyValue(landerView.yProperty(),v.getY() - imgSize/2);
-            timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10 * i),rotation,xPos,yPos));
+            timeline.getKeyFrames().add(new KeyFrame(Duration.millis(totalAnimTime/(finalTime/timeStep) * i),rotation,xPos,yPos));
         }
-        System.out.println("OI");
         timeline.play();
     }
 }

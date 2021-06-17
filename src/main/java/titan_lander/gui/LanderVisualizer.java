@@ -41,7 +41,9 @@ public class LanderVisualizer extends Application
     public static Image landerSprite;
     public static ImageView landerView;
     public static final double imgSize = 100;
-    public static final double totalTime = 15*1000;
+    public static final double totalAnimTime = 30*1000;
+    public static final double finalTime = 15000;
+    public static final double timeStep = 60;
     @Override
     public void start(Stage primaryStage)
     {
@@ -63,7 +65,7 @@ public class LanderVisualizer extends Application
         Vector3d initialPosition = new Vector3d(1.3626e+05, 8.3107e+04, PI / 2);
         Vector3d initialVelocity = new Vector3d(0 ,0 ,0);
         StateInterface lander = new Lander(openLoopController, initialPosition, initialVelocity);
-        landerPathVectors = getPathVectors(solver.solve(function, lander, totalTime, 60));
+        landerPathVectors = getPathVectors(solver.solve(function, lander, finalTime, timeStep));
 
         firstVector = metersToPixels(landerPathVectors[0]);
 
