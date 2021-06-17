@@ -40,7 +40,7 @@ public class LanderVisualizer extends Application
     public static Vector3d firstVector;
     public static Image landerSprite;
     public static ImageView landerView;
-    public static final double imgSize = 100;
+    public static final double imgSize = 75;
     public static final double totalAnimTime = 30*1000;
     public static final double finalTime = 15000;
     public static final double timeStep = 60;
@@ -62,7 +62,7 @@ public class LanderVisualizer extends Application
         LanderSolver solver = new LanderSolver();
         LanderFunction function = new LanderFunction();
         ControllerInterface openLoopController = new OpenLoopController();
-        Vector3d initialPosition = new Vector3d(1.3626e+05, 8.3107e+04, PI / 2);
+        Vector3d initialPosition = new Vector3d(1.3626e+04, 159600, PI / 2);
         Vector3d initialVelocity = new Vector3d(0 ,0 ,0);
         StateInterface lander = new Lander(openLoopController, initialPosition, initialVelocity);
         landerPathVectors = getPathVectors(solver.solve(function, lander, finalTime, timeStep));
@@ -72,7 +72,7 @@ public class LanderVisualizer extends Application
         LanderIntroScene.setIntroScene();
         LanderSimScene.setVisualizerScene();
 
-        landerSprite = new Image("lander.png");
+        landerSprite = new Image("lander_2.png");
         landerView = new ImageView(landerSprite);
         setLanderVector(landerPathVectors[0]);
         landerView.setPreserveRatio(true);
