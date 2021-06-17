@@ -20,9 +20,7 @@ public class Lander extends AbstractLander {
 
     public Vector3d calcAcc(double t) {
         // calculation of the acceleration is a matter of the controller
-        // Controller controller = new Controller(t);
-        // return new Vector3d(controller.getX(),controller.getY(),controller.getTheta());
-        return null;
+        return new Vector3d(controller.getX(this, t), controller.getY(this, t), controller.getTheta(this, t));
     }
 
     @Override

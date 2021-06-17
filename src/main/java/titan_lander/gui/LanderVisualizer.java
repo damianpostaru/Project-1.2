@@ -14,7 +14,13 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import titan.interfaces.StateInterface;
 import titan.space.Vector3d;
+import titan_lander.interfaces.ControllerInterface;
 import titan_lander.solver.Lander;
+import titan_lander.solver.LanderFunction;
+import titan_lander.solver.LanderSolver;
+import titan_lander.solver.OpenLoopController;
+
+import static java.lang.Math.PI;
 
 //Class to visualize a path, will create a window and show the lander at each position including the previous path
 
@@ -51,7 +57,13 @@ public class LanderVisualizer extends Application
         //get the path of the lander from the simulation:
 
         //temporary solution until we made the simulation work
-        landerPathVectors = getPathVectors();
+        LanderSolver solver = new LanderSolver();
+        LanderFunction function = new LanderFunction();
+        ControllerInterface openLoopController = new OpenLoopController();
+        Vector3d initialPosition = new Vector3d(1.3626e+05, 8.3107e+04, PI / 2);
+        Vector3d initialVelocity = new Vector3d(0 ,0 ,0);
+        StateInterface lander = new Lander(openLoopController, initialPosition, initialVelocity);
+        landerPathVectors = getPathVectors(solver.solve(function, lander, totalTime, 60));
 
         firstVector = metersToPixels(landerPathVectors[0]);
 

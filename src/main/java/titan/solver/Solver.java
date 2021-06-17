@@ -18,16 +18,14 @@ public class Solver implements ODESolverInterface {
 
     @Override
     public StateInterface[] solve(ODEFunctionInterface function, StateInterface initialState, double[] outputTimes) {
-//        StateInterface[] states = new StateInterface[outputTimes.length];
-//        states[0] = initialState;
-//        states[1] = step(function, outputTimes[1], initialState, 60);
-//        for (int i = 2; i < states.length; i++) {
-//            states[i] = verletStep(function, outputTimes[i], states[i - 2], states[i - 1], outputTimes[i] - outputTimes[i - 1]);
-//            PlanetTransition.addPath((State) states[i]);
-//            accessTimes.add(outputTimes[i]);
-//        }
-//        return states;
-        return null;
+        StateInterface[] states = new StateInterface[outputTimes.length];
+        states[0] = initialState;
+        states[1] = step(function, outputTimes[1], initialState, 60);
+        for (int i = 2; i < states.length; i++) {
+            states[i] = verletStep(function, outputTimes[i], states[i - 2], states[i - 1], outputTimes[i] - outputTimes[i - 1]);
+            accessTimes.add(outputTimes[i]);
+        }
+        return states;
     }
 
 
@@ -48,9 +46,8 @@ public class Solver implements ODESolverInterface {
                 time += stepSize;
             }
 
-            if(time % 100000 == 0)
-            {
-                System.out.println("\r" + time/finalTime * 100 + "%");
+            if (time % 100000 == 0) {
+                System.out.println("\r" + time / finalTime * 100 + "%");
             }
             accessTimes.add(time);
         }
@@ -63,13 +60,11 @@ public class Solver implements ODESolverInterface {
         double time = 0;
         for (int i = 1; i < states.length; i++) {
             states[i] = step(function, time, states[i - 1], stepSize);
-            PlanetTransition.addPath((State[]) states);
             if ((finalTime - time) / stepSize < 1) {
                 time += (finalTime - time) % stepSize;
             } else {
                 time += stepSize;
             }
-
             accessTimes.add(time);
         }
         return states;

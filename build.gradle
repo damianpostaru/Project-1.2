@@ -4,7 +4,7 @@ plugins {
     id 'java'
 }
 
-mainClassName = 'titan.gui.GuiMain'
+mainClassName = 'titan_lander.gui.LanderVisualizer'
 
 group = 'io.group8'
 version = '0.0.1-SNAPSHOT'
