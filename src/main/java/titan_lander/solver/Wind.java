@@ -6,20 +6,19 @@ import java.util.Random;
 
 public class Wind
 {
-    private boolean leftOrRight;//true is wind speed to positive x, false to negative x
-    private Random random;
-    private double deltaFactor;
-    private final double DENSITY = 1;
-    private final double DRAG_COEFF = 0.47;
-    private final double AREA = 3.52*3.52*Math.PI;//pi * r^2
-    private double minFlipHeight;
-    private double maxFlipHeight;
+    protected boolean leftOrRight;//true is wind speed to positive x, false to negative x
+    protected Random random;
+    protected double deltaFactor;
+    protected final double DRAG_COEFF = 0.47;//drag coefficient of a sphere
+    protected final double AREA = 3.52*3.52*Math.PI;//pi * r^2
+    protected double minFlipHeight;
+    protected double maxFlipHeight;
     Noise noise;
 
     public Wind(double deltaFactor,int maxHeight)
     {
         random = new Random();
-        noise = new Noise(1,0, maxHeight , 500);
+        noise = new Noise(1,-maxHeight, maxHeight , 500);
         this.deltaFactor = deltaFactor;
         if(randomDouble() < 0)
         {
@@ -52,8 +51,8 @@ public class Wind
         double windVelocity = getWind(altitude);
         Vector3d windSpeedVector = new Vector3d(windVelocity,0,0);//new Vector3d(100,0,0);
         Vector3d deltaVelocity = (Vector3d) windSpeedVector.sub(landerSpeed);
-
-        Vector3d force = (Vector3d) squareVector(deltaVelocity).mul( DENSITY * DRAG_COEFF * AREA * 0.5);
+        double density = 1.5743 * Math.exp(-3.4e-5 * altitude);//formula to approximate air density at altitude
+        Vector3d force = (Vector3d) squareVector(deltaVelocity).mul( density * DRAG_COEFF * AREA * 0.5);
 
         return  force;
     }
@@ -74,7 +73,7 @@ public class Wind
 
     //returns the windspeed at an altitude using a function made using the data from the Huygens mission
     //approximating the data using a combination of linear functions
-    private double getWindAtAltitude(double altitude)
+    protected double getWindAtAltitude(double altitude)
     {
         double value = 0;
         if(altitude >= 120000)
@@ -95,19 +94,19 @@ public class Wind
     }
 
     //returns a random number with the value 1 +- deltafactor
-    private double getRandomFactor(double x)
+    protected double getRandomFactor(double x)
     {
         double factor = 1 + noise.getValue(x) * deltaFactor;
         return factor;
     }
 
     //returns a random double between -1 and 1
-    private double randomDouble()
+    protected double randomDouble()
     {
         return random.nextDouble() * 2 - 1;
     }
 
-    private Vector3d squareVector(Vector3d v)
+    protected Vector3d squareVector(Vector3d v)
     {
         double norm = v.norm();
         Vector3d dir = (Vector3d) v.mul(1/norm);

@@ -67,12 +67,11 @@ public class LanderSimScene extends LanderVisualizer
         {
             Vector3d v = metersToPixels(landerPathVectors[i]);
 
-            KeyValue rotation = new KeyValue(landerView.rotateProperty(),v.getZ());
+            KeyValue rotation = new KeyValue(landerView.rotateProperty(),Math.toDegrees(v.getZ()));
             KeyValue xPos = new KeyValue(landerView.xProperty(),v.getX() - imgSize/2);
             KeyValue yPos = new KeyValue(landerView.yProperty(),v.getY() - imgSize/2);
-            timeline.getKeyFrames().add(new KeyFrame(Duration.millis(10 * i),rotation,xPos,yPos));
+            timeline.getKeyFrames().add(new KeyFrame(Duration.millis(totalAnimTime/(finalTime/timeStep) * i),rotation,xPos,yPos));
         }
-        System.out.println("OI");
         timeline.play();
     }
 }

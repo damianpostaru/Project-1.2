@@ -43,10 +43,6 @@ public class Planet {
         velocities.add((Vector3d) positions.get(stateIndex).sub(positionBackup).mul(1 / scalar));
     }
 
-    public void setPosition(Vector3d position) {
-        positions.set(stateIndex, position);
-    }
-
     public void setPosition(Vector3d position, int index) {
         if (index > positions.size() - 1) {
             positions.add(position);
@@ -56,13 +52,10 @@ public class Planet {
         }
     }
 
-    public Vector3dInterface getLatestPosition() {
-        return positions.get(stateIndex);
-    }
-
     public Vector3dInterface getPosition(int index) {
         return positions.get(index);
     }
+
     public List<Vector3d> getPositions() {
         return positions;
     }

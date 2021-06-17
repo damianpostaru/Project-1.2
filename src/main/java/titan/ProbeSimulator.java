@@ -16,6 +16,7 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
         State initialState = new State(initialPosition, initialVelocity);
         Solver solver = new Solver();
         State[] states = (State[]) solver.solve(new Function(), initialState, outputTimes);
+        PlanetTransition.addPath(states);
         for (int i = 0; i < states.length; i++) {
             trajectory[i] = states[i].getShuttlePosition();
         }
@@ -44,9 +45,9 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
                 bestDist = dist;
                 bestTime = i * stepSize;
             }
-            if(i*stepSize % 100000 == 0)
-            {
-                System.out.println("\r" + i*stepSize/finalTime * 100 + "%");
+
+            if (i * stepSize % 100000 == 0) {
+                System.out.println("\r" + i * stepSize / finalTime * 100 + "%");
             }
 
         }

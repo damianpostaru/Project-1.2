@@ -35,7 +35,8 @@ public class Noise {
     {
         if(x > end || x < start)
         {
-            throw new IllegalArgumentException("X is not wihin range of the function");
+            System.out.println();
+            throw new IllegalArgumentException("X : " + x + " is not wihin range of the function");
         }else
         {
             double value = 0;

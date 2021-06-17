@@ -1,11 +1,33 @@
 package titan_lander.solver;
 
 import titan.interfaces.ODEFunctionInterface;
+import titan.interfaces.ODESolverInterface;
 import titan.interfaces.StateInterface;
-import titan.solver.Solver;
 
-public class LanderSolver extends Solver {
+public class LanderSolver implements ODESolverInterface {
     // potential problem with extends: the static accessTime variable for GUI
+
+    @Override
+    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double[] ts) {
+        return new StateInterface[0];
+    }
+
+    @Override
+    public StateInterface[] solve(ODEFunctionInterface function, StateInterface initialState, double finalTime, double stepSize) {
+        StateInterface[] states = new Lander[(int) Math.ceil(finalTime / stepSize) + 1];
+        states[0] = initialState;
+        double time = 0;
+        for (int i = 1; i < states.length; i++) {
+            states[i] = step(function, time, states[i - 1], stepSize);
+            ((Lander) states[i]).hasLanded();
+            if ((finalTime - time) / stepSize < 1) {
+                time += (finalTime - time) % stepSize;
+            } else {
+                time += stepSize;
+            }
+        }
+        return states;
+    }
 
     // Runge-Kutta step with new Rate
     @Override
