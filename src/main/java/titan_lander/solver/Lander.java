@@ -62,7 +62,6 @@ public class Lander extends AbstractLander {
                 hasLanded = true;
             }
         }
-        System.out.println("Velocity: " + velocity);
     }
 
     @Override

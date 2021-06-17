@@ -52,8 +52,6 @@ public class Wind
         Vector3d windSpeedVector = new Vector3d(windVelocity,0,0);//new Vector3d(100,0,0);
         Vector3d deltaVelocity = (Vector3d) windSpeedVector.sub(landerSpeed);
         double density = 1.5743 * Math.exp(-3.4e-5 * altitude);//formula to approximate air density at altitude
-
-        System.out.println(density);
         Vector3d force = (Vector3d) squareVector(deltaVelocity).mul( density * DRAG_COEFF * AREA * 0.5);
 
         return  force;
