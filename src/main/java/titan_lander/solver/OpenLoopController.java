@@ -12,7 +12,7 @@ public class OpenLoopController implements ControllerInterface {
     // and keep updating the motion equations?
     // Might be useless, and having an actual function may be best:
     LanderBurnsData[] landerBurnsData = {
-            new LanderBurnsData(5, 0.1, 0, 5)
+            new LanderBurnsData(2.7463, 0, 361.35, 563.2000000000595)
     };
 
     public OpenLoopController() {

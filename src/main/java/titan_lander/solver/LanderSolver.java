@@ -1,11 +1,8 @@
 package titan_lander.solver;
 
-import titan.gui.PlanetTransition;
 import titan.interfaces.ODEFunctionInterface;
 import titan.interfaces.ODESolverInterface;
 import titan.interfaces.StateInterface;
-import titan.solver.Solver;
-import titan.solver.State;
 
 public class LanderSolver implements ODESolverInterface {
     // potential problem with extends: the static accessTime variable for GUI
@@ -22,6 +19,7 @@ public class LanderSolver implements ODESolverInterface {
         double time = 0;
         for (int i = 1; i < states.length; i++) {
             states[i] = step(function, time, states[i - 1], stepSize);
+            ((Lander) states[i]).hasLanded();
             if ((finalTime - time) / stepSize < 1) {
                 time += (finalTime - time) % stepSize;
             } else {

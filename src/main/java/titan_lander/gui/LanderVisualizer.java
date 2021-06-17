@@ -24,9 +24,8 @@ import static java.lang.Math.PI;
 
 //Class to visualize a path, will create a window and show the lander at each position including the previous path
 
-public class LanderVisualizer extends Application
-{
-    protected  static Vector3d[] landerPathVectors;
+public class LanderVisualizer extends Application {
+    protected static Vector3d[] landerPathVectors;
 
     protected static Stage singleStage;
     static Rectangle2D screenBounds;
@@ -41,18 +40,18 @@ public class LanderVisualizer extends Application
     public static Image landerSprite;
     public static ImageView landerView;
     public static final double imgSize = 75;
-    public static final double totalAnimTime = 30*1000;
-    public static final double finalTime = 15000;
-    public static final double timeStep = 60;
+    public static final double totalAnimTime = 30 * 1000;
+    public static final double finalTime = 700;
+    public static final double timeStep = 0.1;
+
     @Override
-    public void start(Stage primaryStage)
-    {
+    public void start(Stage primaryStage) {
         singleStage = primaryStage;
         singleStage.setTitle("Titan Landing!");
         screenBounds = Screen.getPrimary().getBounds();
 
         //position of the landing pad
-        centerX = screenBounds.getWidth()/2;
+        centerX = screenBounds.getWidth() / 2;
         centerY = centerX;
 
 
@@ -62,8 +61,8 @@ public class LanderVisualizer extends Application
         LanderSolver solver = new LanderSolver();
         LanderFunction function = new LanderFunction();
         ControllerInterface openLoopController = new OpenLoopController();
-        Vector3d initialPosition = new Vector3d(1.3626e+04, 159600, PI / 2);
-        Vector3d initialVelocity = new Vector3d(0 ,0 ,0);
+        Vector3d initialPosition = new Vector3d(1.3626e+04, 159600, 0);
+        Vector3d initialVelocity = new Vector3d(0, 0, 0);
         StateInterface lander = new Lander(openLoopController, initialPosition, initialVelocity);
         landerPathVectors = getPathVectors(solver.solve(function, lander, finalTime, timeStep));
 
@@ -87,39 +86,35 @@ public class LanderVisualizer extends Application
         singleStage.show();
     }
 
-    protected static Vector3d metersToPixels(Vector3d pos)
-    {
-        Vector3d newVector = new Vector3d(centerX + pos.getX() * CONVERSION_FACTOR ,centerY - pos.getY() * CONVERSION_FACTOR,pos.getZ());
+    protected static Vector3d metersToPixels(Vector3d pos) {
+        Vector3d newVector = new Vector3d(centerX + pos.getX() * CONVERSION_FACTOR, centerY - pos.getY() * CONVERSION_FACTOR, pos.getZ());
         return newVector;
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         launch(args);
     }
 
-    public static void setLanderVector(Vector3d state)
-    {
+    public static void setLanderVector(Vector3d state) {
         Vector3d pixelCoor = metersToPixels(state);
-        landerView.setRotate(pixelCoor.getZ());//maybe update to degrees, depends on lander implementation
-        landerView.setX(pixelCoor.getX() - imgSize/2);
-        landerView.setY(pixelCoor.getY() - imgSize/2);
+        landerView.setRotate(Math.toDegrees(pixelCoor.getZ()));
+        landerView.setX(pixelCoor.getX() - imgSize / 2);
+        landerView.setY(pixelCoor.getY() - imgSize / 2);
     }
 
-    private Vector3d[] getPathVectors()
-    {
+    private Vector3d[] getPathVectors() {
         Vector3d[] output = new Vector3d[1000];
         double height = 200000;
         for (int i = 0; i < output.length; i++) {
-        output[i] = new Vector3d(0,height - (Math.pow(1.3,i)),i);
+            output[i] = new Vector3d(0, height - (Math.pow(1.3, i)), i);
         }
         return output;
     }
 
-    private Vector3d[] getPathVectors(StateInterface[] states){
+    private Vector3d[] getPathVectors(StateInterface[] states) {
         Vector3d[] path = new Vector3d[states.length];
         for (int i = 0; i < states.length; i++) {
-            path[i] = ((Lander)states[i]).getPosition();
+            path[i] = ((Lander) states[i]).getPosition();
         }
         return path;
     }
