@@ -9,7 +9,7 @@ public class OpenLoopController implements ControllerInterface {
 
     private final double TITAN_G = 1.352;
     LanderBurnsData[] landerBurnsData = {
-            new LanderBurnsData(2.7463, 0, 361.35, 563.2000000000595)
+            //new LanderBurnsData(2.7463, 0, 361.35, 563.2000000000595)
     };
 
     public OpenLoopController() {

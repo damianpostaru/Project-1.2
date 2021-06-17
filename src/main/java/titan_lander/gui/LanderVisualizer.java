@@ -62,7 +62,7 @@ public class LanderVisualizer extends Application {
         LanderFunction function = new LanderFunction();
         ControllerInterface openLoopController = new OpenLoopController();
         Vector3d initialPosition = new Vector3d(1.3626e+04, 159600, 0);
-        Vector3d initialVelocity = new Vector3d(0, 0, 0);
+        Vector3d initialVelocity = new Vector3d(10, 0, 0);
         StateInterface lander = new Lander(openLoopController, initialPosition, initialVelocity);
         landerPathVectors = getPathVectors(solver.solve(function, lander, finalTime, timeStep));
 

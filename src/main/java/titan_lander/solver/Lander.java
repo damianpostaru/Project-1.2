@@ -17,9 +17,11 @@ public class Lander extends AbstractLander {
     private final double error = 0.1;
     private static boolean wasPrinted;
     private static boolean wasPrinted1;
-
+    private static AirDrag airDrag = new AirDrag(0,300000);
+    private double mass = 16400;
     public Lander(ControllerInterface controller, Vector3d initialPos, Vector3d initialVel) {
         super(controller, initialPos, initialVel);
+
     }
 
     public void update(double step, Vector3d acc) {
@@ -38,7 +40,9 @@ public class Lander extends AbstractLander {
             }
             return new Vector3d(0, 0, 0);
         }
-        return new Vector3d(controller.getX(this, t), controller.getY(this, t), controller.getTheta(this, t));
+        Vector3d controllerAcc = new Vector3d(controller.getX(this, t), controller.getY(this, t), controller.getTheta(this, t));
+        Vector3d windAcc = (Vector3d) airDrag.getWindForce(velocity,position.getY()).mul(1/mass);
+        return (Vector3d) controllerAcc.add(windAcc);
     }
 
     public void hasLanded() {
@@ -58,6 +62,7 @@ public class Lander extends AbstractLander {
                 hasLanded = true;
             }
         }
+        System.out.println("Velocity: " + velocity);
     }
 
     @Override
