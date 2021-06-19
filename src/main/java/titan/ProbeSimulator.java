@@ -46,9 +46,9 @@ public class ProbeSimulator implements ProbeSimulatorInterface {
                 bestTime = i * stepSize;
             }
 
-            if (i * stepSize % 100000 == 0) {
-                System.out.println("\r" + i * stepSize / finalTime * 100 + "%");
-            }
+//            if (i * stepSize % 100000 == 0) {
+//                System.out.println("\r" + i * stepSize / finalTime * 100 + "%");
+//            }
 
         }
 

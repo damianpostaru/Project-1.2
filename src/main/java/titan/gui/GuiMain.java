@@ -32,6 +32,8 @@ import titan_lander.solver.OpenLoopController;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static java.lang.Math.PI;
+
 public class GuiMain extends Application {
 
     static CelestialBody[] planetBodies = new CelestialBody[12];
@@ -69,7 +71,7 @@ public class GuiMain extends Application {
     protected static final double finalTime = 2.95217E8;
     protected static final double timeStep = 500;
     public static final double totalAnimTime = 30 * 1000;
-    public static final double landerFinalTime = 700;
+    public static final double landerFinalTime = 1493;
     public static final double landerTimeStep = 0.1;
 
     // Zoom Related Variables
@@ -82,8 +84,8 @@ public class GuiMain extends Application {
         initialPosition = new Vector3d(-6371e3, 0.1, 0.1);
         initialVelocity = new Vector3d(0, 0, 0); // new Vector3d(18044.44, -29351.0, -819.35);
         double MaxAnimationTimeInMillis = 30000;
-        double timesteps = finalTime/timeStep;
-        keyTime = MaxAnimationTimeInMillis/timesteps;
+        double timeSteps = finalTime / timeStep;
+        keyTime = MaxAnimationTimeInMillis / timeSteps;
         launch(args);
     }
 
@@ -118,8 +120,8 @@ public class GuiMain extends Application {
         LanderSolver solver = new LanderSolver();
         LanderFunction function = new LanderFunction();
         ControllerInterface openLoopController = new OpenLoopController();
-        Vector3d landerInitialPosition = new Vector3d(1.3626e+04, 159600, 0);
-        Vector3d landerInitialVelocity = new Vector3d(10, 0, 0);
+        Vector3d landerInitialPosition = new Vector3d(1.3626e+04, 159600, PI / 2);
+        Vector3d landerInitialVelocity = new Vector3d(0, 0, 0);
         StateInterface lander = new Lander(openLoopController, landerInitialPosition, landerInitialVelocity);
         landerPathVectors = getPathVectors(solver.solve(function, lander, landerFinalTime, landerTimeStep));
 

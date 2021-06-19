@@ -17,8 +17,9 @@ public class Lander extends AbstractLander {
     private final double error = 0.1;
     private static boolean wasPrinted;
     private static boolean wasPrinted1;
-    private static AirDrag airDrag = new AirDrag(0,300000);
-    private double mass = 16400;
+    private static final AirDrag airDrag = new AirDrag(0,300000);
+    private final double mass = 16400;
+
     public Lander(ControllerInterface controller, Vector3d initialPos, Vector3d initialVel) {
         super(controller, initialPos, initialVel);
 
@@ -58,8 +59,24 @@ public class Lander extends AbstractLander {
                 System.out.println("Velocity: " + velocity);
                 wasPrinted = true;
             }
+            if (xPos) {
+                System.out.println("xPos");
+            }
+            if (thetaPos) {
+                System.out.println("thetaPos");
+            }
+            if (xVel) {
+                System.out.println("xVel");
+            }
+            if (yVel) {
+                System.out.println("yVel");
+            }
+            if (thetaVel) {
+                System.out.println("thetaVel");
+            }
             if (xPos & thetaPos & xVel & yVel & thetaVel) {
                 hasLanded = true;
+                System.out.println("Successful landing");
             }
         }
     }
