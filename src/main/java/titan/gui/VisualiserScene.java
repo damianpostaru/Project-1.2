@@ -14,6 +14,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.scene.transform.Translate;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import static titan.gui.Util.startTimerTask;
 
 public class VisualiserScene extends GuiMain {
@@ -25,14 +28,47 @@ public class VisualiserScene extends GuiMain {
 
         probeLaunch = new Button("Launch Probe!");
         exitButton = new Button("Exit Simulation!");
+        landerButtonY = new Button("Observe Landing!");
+        landerButtonN = new Button("Return to Earth!");
+        landerButtonY.setVisible(false);
+        landerButtonN.setVisible(false);
+
         probeLaunch.setOnAction(e -> {
             startTimerTask();
             for (int i = 0; i < planetPaths.length; i++) {
-                PlanetTransition.transition( planetPaths[i]);
+                PlanetTransition.transition(planetPaths[i]);
             }
+
+            Timer scheduler = new Timer();
+            TimerTask schedulerTask;
+            scheduler.schedule(
+                    schedulerTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            for (int i = 0; i < planetPaths.length; i++) {
+                                PlanetTransition.pauseTransition(planetPaths[i]);
+                            }
+                            landerButtonY.setVisible(true);
+                            landerButtonN.setVisible(true);
+                        }
+                    },
+                    26380
+            );
         });
 
         exitButton.setOnAction(e -> System.exit(0));
+
+        landerButtonY.setOnAction(e -> {
+            singleStage.setScene(landerVisualiserScene);
+        });
+
+        landerButtonN.setOnAction(e -> {
+            for (int i = 0; i < planetPaths.length; i++) {
+                PlanetTransition.transition(planetPaths[i]);
+            }
+            landerButtonY.setVisible(false);
+            landerButtonN.setVisible(false);
+        });
 
         Slider slider1 = new Slider();
 
@@ -62,8 +98,6 @@ public class VisualiserScene extends GuiMain {
         slider2.setLayoutY(200);
         slider2.setShowTickLabels(false);
         slider2.setStyle("-fx-base: yellow");
-
-
 
         slider2.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue <?extends Number>observable, Number oldValue, Number newValue){
@@ -97,6 +131,7 @@ public class VisualiserScene extends GuiMain {
 
         BorderPane root = new BorderPane();
         root.setRight(infoBox);
+        root.setLeft(landerSelection);
         root.setAlignment(timeText, Pos.BOTTOM_RIGHT);
         root.setBottom(slider1);
         root.setTop(slider2);
