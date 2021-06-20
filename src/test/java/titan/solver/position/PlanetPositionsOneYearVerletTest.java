@@ -6,6 +6,7 @@ import titan.interfaces.Vector3dInterface;
 import titan.solver.Function;
 import titan.solver.Solver;
 import titan.solver.State;
+import titan.space.SolarSystem;
 import titan.space.Vector3d;
 
 import java.util.ArrayList;
@@ -29,7 +30,9 @@ class PlanetPositionsOneYearVerletTest {
 
     @BeforeAll
     static void setUp() {
+
         states = (State[]) solver.solve(new Function(), initialState, finalTime, stepSize);
+        SolarSystem.reset(initialPosition,initialVelocity);
         setPositionsAfterOneYear();
     }
 
@@ -98,7 +101,7 @@ class PlanetPositionsOneYearVerletTest {
             count++;
             System.out.println("Biggest Difference: " + (biggestDifference / 1000) + " count: " + count);
         }
-        assertEquals(difference, 0, ACCURACY);
+        assertEquals(0, difference, ACCURACY);
     }
 
     public static void setPositionsAfterOneYear() {
