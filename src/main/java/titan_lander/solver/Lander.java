@@ -17,8 +17,9 @@ public class Lander extends AbstractLander {
     private final double error = 0.1;
     private static boolean wasPrinted;
     private static boolean wasPrinted1;
-    private static AirDrag airDrag = new AirDrag(0,300000);
-    private double mass = 16400;
+    private static final AirDrag airDrag = new AirDrag(0, 300000);
+    private final double mass = 16400;
+
     public Lander(ControllerInterface controller, Vector3d initialPos, Vector3d initialVel) {
         super(controller, initialPos, initialVel);
 
@@ -41,13 +42,13 @@ public class Lander extends AbstractLander {
             return new Vector3d(0, 0, 0);
         }
         Vector3d controllerAcc = new Vector3d(controller.getX(this, t), controller.getY(this, t), controller.getTheta(this, t));
-        Vector3d windAcc = (Vector3d) airDrag.getWindForce(velocity,position.getY()).mul(1/mass);
+        Vector3d windAcc = (Vector3d) airDrag.getWindForce(velocity, position.getY()).mul(1 / mass);
         return (Vector3d) controllerAcc.add(windAcc);
     }
 
     public void hasLanded() {
         boolean xPos = abs(position.getX()) <= 0.1;
-        boolean thetaPos = abs(position.getZ() % (2 * PI)) <= 0.02;
+        boolean thetaPos = angleWithinError(0.02);
         boolean xVel = abs(velocity.getX()) <= 0.1;
         boolean yVel = abs(velocity.getY()) <= 0.1;
         boolean thetaVel = abs(velocity.getZ()) <= 0.01;
@@ -60,6 +61,7 @@ public class Lander extends AbstractLander {
             }
             if (xPos & thetaPos & xVel & yVel & thetaVel) {
                 hasLanded = true;
+                System.out.println("Successful landing");
             }
         }
     }
@@ -73,5 +75,15 @@ public class Lander extends AbstractLander {
 
     public StateInterface cloneLander(Lander lander) {
         return new Lander(lander.getController(), lander.getPosition(), lander.getVelocity());
+    }
+
+    private boolean angleWithinError(double error) {
+        double angle = position.getZ();
+        //reduce angle to something less than 2 * PI
+        while (angle > 2 * PI) {
+            angle -= 2 * PI;
+        }
+        //if the angle is within the error bounds
+        return angle < error || abs(angle - 2 * PI) < error;
     }
 }

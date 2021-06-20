@@ -46,9 +46,9 @@ public class Solver implements ODESolverInterface {
                 time += stepSize;
             }
 
-            if (time % 100000 == 0) {
-                System.out.println("\r" + time / finalTime * 100 + "%");
-            }
+//            if (time % 100000 == 0) {
+//                System.out.println("\r" + time / finalTime * 100 + "%");
+//            }
             accessTimes.add(time);
         }
         return states;

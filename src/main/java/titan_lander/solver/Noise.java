@@ -6,11 +6,11 @@ import java.util.*;
 
 public class Noise {
     
-    private double[] ypoints;
-    private double[] xpoints;
-    private Random random;
-    private int start;
-    private int end;
+    private final double[] ypoints;
+    private final double[] xpoints;
+    private final Random random;
+    private final int start;
+    private final int end;
 
     public Noise(double amplitude, int x0 , int xEnd, double stepSize)
     {
@@ -39,7 +39,7 @@ public class Noise {
             throw new IllegalArgumentException("X : " + x + " is not wihin range of the function");
         }else
         {
-            double value = 0;
+            double value;
             double a = 0;
             double b = 0;
             double percentage =0;

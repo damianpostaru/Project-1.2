@@ -69,4 +69,8 @@ public class PlanetTransition extends GuiMain {
         nodePath.setAutoReverse(false);
         nodePath.play();
     }
+
+    public static void pauseTransition(Timeline nodePath) {
+        nodePath.pause();
+    }
 }

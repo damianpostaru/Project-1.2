@@ -7,6 +7,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -18,25 +20,43 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import titan.ProbeSimulator;
+import titan.interfaces.StateInterface;
 import titan.interfaces.Vector3dInterface;
-import titan.solver.State;
 import titan.space.Vector3d;
+import titan_lander.interfaces.ControllerInterface;
+import titan_lander.solver.Lander;
+import titan_lander.solver.LanderFunction;
+import titan_lander.solver.LanderSolver;
+import titan_lander.solver.OpenLoopController;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static java.lang.Math.PI;
+
 public class GuiMain extends Application {
 
-    static CelestialBody[] planetBodies = new CelestialBody[12];//sun, earth, mercury, venus, moon, mars, jupiter, saturn, titan, probe, neptune, uranus;
+    static CelestialBody[] planetBodies = new CelestialBody[12];
     static Rectangle2D screenBounds;
     protected static Stage singleStage;
-    protected static Scene introScene, visualiserScene;
-    public static Button beginButton, probeLaunch, exitButton;
-    public static double centerX, centerY, distancePixel;
-    public static Timeline[] planetPaths = new Timeline[12];//sunPath, mercuryPath, venusPath, earthPath, moonPath, marsPath, jupiterPath, saturnPath, titanPath, probePath, neptunePath, uranusPath;
-    public static VBox infoBox;
-    public static HBox[] planetContainers = new HBox[12];//sunBox, mercuryBox, venusBox, earthBox, moonBox, marsBox, jupiterBox, saturnBox, titanBox, probeBox, neptuneBox, uranusBox;
+    public static Scene introScene, visualiserScene, landerIntroScene, landerVisualiserScene;
+    public static Button beginButton, landerBeginButton, probeLaunch, landerProbeLaunch,
+            exitButton, landerExitButton, landerButtonY, landerButtonN;
+    public static double centerX, centerY, landerCenterX, landerCenterY, distancePixel;
+    public static Timeline[] planetPaths = new Timeline[12];
+    public static VBox infoBox, landerSelection, landerButtonBox;
+    public static HBox[] planetContainers = new HBox[12];
     private static Vector3dInterface initialPosition, initialVelocity;
+
+    public static Vector3d[] landerPathVectors;
+    static final double CONVERSION_FACTOR = 3.2000e-03;
+    public static Pane pathLines;
+    public static Path landerPath;
+    public static Vector3d firstVector;
+    public static Image landerSprite;
+    public static ImageView landerView;
+    public static final double imgSize = 75;
+
 
     // Timer Related Variables
     protected static TimerTask timerTask;
@@ -50,6 +70,9 @@ public class GuiMain extends Application {
     protected static double keyTime;
     protected static final double finalTime = 2.95217E8;
     protected static final double timeStep = 500;
+    public static final double totalAnimTime = 30 * 1000;
+    public static final double landerFinalTime = 1493;
+    public static final double landerTimeStep = 0.1;
 
     // Zoom Related Variables
     protected static DoubleProperty scrollScale;
@@ -61,8 +84,8 @@ public class GuiMain extends Application {
         initialPosition = new Vector3d(-6371e3, 0.1, 0.1);
         initialVelocity = new Vector3d(0, 0, 0); // new Vector3d(18044.44, -29351.0, -819.35);
         double MaxAnimationTimeInMillis = 30000;
-        double timesteps = finalTime/timeStep;
-        keyTime = MaxAnimationTimeInMillis/timesteps;
+        double timeSteps = finalTime / timeStep;
+        keyTime = MaxAnimationTimeInMillis / timeSteps;
         launch(args);
     }
 
@@ -84,10 +107,36 @@ public class GuiMain extends Application {
 
         centerX = screenBounds.getWidth() / 2;
         centerY = screenBounds.getHeight() / 2;
+        landerCenterX = centerX;
+        landerCenterY = landerCenterX;
 
         // Sets all the scenes that will be (eventually) seen.
         IntroScene.setIntroScene();
         VisualiserScene.setVisualiserScene();
+
+        //get the path of the lander from the simulation:
+
+        //temporary solution until we made the simulation work
+        LanderSolver solver = new LanderSolver();
+        LanderFunction function = new LanderFunction();
+        ControllerInterface openLoopController = new OpenLoopController();
+        Vector3d landerInitialPosition = new Vector3d(1.3626e+04, 159600, PI / 2);
+        Vector3d landerInitialVelocity = new Vector3d(0, 0, 0);
+        StateInterface lander = new Lander(openLoopController, landerInitialPosition, landerInitialVelocity);
+        landerPathVectors = getPathVectors(solver.solve(function, lander, landerFinalTime, landerTimeStep));
+
+        firstVector = metersToPixels(landerPathVectors[0]);
+
+        LanderIntroScene.setLanderIntroScene();
+        LanderVisScene.setLanderVisualizerScene();
+
+        landerSprite = new Image("lander_2.png");
+        landerView = new ImageView(landerSprite);
+        setLanderVector(landerPathVectors[0]);
+        landerView.setPreserveRatio(true);
+        landerView.setFitHeight(imgSize);
+
+        pathLines.getChildren().add(landerView);
 
         PlanetTransition.createPath();
         //2.95217E8, 500
@@ -164,4 +213,34 @@ public class GuiMain extends Application {
             zoomPane.setTranslateY(yTranslation + e.getSceneY() - initialSceneY);
         }
     };
+
+    // Lander path visualiser methods, will create a window and show the lander at each position including the previous path.
+    private Vector3d[] getPathVectors() {
+        Vector3d[] output = new Vector3d[1000];
+        double height = 200000;
+        for (int i = 0; i < output.length; i++) {
+            output[i] = new Vector3d(0, height - (Math.pow(1.3, i)), i);
+        }
+        return output;
+    }
+
+    private Vector3d[] getPathVectors(StateInterface[] states) {
+        Vector3d[] path = new Vector3d[states.length];
+        for (int i = 0; i < states.length; i++) {
+            path[i] = ((Lander) states[i]).getPosition();
+        }
+        return path;
+    }
+
+    public static Vector3d metersToPixels(Vector3d pos) {
+        Vector3d newVector = new Vector3d(landerCenterX + pos.getX() * CONVERSION_FACTOR, landerCenterY - pos.getY() * CONVERSION_FACTOR, pos.getZ());
+        return newVector;
+    }
+
+    public static void setLanderVector(Vector3d state) {
+        Vector3d pixelColor = metersToPixels(state);
+        landerView.setRotate(Math.toDegrees(pixelColor.getZ()));
+        landerView.setX(pixelColor.getX() - imgSize / 2);
+        landerView.setY(pixelColor.getY() - imgSize / 2);
+    }
 }
