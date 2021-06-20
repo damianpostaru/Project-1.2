@@ -71,7 +71,7 @@ public class GuiMain extends Application {
     protected static final double finalTime = 2.95217E8;
     protected static final double timeStep = 500;
     public static final double totalAnimTime = 30 * 1000;
-    public static final double landerFinalTime = 1493;
+    public static final double landerFinalTime = 1481.5;
     public static final double landerTimeStep = 0.1;
 
     // Zoom Related Variables
