@@ -19,7 +19,7 @@ public class PlanetVelocityOneDayVerletTest {
     private static final Solver solver = new Solver();
     private static final double finalTime = 31536000;
     private static final double stepSize = 500;
-    private final double ACCURACY = 39336;
+    private final double ACCURACY = 0;
     private static final Vector3d initialPosition = new Vector3d(-6371e3, 0.1, 0.1);
     private static final Vector3d initialVelocity = new Vector3d(0, 0, 0);
     private static final State initialState = new State(initialPosition, initialVelocity);
