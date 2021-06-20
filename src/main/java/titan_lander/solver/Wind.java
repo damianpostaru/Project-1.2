@@ -9,7 +9,8 @@ public class Wind {
     protected Random random;
     protected double deltaFactor;
     protected final double DRAG_COEFF = 0.47;//drag coefficient of a sphere
-    protected final double AREA = 3.52 * 3.52 * Math.PI;//pi * r^2
+    protected final double RADIUS = 3.49;
+    protected final double AREA = RADIUS * RADIUS * Math.PI;//pi * r^2
     protected double minFlipHeight;
     protected double maxFlipHeight;
     Noise noise;

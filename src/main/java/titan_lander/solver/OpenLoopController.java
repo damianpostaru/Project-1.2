@@ -8,16 +8,17 @@ import static java.lang.Math.*;
 public class OpenLoopController implements ControllerInterface {
 
     private final double TITAN_G = 1.352;
+    double time = 1457.7;
     LanderBurnsData[] landerBurnsData = {
             new LanderBurnsData(0, 0.1 * PI, 1, 2),
             new LanderBurnsData(0, -0.1 * PI, 11, 12),
-            new LanderBurnsData(2, 0, 12, 42),
+            new LanderBurnsData(1.9939, 0, 12, 42),
             new LanderBurnsData(0, 0.1 * PI, 42, 43),
             new LanderBurnsData(0, -0.1 * PI, 52, 53),
             new LanderBurnsData(2.7, 0, 304, 319),
             new LanderBurnsData(0, -0.1 * PI, 542, 543),
             new LanderBurnsData(0, 0.1 * PI, 547, 548),
-            new LanderBurnsData(2.7037, 0, 1469.3, 1492.4)
+            new LanderBurnsData(2.69172, 0, time, time + 23.7)
     };
 
     public OpenLoopController() {
