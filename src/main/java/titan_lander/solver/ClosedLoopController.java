@@ -11,16 +11,13 @@ import static java.lang.Math.*;
 
 public class ClosedLoopController implements ControllerInterface {
 
-    // TAKE OUT (TO) - Notes to remove later
-    // TO: We shouldn't rly need to consider time on this one, u and v are obtained in a different manner
-    LanderBurnsData[] landerBurnsData = {};
-    private final double TITAN_G = 1.352;
-    private Vector3d currentPosition;
-    private Vector3d currentVelocity;
-    private double currentU; // TO: reason for this class variable explained line 29-33
-    private final List<Double> allEngineAcc = new LinkedList<>(); // TO: have an object-specific allEngineAcc to maybe know how to adjust based on prev calls - like as if we're closer, half the prev call
+    private final double minVel = 10.0;
+    private final double maxTheta = 0.25*PI;
+    private double currentU;
+    //private List<Double> allEngineAcc; // TO: have an object-specific allEngineAcc to maybe know how to adjust based on prev calls - like as if we're closer, half the prev call
 
     public ClosedLoopController() {
+        //this.allEngineAcc = new LinkedList<Double>();
     }
 
     // TO: this one shouldn't need time, since it is not dependent on a pre-defined function over time.
@@ -32,14 +29,12 @@ public class ClosedLoopController implements ControllerInterface {
     // bcs it depends on current pos and vel)
     @Override
     public double getX(AbstractLander lander, double t) {
-        //
         currentU = findU(lander);
         return currentU * sin(lander.getPosition().getZ());
     }
 
     @Override
     public double getY(AbstractLander lander, double t) {
-        double u = findU(lander);
         return currentU * cos(lander.getPosition().getZ()) - TITAN_G;
     }
 
@@ -48,40 +43,111 @@ public class ClosedLoopController implements ControllerInterface {
         return findV(lander);
     }
 
-    // TO: maybe no need for this, just a way to get the current pos/vel
-    // (put in line 36 if needed - if we keep the same method of getting the vector:
-    // Vector3d controllerAcc = new Vector3d(controller.getX(this, t), controller.getY(this, t), controller.getTheta(this, t));)
-    private void setCurrentPosition(AbstractLander lander) {
-        currentPosition.setX(lander.getPosition().getX());
-        currentPosition.setZ(lander.getPosition().getY());
-        currentPosition.setZ(lander.getPosition().getZ());
-    }
 
-    // TO: same note as in setCurrentPosition(...)
-    private void setCurrentVelocity(AbstractLander lander) {
-        currentVelocity.setX(lander.getVelocity().getX());
-        currentVelocity.setY(lander.getVelocity().getY());
-        currentVelocity.setZ(lander.getVelocity().getZ());
-    }
-
-    // TO: This new u is dependent on the *current position and velocity*
-    // So it should result in a value that ponders both of these ^^^^^
     // Also the initial factor that is assigned honestly depends on the frequency we call the controller - like a time-step maybe
     // (aka the frequency we want to adjust the landing - i.e get feedback and come up with new values based on that)
     private double findU(AbstractLander lander) {
-        // TO <-> MAIN ISSUE <->
-        // Basically, we need to find a good way to come up with u, using all the info (current pos and vel) we might need
+
+        double engineAcc = 2.7;
+
         // Positive x value, out of goal
-        if(abs(currentPosition.getX()) > 0.1 && currentPosition.getX() > 0) {
-            allEngineAcc.add(/*the u we came up with - create a series of if conditions that comes up with u based on all the info??*/);
-            return /*the u we came up with*/;
+        if(abs(lander.getPosition().getX()) > 0.1 && lander.getPosition().getX() > 0) {
+            if(lander.getVelocity().getX() > -minVel) {
+                if(angleWithinError(lander.getPosition().getZ(),0.2,3*PI/2)) {
+                    return engineAcc;
+                } else {
+                    return 0;
+                }
+            }
+
+        // Negative x value, out of goal
+        } else if(abs(lander.getPosition().getX()) > 0.1 && lander.getPosition().getX() < 0) {
+            if(lander.getVelocity().getX() < minVel) {
+                if(angleWithinError(lander.getPosition().getZ(),0.2,PI/2)) {
+                    return engineAcc;
+                } else {
+                    return 0;
+                }
+            }
+
+        // Free fall, once we get within the x goal
+        } else if(abs(lander.getPosition().getX()) <= 0.1 && abs(lander.getPosition().getX()) >= 0) {
+            double maxA = engineAcc - TITAN_G;
+            double v0 = lander.getVelocity().getY();
+            double dist = (v0*v0) / (2*maxA);
+
+            if(lander.getPosition().getY() < dist && angleWithinError(lander.getPosition().getZ(),0.02,0)) {
+                return engineAcc;
+            } else {
+                return 0;
+            }
         }
         return 0;
     }
 
-    // TO: Same logic as in findU(), but adjusted to torque
     private double findV(AbstractLander lander) {
-        // TO: Same logic as in findU()
+
+        double torque = 0.1 * PI;
+        double targetAngle;
+
+        // Positive x value, out of goal
+        if(abs(lander.getPosition().getX()) > 0.1 && lander.getPosition().getX() > 0) {
+            if(lander.getVelocity().getX() > -minVel) {
+                targetAngle = 3*PI/2;
+                return returnV(lander,targetAngle,torque);
+            }
+
+        // Negative x value, out of goal
+        } else if(abs(lander.getPosition().getX()) > 0.1 && lander.getPosition().getX() < 0) {
+            if(lander.getVelocity().getX() < minVel) {
+                targetAngle = PI/2;
+                return returnV(lander,targetAngle,torque);
+            }
+
+        // Free fall, once we get within the x goal
+        } else if(abs(lander.getPosition().getX()) <= 0.1 && abs(lander.getPosition().getX()) >= 0) {
+            double maxA = torque - TITAN_G;
+            double v0 = lander.getVelocity().getY();
+            double dist = (v0*v0) / (2*maxA);
+
+            targetAngle = 0;
+            if(lander.getPosition().getY() < dist && angleWithinError(lander.getPosition().getZ(),0.02,targetAngle)) {
+                return 0;
+            } else {
+                return returnV(lander,targetAngle,torque);
+            }
+        }
         return 0;
+    }
+
+    private boolean angleWithinError(double angle, double error, double target) {
+        //reduce angle to something less than 2 * PI
+        while (angle >= 2 * PI) {
+            angle -= 2 * PI;
+        }
+
+        while (angle <= - 2 * PI) {
+            angle += 2 * PI;
+        }
+        //if the angle is within the error bounds
+        return abs(abs(angle) - target) < error;
+    }
+
+    private double returnV(AbstractLander lander, double targetAngle, double torque) {
+        if(angleWithinError(lander.getPosition().getZ(),0.1,targetAngle)) {
+            return 0;
+        } else {
+            if(lander.getPosition().getZ() < targetAngle) {
+                if(lander.getVelocity().getZ() >= maxTheta) {
+                    return 0;
+                }
+                return torque;
+            } else {
+                if(lander.getVelocity().getZ() <= -maxTheta) {
+                    return 0;
+                }
+                return -torque;
+            }
+        }
     }
 }
