@@ -68,7 +68,7 @@ public class GuiMain extends Application {
     protected static final double finalTime = 2.95217E8;
     protected static final double timeStep = 500;
     public static final double totalAnimTime = 30 * 1000;
-    public static final double landerFinalTime = 1550;
+    public static final double landerFinalTime =2000;
     public static final double landerTimeStep = 0.1;
 
     // Zoom Related Variables
@@ -118,7 +118,7 @@ public class GuiMain extends Application {
         LanderFunction function = new LanderFunction();
         //ControllerInterface openLoopController = new OpenLoopController();
         ControllerInterface closedLoopController = new ClosedLoopController();
-        Vector3d landerInitialPosition = new Vector3d(1.3626e+04, 159600, PI / 2);
+        Vector3d landerInitialPosition = new Vector3d(-1.3626e+04, 209600, PI / 2);
         Vector3d landerInitialVelocity = new Vector3d(-10, 0, 0);
         StateInterface lander = new Lander(closedLoopController, landerInitialPosition, landerInitialVelocity);
         landerPathVectors = getPathVectors(solver.solve(function, lander, landerFinalTime, landerTimeStep));

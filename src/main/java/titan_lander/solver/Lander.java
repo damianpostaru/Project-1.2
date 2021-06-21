@@ -52,8 +52,11 @@ public class Lander extends AbstractLander {
         boolean xVel = abs(velocity.getX()) <= 0.1;
         boolean yVel = abs(velocity.getY()) <= 0.1;
         boolean thetaVel = abs(velocity.getZ()) <= 0.01;
+//        System.out.println("Position: " + position);
+//        System.out.println("Velocity: " + velocity);
         if (position.getY() <= error) {
             hasCrashed = true;
+
             if (!wasPrinted) {
                 System.out.println("Position: " + position);
                 System.out.println("Velocity: " + velocity);

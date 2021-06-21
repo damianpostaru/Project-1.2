@@ -11,11 +11,11 @@ import static java.lang.Math.*;
 
 public class ClosedLoopController implements ControllerInterface {
 
-    private final double maxLanderVel = 25.0;
+    private final double maxLanderVel = 30.0;
     private final double maxThetaVel = 0.05*PI;
-    private final double landingHeight= 10000;//from this height the lander will try to land, not caring about x position
+    private final double landingHeight= 22000;//from this height the lander will try to land, not caring about x position and velocity
     private final double maxEngineA = 2.7;
-    private final double standardError = 0.1;
+    private final double standardError = 0.01;
     private double currentU;
     //private List<Double> allEngineAcc; // TO: have an object-specific allEngineAcc to maybe know how to adjust based on prev calls - like as if we're closer, half the prev call
 
@@ -51,7 +51,7 @@ public class ClosedLoopController implements ControllerInterface {
     // (aka the frequency we want to adjust the landing - i.e get feedback and come up with new values based on that)
     private double findU(AbstractLander lander) {
 
-        double velFactor = Math.min(2,abs(lander.getPosition().getX()/ 6000) + 0.01);
+        double velFactor = Math.min(2,abs(lander.getPosition().getX()/ 3000) + 0.01);
         double minVel = maxLanderVel * velFactor;
         double accFactor = Math.min(1,abs(lander.getPosition().getY()/ 50) + 0.01);
         double engineAcc = maxEngineA * accFactor;
@@ -70,7 +70,17 @@ public class ClosedLoopController implements ControllerInterface {
         // Negative x value, out of goal
         } else if(abs(lander.getPosition().getX()) > 0.1 && lander.getPosition().getX() < 0) {
             if(lander.getVelocity().getX() < minVel) {
+                //System.out.println("leftp leftm");
+
                 if(angleWithinError(lander.getPosition().getZ(),standardError,PI/2)) {
+                    //System.out.println("leftp leftm fire!");
+                    return engineAcc;
+                } else {
+                    return 0;
+                }
+            }else{
+                if(angleWithinError(lander.getPosition().getZ(),standardError,3*PI/2)) {
+                    //System.out.println("leftp leftm slow!");
                     return engineAcc;
                 } else {
                     return 0;
@@ -85,6 +95,12 @@ public class ClosedLoopController implements ControllerInterface {
                 } else {
                     return 0;
                 }
+            }else{
+                if(angleWithinError(lander.getPosition().getZ(),standardError,PI/2)) {
+                    return engineAcc;
+                } else {
+                    return 0;
+                }
             }
         }
         return 0;
@@ -95,7 +111,7 @@ public class ClosedLoopController implements ControllerInterface {
         double accFactor = Math.min(1,abs(lander.getPosition().getY()/ 100) + 0.01);
         double torque = 0.05 * PI * accFactor;
         double targetAngle;
-        double factor = Math.min(5,lander.getPosition().getX()/ 10000 + 0.01);
+        double factor = Math.min(5,abs(lander.getPosition().getX())/ 1000 + 0.01);
         double minVel = maxLanderVel * factor;
         // when close to ground try to land
         if(abs(lander.getPosition().getY()) <= landingHeight) {
@@ -103,6 +119,15 @@ public class ClosedLoopController implements ControllerInterface {
             double v0 = lander.getVelocity().getY();
             double dist = (v0*v0) / (2*maxA)*1.2;
 
+            if(lander.getPosition().getX() >= 0.1  && lander.getVelocity().getX() >= 0.1)
+            {
+                targetAngle = -0.01;
+            }else if(lander.getPosition().getX() <= -0.1  && lander.getVelocity().getX() <= -0.1)
+            {
+                targetAngle = 0.01;
+            }else{
+                targetAngle = 0;
+            }
             targetAngle = 0;
             if(lander.getPosition().getY() < dist && angleWithinError(lander.getPosition().getZ(),standardError,targetAngle)) {
                 return 0;
@@ -114,15 +139,21 @@ public class ClosedLoopController implements ControllerInterface {
         } else if(abs(lander.getPosition().getX()) > 0.1 && lander.getPosition().getX() < 0) {
             if(lander.getVelocity().getX() < minVel) {
                 targetAngle = PI/2;
-                return returnV(lander,targetAngle,torque);
+            }else{
+                targetAngle = 3*PI/2;
             }
+            //System.out.println("target angle: " + targetAngle + "Velocity: " + lander.getVelocity().getX() + minVel;
+            return returnV(lander,targetAngle,torque);
 
 
         } else if(abs(lander.getPosition().getX()) > 0.1 && lander.getPosition().getX() > 0) {
-        if(lander.getVelocity().getX() > -minVel) {
-            targetAngle = 3*PI/2;
+            if(lander.getVelocity().getX() > -minVel) {
+                targetAngle = 3*PI/2;
+
+            }else{
+                targetAngle = PI/2;
+            }
             return returnV(lander,targetAngle,torque);
-        }
         }
         return 0;
     }
@@ -133,7 +164,7 @@ public class ClosedLoopController implements ControllerInterface {
             angle -= 2 * PI;
         }
 
-        while (angle <= - 2 * PI) {
+        while (angle <= -2*PI) {
             angle += 2 * PI;
         }
         //if the angle is within the error bounds
