@@ -24,10 +24,7 @@ import titan.interfaces.StateInterface;
 import titan.interfaces.Vector3dInterface;
 import titan.space.Vector3d;
 import titan_lander.interfaces.ControllerInterface;
-import titan_lander.solver.Lander;
-import titan_lander.solver.LanderFunction;
-import titan_lander.solver.LanderSolver;
-import titan_lander.solver.OpenLoopController;
+import titan_lander.solver.*;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -71,7 +68,7 @@ public class GuiMain extends Application {
     protected static final double finalTime = 2.95217E8;
     protected static final double timeStep = 500;
     public static final double totalAnimTime = 30 * 1000;
-    public static final double landerFinalTime = 1481.5;
+    public static final double landerFinalTime = 1550;
     public static final double landerTimeStep = 0.1;
 
     // Zoom Related Variables
@@ -122,7 +119,7 @@ public class GuiMain extends Application {
         //ControllerInterface openLoopController = new OpenLoopController();
         ControllerInterface closedLoopController = new ClosedLoopController();
         Vector3d landerInitialPosition = new Vector3d(1.3626e+04, 159600, PI / 2);
-        Vector3d landerInitialVelocity = new Vector3d(0, 0, 0);
+        Vector3d landerInitialVelocity = new Vector3d(-10, 0, 0);
         StateInterface lander = new Lander(closedLoopController, landerInitialPosition, landerInitialVelocity);
         landerPathVectors = getPathVectors(solver.solve(function, lander, landerFinalTime, landerTimeStep));
 

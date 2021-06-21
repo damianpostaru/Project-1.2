@@ -11,8 +11,11 @@ import static java.lang.Math.*;
 
 public class ClosedLoopController implements ControllerInterface {
 
-    private final double minVel = 10.0;
-    private final double maxTheta = 0.25*PI;
+    private final double maxLanderVel = 25.0;
+    private final double maxThetaVel = 0.05*PI;
+    private final double landingHeight= 10000;//from this height the lander will try to land, not caring about x position
+    private final double maxEngineA = 2.7;
+    private final double standardError = 0.1;
     private double currentU;
     //private List<Double> allEngineAcc; // TO: have an object-specific allEngineAcc to maybe know how to adjust based on prev calls - like as if we're closer, half the prev call
 
@@ -48,38 +51,40 @@ public class ClosedLoopController implements ControllerInterface {
     // (aka the frequency we want to adjust the landing - i.e get feedback and come up with new values based on that)
     private double findU(AbstractLander lander) {
 
-        double engineAcc = 2.7;
+        double velFactor = Math.min(2,abs(lander.getPosition().getX()/ 6000) + 0.01);
+        double minVel = maxLanderVel * velFactor;
+        double accFactor = Math.min(1,abs(lander.getPosition().getY()/ 50) + 0.01);
+        double engineAcc = maxEngineA * accFactor;
+        // when close to ground try to land
+        if(abs(lander.getPosition().getY()) <= landingHeight) {
+            double maxA = maxEngineA * cos(lander.getPosition().getZ()) - TITAN_G;
+            double v0 = lander.getVelocity().getY();
+            double dist = (v0*v0) / (2*maxA);
 
-        // Positive x value, out of goal
-        if(abs(lander.getPosition().getX()) > 0.1 && lander.getPosition().getX() > 0) {
-            if(lander.getVelocity().getX() > -minVel) {
-                if(angleWithinError(lander.getPosition().getZ(),0.2,3*PI/2)) {
-                    return engineAcc;
-                } else {
-                    return 0;
-                }
+            if(lander.getPosition().getY() < dist && angleWithinError(lander.getPosition().getZ(),standardError,0)) {
+                return maxEngineA;
+            } else {
+                return 0;
             }
 
         // Negative x value, out of goal
         } else if(abs(lander.getPosition().getX()) > 0.1 && lander.getPosition().getX() < 0) {
             if(lander.getVelocity().getX() < minVel) {
-                if(angleWithinError(lander.getPosition().getZ(),0.2,PI/2)) {
+                if(angleWithinError(lander.getPosition().getZ(),standardError,PI/2)) {
                     return engineAcc;
                 } else {
                     return 0;
                 }
             }
 
-        // Free fall, once we get within the x goal
-        } else if(abs(lander.getPosition().getX()) <= 0.1 && abs(lander.getPosition().getX()) >= 0) {
-            double maxA = engineAcc - TITAN_G;
-            double v0 = lander.getVelocity().getY();
-            double dist = (v0*v0) / (2*maxA);
-
-            if(lander.getPosition().getY() < dist && angleWithinError(lander.getPosition().getZ(),0.02,0)) {
-                return engineAcc;
-            } else {
-                return 0;
+            // Positive x value, out of goal
+        } else if(abs(lander.getPosition().getX()) > 0.1 && lander.getPosition().getX() > 0) {
+            if(lander.getVelocity().getX() > -minVel) {
+                if(angleWithinError(lander.getPosition().getZ(),standardError,3*PI/2)) {
+                    return engineAcc;
+                } else {
+                    return 0;
+                }
             }
         }
         return 0;
@@ -87,13 +92,21 @@ public class ClosedLoopController implements ControllerInterface {
 
     private double findV(AbstractLander lander) {
 
-        double torque = 0.1 * PI;
+        double accFactor = Math.min(1,abs(lander.getPosition().getY()/ 100) + 0.01);
+        double torque = 0.05 * PI * accFactor;
         double targetAngle;
+        double factor = Math.min(5,lander.getPosition().getX()/ 10000 + 0.01);
+        double minVel = maxLanderVel * factor;
+        // when close to ground try to land
+        if(abs(lander.getPosition().getY()) <= landingHeight) {
+            double maxA = torque - TITAN_G;
+            double v0 = lander.getVelocity().getY();
+            double dist = (v0*v0) / (2*maxA)*1.2;
 
-        // Positive x value, out of goal
-        if(abs(lander.getPosition().getX()) > 0.1 && lander.getPosition().getX() > 0) {
-            if(lander.getVelocity().getX() > -minVel) {
-                targetAngle = 3*PI/2;
+            targetAngle = 0;
+            if(lander.getPosition().getY() < dist && angleWithinError(lander.getPosition().getZ(),standardError,targetAngle)) {
+                return 0;
+            } else {
                 return returnV(lander,targetAngle,torque);
             }
 
@@ -104,18 +117,12 @@ public class ClosedLoopController implements ControllerInterface {
                 return returnV(lander,targetAngle,torque);
             }
 
-        // Free fall, once we get within the x goal
-        } else if(abs(lander.getPosition().getX()) <= 0.1 && abs(lander.getPosition().getX()) >= 0) {
-            double maxA = torque - TITAN_G;
-            double v0 = lander.getVelocity().getY();
-            double dist = (v0*v0) / (2*maxA);
 
-            targetAngle = 0;
-            if(lander.getPosition().getY() < dist && angleWithinError(lander.getPosition().getZ(),0.02,targetAngle)) {
-                return 0;
-            } else {
-                return returnV(lander,targetAngle,torque);
-            }
+        } else if(abs(lander.getPosition().getX()) > 0.1 && lander.getPosition().getX() > 0) {
+        if(lander.getVelocity().getX() > -minVel) {
+            targetAngle = 3*PI/2;
+            return returnV(lander,targetAngle,torque);
+        }
         }
         return 0;
     }
@@ -134,16 +141,16 @@ public class ClosedLoopController implements ControllerInterface {
     }
 
     private double returnV(AbstractLander lander, double targetAngle, double torque) {
-        if(angleWithinError(lander.getPosition().getZ(),0.1,targetAngle)) {
+        if(angleWithinError(lander.getPosition().getZ(),standardError,targetAngle)) {
             return 0;
         } else {
             if(lander.getPosition().getZ() < targetAngle) {
-                if(lander.getVelocity().getZ() >= maxTheta) {
+                if(lander.getVelocity().getZ() >= maxThetaVel) {
                     return 0;
                 }
                 return torque;
             } else {
-                if(lander.getVelocity().getZ() <= -maxTheta) {
+                if(lander.getVelocity().getZ() <= -maxThetaVel) {
                     return 0;
                 }
                 return -torque;

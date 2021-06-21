@@ -14,7 +14,7 @@ public class Lander extends AbstractLander {
 
     private static boolean hasCrashed;
     private static boolean hasLanded;
-    private final double error = 0.1;
+    private final double error = 0;
     private static boolean wasPrinted;
     private static boolean wasPrinted1;
     private static final AirDrag airDrag = new AirDrag(0, 300000);
