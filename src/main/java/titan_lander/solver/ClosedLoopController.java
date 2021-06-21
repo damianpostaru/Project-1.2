@@ -14,7 +14,7 @@ public class ClosedLoopController implements ControllerInterface {
     // TAKE OUT (TO) - Notes to remove later
     // TO: We shouldn't rly need to consider time on this one, u and v are obtained in a different manner
     LanderBurnsData[] landerBurnsData = {};
-
+    private final double TITAN_G = 1.352;
     private Vector3d currentPosition;
     private Vector3d currentVelocity;
     private double currentU; // TO: reason for this class variable explained line 29-33
