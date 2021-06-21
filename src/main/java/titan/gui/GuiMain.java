@@ -24,10 +24,7 @@ import titan.interfaces.StateInterface;
 import titan.interfaces.Vector3dInterface;
 import titan.space.Vector3d;
 import titan_lander.interfaces.ControllerInterface;
-import titan_lander.solver.Lander;
-import titan_lander.solver.LanderFunction;
-import titan_lander.solver.LanderSolver;
-import titan_lander.solver.OpenLoopController;
+import titan_lander.solver.*;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,12 +33,13 @@ import static java.lang.Math.PI;
 
 public class GuiMain extends Application {
 
+    private final boolean useOpenLoop = true;
+
     static CelestialBody[] planetBodies = new CelestialBody[12];
     static Rectangle2D screenBounds;
     protected static Stage singleStage;
     public static Scene introScene, visualiserScene, landerIntroScene, landerVisualiserScene;
-    public static Button beginButton, landerBeginButton, probeLaunch, landerProbeLaunch,
-            exitButton, landerExitButton, landerButtonY, landerButtonN;
+    public static Button beginButton, landerBeginButton, probeLaunch, landerProbeLaunch, exitButton, landerExitButton, landerButtonY, landerButtonN;
     public static double centerX, centerY, landerCenterX, landerCenterY, distancePixel;
     public static Timeline[] planetPaths = new Timeline[12];
     public static VBox infoBox, landerSelection, landerButtonBox;
@@ -71,7 +69,7 @@ public class GuiMain extends Application {
     protected static final double finalTime = 2.95217E8;
     protected static final double timeStep = 500;
     public static final double totalAnimTime = 30 * 1000;
-    public static final double landerFinalTime = 1481.5;
+    public static final double landerFinalTime = 2000;
     public static final double landerTimeStep = 0.1;
 
     // Zoom Related Variables
@@ -119,10 +117,17 @@ public class GuiMain extends Application {
         //temporary solution until we made the simulation work
         LanderSolver solver = new LanderSolver();
         LanderFunction function = new LanderFunction();
-        ControllerInterface openLoopController = new OpenLoopController();
+        ControllerInterface controller;
+        Vector3d landerInitialVelocity;
+        if (useOpenLoop) {
+            controller = new OpenLoopController();
+            landerInitialVelocity = new Vector3d(0, 0, 0);
+        } else {
+            controller = new ClosedLoopController();
+            landerInitialVelocity = new Vector3d(-10, 0, 0);
+        }
         Vector3d landerInitialPosition = new Vector3d(1.3626e+04, 159600, PI / 2);
-        Vector3d landerInitialVelocity = new Vector3d(0, 0, 0);
-        StateInterface lander = new Lander(openLoopController, landerInitialPosition, landerInitialVelocity);
+        StateInterface lander = new Lander(controller, landerInitialPosition, landerInitialVelocity);
         landerPathVectors = getPathVectors(solver.solve(function, lander, landerFinalTime, landerTimeStep));
 
         firstVector = metersToPixels(landerPathVectors[0]);
@@ -130,7 +135,7 @@ public class GuiMain extends Application {
         LanderIntroScene.setLanderIntroScene();
         LanderVisScene.setLanderVisualizerScene();
 
-        landerSprite = new Image("lander_2.png");
+        landerSprite = new Image("lander.png");
         landerView = new ImageView(landerSprite);
         setLanderVector(landerPathVectors[0]);
         landerView.setPreserveRatio(true);
@@ -139,8 +144,7 @@ public class GuiMain extends Application {
         pathLines.getChildren().add(landerView);
 
         PlanetTransition.createPath();
-        //2.95217E8, 500
-        (new ProbeSimulator()).trajectory(initialPosition, initialVelocity, finalTime , timeStep);
+        (new ProbeSimulator()).trajectory(initialPosition, initialVelocity, finalTime, timeStep);
         singleStage.setFullScreen(true);
         singleStage.setResizable(false);
         singleStage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);

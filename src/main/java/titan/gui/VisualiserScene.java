@@ -1,8 +1,6 @@
 package titan.gui;
 
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -35,25 +33,21 @@ public class VisualiserScene extends GuiMain {
 
         probeLaunch.setOnAction(e -> {
             startTimerTask();
-            for (int i = 0; i < planetPaths.length; i++) {
-                PlanetTransition.transition(planetPaths[i]);
+            for (javafx.animation.Timeline planetPath : planetPaths) {
+                PlanetTransition.transition(planetPath);
             }
 
             Timer scheduler = new Timer();
-            TimerTask schedulerTask;
-            scheduler.schedule(
-                    schedulerTask = new TimerTask() {
-                        @Override
-                        public void run() {
-                            for (int i = 0; i < planetPaths.length; i++) {
-                                PlanetTransition.pauseTransition(planetPaths[i]);
-                            }
-                            landerButtonY.setVisible(true);
-                            landerButtonN.setVisible(true);
-                        }
-                    },
-                    26380
-            );
+            scheduler.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    for (javafx.animation.Timeline planetPath : planetPaths) {
+                        PlanetTransition.pauseTransition(planetPath);
+                    }
+                    landerButtonY.setVisible(true);
+                    landerButtonN.setVisible(true);
+                }
+            }, 26380);
         });
 
         exitButton.setOnAction(e -> System.exit(0));
@@ -63,8 +57,8 @@ public class VisualiserScene extends GuiMain {
         });
 
         landerButtonN.setOnAction(e -> {
-            for (int i = 0; i < planetPaths.length; i++) {
-                PlanetTransition.transition(planetPaths[i]);
+            for (javafx.animation.Timeline planetPath : planetPaths) {
+                PlanetTransition.transition(planetPath);
             }
             landerButtonY.setVisible(false);
             landerButtonN.setVisible(false);
@@ -76,18 +70,13 @@ public class VisualiserScene extends GuiMain {
         slider1.setMin(-800);
         slider1.setPrefWidth(300d);
         slider1.setLayoutX(-150);
-        slider1.setLayoutY( 200);
+        slider1.setLayoutY(200);
         slider1.setShowTickLabels(false);
         slider1.setStyle("-fx-base: yellow");
 
         Translate translate = new Translate();
 
-        slider1.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<?extends Number> observable, Number oldValue, Number newValue){
-                translate.setX((double) newValue);
-
-            }
-        });
+        slider1.valueProperty().addListener((observable, oldValue, newValue) -> translate.setX((double) newValue));
 
         Slider slider2 = new Slider();
 
@@ -99,15 +88,10 @@ public class VisualiserScene extends GuiMain {
         slider2.setShowTickLabels(false);
         slider2.setStyle("-fx-base: yellow");
 
-        slider2.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue <?extends Number>observable, Number oldValue, Number newValue){
+        slider2.valueProperty().addListener((observable, oldValue, newValue) -> translate.setY((double) newValue));
 
-                translate.setY((double) newValue);
-            }
-        });
-
-        for (int i = 0; i < planetBodies.length; i++) {
-            planetBodies[i].getBody().getTransforms().add(translate);
+        for (CelestialBody planetBody : planetBodies) {
+            planetBody.getBody().getTransforms().add(translate);
         }
 
         InfoScreen.run();
@@ -118,8 +102,8 @@ public class VisualiserScene extends GuiMain {
         zoomPane.scaleYProperty().bind(scrollScale);
 
         ObservableList<Node> zoomChildren = zoomPane.getChildren();
-        for (int i = 0; i < planetBodies.length; i++) {
-            zoomChildren.add(planetBodies[i].getBody());
+        for (CelestialBody planetBody : planetBodies) {
+            zoomChildren.add(planetBody.getBody());
         }
         // Initially displayed Solar System position
         zoomPane.setTranslateX(-screenBounds.getWidth() / 4);

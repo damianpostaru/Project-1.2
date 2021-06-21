@@ -1,9 +1,8 @@
 package titan_lander.solver;
 
-public class AirDrag extends Wind
-{
-    public AirDrag(double deltaFactor,int maxHeight)
-    {
+public class AirDrag extends Wind {
+
+    public AirDrag(double deltaFactor, int maxHeight) {
         super(deltaFactor, maxHeight);
     }
 

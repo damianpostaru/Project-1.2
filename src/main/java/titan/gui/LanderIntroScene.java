@@ -8,10 +8,8 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-public class LanderIntroScene extends GuiMain
-{
-    public static void setLanderIntroScene()
-    {
+public class LanderIntroScene extends GuiMain {
+    public static void setLanderIntroScene() {
         StackPane beginPane = new StackPane();
         landerIntroScene = new Scene(beginPane, screenBounds.getWidth(), screenBounds.getHeight());
         landerIntroScene.getStylesheets().add("Stylesheet.css");

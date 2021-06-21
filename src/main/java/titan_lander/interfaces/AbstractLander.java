@@ -18,7 +18,7 @@ public abstract class AbstractLander implements StateInterface {
     }
 
     /**
-     * Update the landers position and velocity using acceleration
+     * Update the lander's position and velocity using acceleration
      *
      * @param step The time-step of the update
      * @param acc  the acceleration applied on the lander
@@ -29,8 +29,8 @@ public abstract class AbstractLander implements StateInterface {
     /**
      * Calculate the acceleration of the lander at a specific time
      *
-     * @param t The time to evaluate the accelaration
-     * @return a vector containing the x-accelaration, y-accelaration and the angular acceleration
+     * @param t The time to evaluate the acceleration
+     * @return a vector containing the x-acceleration, y-acceleration and the angular acceleration
      */
     public abstract Vector3d calcAcc(double t);
 
