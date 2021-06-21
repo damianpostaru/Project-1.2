@@ -18,10 +18,9 @@ public class ClosedLoopController implements ControllerInterface {
     private Vector3d currentPosition;
     private Vector3d currentVelocity;
     private double currentU; // TO: reason for this class variable explained line 29-33
-    private List<Double> allEngineAcc; // TO: have an object-specific allEngineAcc to maybe know how to adjust based on prev calls - like as if we're closer, half the prev call
+    private final List<Double> allEngineAcc = new LinkedList<>(); // TO: have an object-specific allEngineAcc to maybe know how to adjust based on prev calls - like as if we're closer, half the prev call
 
     public ClosedLoopController() {
-        this.allEngineAcc = new LinkedList<Double>();
     }
 
     // TO: this one shouldn't need time, since it is not dependent on a pre-defined function over time.
@@ -34,19 +33,19 @@ public class ClosedLoopController implements ControllerInterface {
     @Override
     public double getX(AbstractLander lander, double t) {
         //
-        currentU = findU();
+        currentU = findU(lander);
         return currentU * sin(lander.getPosition().getZ());
     }
 
     @Override
     public double getY(AbstractLander lander, double t) {
-        //double u = findU();
+        double u = findU(lander);
         return currentU * cos(lander.getPosition().getZ()) - TITAN_G;
     }
 
     @Override
     public double getTheta(AbstractLander lander, double t) {
-        return findV();
+        return findV(lander);
     }
 
     // TO: maybe no need for this, just a way to get the current pos/vel
@@ -69,7 +68,7 @@ public class ClosedLoopController implements ControllerInterface {
     // So it should result in a value that ponders both of these ^^^^^
     // Also the initial factor that is assigned honestly depends on the frequency we call the controller - like a time-step maybe
     // (aka the frequency we want to adjust the landing - i.e get feedback and come up with new values based on that)
-    private double findU() {
+    private double findU(AbstractLander lander) {
         // TO <-> MAIN ISSUE <->
         // Basically, we need to find a good way to come up with u, using all the info (current pos and vel) we might need
         // Positive x value, out of goal
@@ -81,7 +80,7 @@ public class ClosedLoopController implements ControllerInterface {
     }
 
     // TO: Same logic as in findU(), but adjusted to torque
-    private double findV() {
+    private double findV(AbstractLander lander) {
         // TO: Same logic as in findU()
         return 0;
     }
