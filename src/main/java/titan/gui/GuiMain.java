@@ -119,10 +119,11 @@ public class GuiMain extends Application {
         //temporary solution until we made the simulation work
         LanderSolver solver = new LanderSolver();
         LanderFunction function = new LanderFunction();
-        ControllerInterface openLoopController = new OpenLoopController();
+        //ControllerInterface openLoopController = new OpenLoopController();
+        ControllerInterface closedLoopController = new ClosedLoopController();
         Vector3d landerInitialPosition = new Vector3d(1.3626e+04, 159600, PI / 2);
         Vector3d landerInitialVelocity = new Vector3d(0, 0, 0);
-        StateInterface lander = new Lander(openLoopController, landerInitialPosition, landerInitialVelocity);
+        StateInterface lander = new Lander(closedLoopController, landerInitialPosition, landerInitialVelocity);
         landerPathVectors = getPathVectors(solver.solve(function, lander, landerFinalTime, landerTimeStep));
 
         firstVector = metersToPixels(landerPathVectors[0]);
