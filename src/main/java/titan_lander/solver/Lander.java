@@ -14,9 +14,8 @@ public class Lander extends AbstractLander {
 
     private static boolean hasCrashed;
     private static boolean hasLanded;
-    private final double error = 0;
+    private final double error = 0.1;
     private static boolean wasPrinted;
-    private static boolean wasPrinted1;
     private static final AirDrag airDrag = new AirDrag(0, 300000);
     private final double mass = 16400;
 
@@ -35,10 +34,6 @@ public class Lander extends AbstractLander {
 
     public Vector3d calcAcc(double t) {
         if (hasCrashed) {
-            if (!wasPrinted1) {
-                System.out.println(t);
-                wasPrinted1 = true;
-            }
             return new Vector3d(0, 0, 0);
         }
         Vector3d controllerAcc = new Vector3d(controller.getX(this, t), controller.getY(this, t), controller.getTheta(this, t));
@@ -52,19 +47,18 @@ public class Lander extends AbstractLander {
         boolean xVel = abs(velocity.getX()) <= 0.1;
         boolean yVel = abs(velocity.getY()) <= 0.1;
         boolean thetaVel = abs(velocity.getZ()) <= 0.01;
-//        System.out.println("Position: " + position);
-//        System.out.println("Velocity: " + velocity);
         if (position.getY() <= error) {
             hasCrashed = true;
-
             if (!wasPrinted) {
                 System.out.println("Position: " + position);
                 System.out.println("Velocity: " + velocity);
                 wasPrinted = true;
             }
             if (xPos & thetaPos & xVel & yVel & thetaVel) {
-                hasLanded = true;
-                System.out.println("Successful landing");
+                if (!hasLanded) {
+                    System.out.println("Successful landing!");
+                    hasLanded = true;
+                }
             }
         }
     }

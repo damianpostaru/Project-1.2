@@ -83,8 +83,7 @@ public class SolarSystem {
         return output.toString();
     }
 
-    public static void reset(Vector3d initialPosition, Vector3d initialVelocity)
-    {
+    public static void reset(Vector3d initialPosition, Vector3d initialVelocity) {
         INSTANCE = new SolarSystem(initialPosition, initialVelocity);
     }
 }

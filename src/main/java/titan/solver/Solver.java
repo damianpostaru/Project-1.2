@@ -1,6 +1,5 @@
 package titan.solver;
 
-import titan.gui.PlanetTransition;
 import titan.interfaces.ODEFunctionInterface;
 import titan.interfaces.ODESolverInterface;
 import titan.interfaces.StateInterface;
@@ -37,7 +36,6 @@ public class Solver implements ODESolverInterface {
         // bootstrap to get the last 2 positions using Runge-Kutta Solver
         states[1] = step(function, time, initialState, stepSize);
         time = time + stepSize;
-        System.out.println("0%");
         for (int i = 2; i < states.length; i++) {
             states[i] = verletStep(function, time, states[i - 2], states[i - 1], stepSize);
             if ((finalTime - time) / stepSize < 1) {
@@ -45,10 +43,6 @@ public class Solver implements ODESolverInterface {
             } else {
                 time += stepSize;
             }
-
-//            if (time % 100000 == 0) {
-//                System.out.println("\r" + time / finalTime * 100 + "%");
-//            }
             accessTimes.add(time);
         }
         return states;

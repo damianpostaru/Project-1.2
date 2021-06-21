@@ -8,8 +8,13 @@ public class LanderSolver implements ODESolverInterface {
     // potential problem with extends: the static accessTime variable for GUI
 
     @Override
-    public StateInterface[] solve(ODEFunctionInterface f, StateInterface y0, double[] ts) {
-        return new StateInterface[0];
+    public StateInterface[] solve(ODEFunctionInterface function, StateInterface initialState, double[] outputTimes) {
+        StateInterface[] states = new StateInterface[outputTimes.length];
+        states[0] = initialState;
+        for (int i = 1; i < states.length; i++) {
+            states[i] = step(function, outputTimes[i], states[i - 1], outputTimes[i] - outputTimes[i - 1]);
+        }
+        return states;
     }
 
     @Override
@@ -39,6 +44,4 @@ public class LanderSolver implements ODESolverInterface {
         LanderRate k = k1.add(k2.mul(2).add(k3.mul(2).add(k4)));
         return y.addMul(h, k.mul(1.0 / 6.0));
     }
-
-    // implement the Verlet step with new Rate later if necessary
 }
