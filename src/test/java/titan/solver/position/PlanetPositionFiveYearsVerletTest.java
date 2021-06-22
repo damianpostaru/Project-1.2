@@ -6,6 +6,7 @@ import titan.interfaces.Vector3dInterface;
 import titan.solver.Function;
 import titan.solver.Solver;
 import titan.solver.State;
+import titan.space.SolarSystem;
 import titan.space.Vector3d;
 
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ class PlanetPositionFiveYearsVerletTest {
     private static final Solver solver = new Solver();
     private static final double finalTime = 157784630;
     private static final double stepSize = 500;
-    private final double ACCURACY = 0;
+    private final double ACCURACY = 3306417730.0;
     private static final Vector3d initialPosition = new Vector3d(-6371e3, 0.1, 0.1);
     private static final Vector3d initialVelocity = new Vector3d(0, 0, 0);
     private static final State initialState = new State(initialPosition, initialVelocity);
@@ -30,6 +31,7 @@ class PlanetPositionFiveYearsVerletTest {
     @BeforeAll
     static void setUp() {
         states = (State[]) solver.solve(new Function(), initialState, finalTime, stepSize);
+        SolarSystem.reset(initialPosition,initialVelocity);
         setPositionsAfterFiveYears();
     }
 
