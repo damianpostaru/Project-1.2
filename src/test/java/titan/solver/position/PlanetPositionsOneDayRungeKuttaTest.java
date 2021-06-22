@@ -6,6 +6,7 @@ import titan.interfaces.Vector3dInterface;
 import titan.solver.Function;
 import titan.solver.Solver;
 import titan.solver.State;
+import titan.space.SolarSystem;
 import titan.space.Vector3d;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ class PlanetPositionsOneDayRungeKuttaTest {
 
     private static final List<Vector3d> positionsAfterOneDay = new ArrayList<>();
     private static final Solver solver = new Solver();
-    private static final double finalTime = 31536000;
+    private static final double finalTime = 86400;
     private static final double stepSize = 500;
     private final double ACCURACY = 49800000;
     private static final Vector3d initialPosition = new Vector3d(-6371e3, 0.1, 0.1);
@@ -30,67 +31,68 @@ class PlanetPositionsOneDayRungeKuttaTest {
     @BeforeAll
     static void setUp() {
         states = (State[]) solver.rungeKuttaSolve(new Function(), initialState, finalTime, stepSize);
+        SolarSystem.reset(initialPosition,initialVelocity);
         setPositionsAfterOneDay();
     }
 
     @Test
-    void verletSolverSun() {
+    void rungeSolverSun() {
         checkPositionAfterOneDay(0);
     }
 
     @Test
-    void verletSolverMercury() {
+    void rungeSolverMercury() {
         checkPositionAfterOneDay(1);
     }
 
     @Test
-    void verletSolverVenus() {
+    void rungeSolverVenus() {
         checkPositionAfterOneDay(2);
     }
 
     @Test
-    void verletSolverEarth() {
+    void rungeSolverEarth() {
         checkPositionAfterOneDay(3);
     }
 
     @Test
-    void verletSolverMoon() {
+    void rungeSolverMoon() {
         checkPositionAfterOneDay(4);
     }
 
     @Test
-    void verletSolverMars() {
+    void rungeSolverMars() {
         checkPositionAfterOneDay(5);
     }
 
     @Test
-    void verletSolverJupiter() {
+    void rungeSolverJupiter() {
         checkPositionAfterOneDay(6);
     }
 
     @Test
-    void verletSolverSaturn() {
+    void rungeSolverSaturn() {
         checkPositionAfterOneDay(7);
     }
 
     @Test
-    void verletSolverTitan() {
+    void rungeSolverTitan() {
         checkPositionAfterOneDay(8);
     }
 
     @Test
-    void verletSolverNeptune() {
+    void rungeSolverNeptune() {
         checkPositionAfterOneDay(9);
     }
 
     @Test
-    void verletSolverUranus() {
+    void rungeSolverUranus() {
         checkPositionAfterOneDay(10);
     }
 
     private void checkPositionAfterOneDay(int i) {
         Vector3dInterface expectedPosition = positionsAfterOneDay.get(i);
-        Vector3dInterface actualPosition = states[(int) Math.ceil(finalTime / stepSize / 365)].getPlanetPosition(i);
+        Vector3dInterface actualPosition = states[(int) Math.ceil(finalTime / stepSize)].getPlanetPosition(i);
         double difference = expectedPosition.dist(actualPosition);
         System.out.println(difference / 1000);
         if (difference > biggestDifference) {

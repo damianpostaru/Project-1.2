@@ -1,37 +1,37 @@
 package titan_lander.solver;
 
 public class LanderBurnsData {
-    private double u;
-    private double v;
-    private double timeStart;
-    private double timeEnd;
+    private final double engineAcc;
+    private final double torque;
+    private final double timeStart;
+    private final double timeEnd;
 
-    public LanderBurnsData(double u, double v, double timeStart, double timeEnd) {
-        this.u = u;
-        this.v = v;
+    public LanderBurnsData(double engineAcc, double torque, double timeStart, double timeEnd) {
+        this.engineAcc = engineAcc;
+        this.torque = torque;
         this.timeStart = timeStart;
         this.timeEnd = timeEnd;
     }
 
-    public double getU() {
-        return u;
+    public double getEngineAcc() {
+        return engineAcc;
     }
 
-    public double getV() {
-        return v;
-    }
-
-    public double getTimeStart() {
-        return timeStart;
-    }
-
-    public double getTimeEnd() {
-        return timeEnd;
+    public double getTorque() {
+        return torque;
     }
 
     public boolean isTimeInRange(double time) {
-        return time < timeEnd && time >= timeStart;
+        double epsilon = 0.001;
+        return greaterThan(timeEnd, time, epsilon) && (greaterThan(time, timeStart, epsilon) || equals(time, timeStart, epsilon));
     }
 
+    private boolean greaterThan(double a, double b, double epsilon) {
+        return a - b > epsilon;
+    }
+
+    private boolean equals(double a, double b, double epsilon) {
+        return a == b || Math.abs(a - b) < epsilon;
+    }
 
 }

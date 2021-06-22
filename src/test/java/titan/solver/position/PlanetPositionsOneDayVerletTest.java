@@ -6,6 +6,7 @@ import titan.interfaces.Vector3dInterface;
 import titan.solver.Function;
 import titan.solver.Solver;
 import titan.solver.State;
+import titan.space.SolarSystem;
 import titan.space.Vector3d;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ class PlanetPositionsOneDayVerletTest {
     @BeforeAll
     static void setUp() {
         states = (State[]) solver.solve(new Function(), initialState, finalTime, stepSize);
+        SolarSystem.reset(initialPosition,initialVelocity);
         setPositionsAfterOneDay();
     }
 

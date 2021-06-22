@@ -9,35 +9,38 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Circle;
 
+import java.util.Collections;
+
 
 public class InfoScreen extends GuiMain {
 
-    public static Label[] planetLabels = new Label[13];//planetLabel, sunLabel, mercuryLabel, venusLabel, earthLabel, moonLabel,
-   // marsLabel, jupiterLabel, saturnLabel, titanLabel, probeLabel, uranusLabel, neptuneLabel;
+    public static Label[] planetLabels = new Label[13];
 
-    public static Circle[] circles = new Circle[12];//sun2, mercury2, venus2, earth2, moon2, mars2, jupiter2, saturn2, titan2,
-    // probe2, uranus2, neptune2;
+    public static Circle[] circles = new Circle[12];
 
     public static void run() {
         labelCreator();
         circleCreator();
 
         for (int q = 1; q < planetLabels.length; q++) {
-            planetContainers[q-1] = new HBox(25);
-            planetContainers[q-1].getChildren().addAll(planetLabels[q], circles[q-1]);
+            planetContainers[q - 1] = new HBox(25);
+            planetContainers[q - 1].getChildren().addAll(planetLabels[q], circles[q - 1]);
         }
 
-
-        infoBox = new VBox(screenBounds.getHeight()/(20*2));
+        infoBox = new VBox(screenBounds.getHeight() / (20 * 2));
         ObservableList<Node> children = infoBox.getChildren();
         children.add(planetLabels[0]);
-        for (int i = 0; i < planetContainers.length; i++) {
-            children.add(planetContainers[i]);
-        }
-        children.addAll(probeLaunch,exitButton);
+        Collections.addAll(children, planetContainers);
+
+        children.addAll(probeLaunch, exitButton);
         infoBox.setPadding(new Insets(0, 50, 0, 0));
         infoBox.getStyleClass().add("Label");
         infoBox.setAlignment(Pos.CENTER);
+
+        landerSelection = new VBox(screenBounds.getHeight() / 40);
+        ObservableList<Node> children2 = landerSelection.getChildren();
+        children2.addAll(landerButtonY, landerButtonN);
+        landerSelection.setAlignment(Pos.CENTER);
     }
 
     public static void labelCreator() {
